@@ -1,4 +1,4 @@
-package utils;
+package main.java.utils;
 /* -------------------------------------------------------------------------
  * This is a Java library that can be used to evaluate the probability
  * density functions (pdf's), cumulative distribution functions (cdf's), and
