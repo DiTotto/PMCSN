@@ -4,9 +4,6 @@ import main.java.datastruct.*;
 
 public class Node1 {
 
-    ///NodeState state = new NodeState();
-    //int num_job;
-
     //num job nel centro
     private int num_job;
     //num job che entrano nel centro
@@ -19,43 +16,108 @@ public class Node1 {
     private int num_job_feedback;
     //numero di serventi
     private int server;
+    //numero di job serviti per ogni centro
+    //utie?? indica il numero di job serviti dal centro i-esimo??
+    private int[] served;
+    private boolean idleServer[];
+    private int jobCoda;
+    private int jobServizio;
 
-    public Node1(int server) {
-        this.num_job = 0;
-        this.num_job_in = 0;
+    //indica il nome del centro - sportello del comune
+    private String name;
+
+
+    public Node1(int server, int num_job, String nome) {
+        this.server = server;
+        this.num_job = num_job;
+
+        this.num_job_feedback = 0;
         this.num_job_left = 0;
         this.num_job_out = 0;
-        this.num_job_feedback = 0;
+        this.num_job_in = 0;
 
-        this.server = server;
+        this.name = nome;
 
-        for(int i = 0; i < server; i++) {
-
+        for (int i = 0; i < server; i++) {
+            this.served[i] = 0;
+            this.idleServer[i] = true;
+            /*this.sumService[i] = 0.0;*/
         }
+
+        if(num_job > server) {
+            //indica il fatto che se il numero di job entranti nel centro è maggiore del numero di server
+            //non sono presenti server inattivi
+            for(int i = 0; i < server; i++) {
+                this.idleServer[i] = false;
+            }
+        } else if(num_job > 0) {
+            //indica che se il numero di job entranti nel centro è minore del numero di server, allora verranno
+            //occupati solo i server necessari
+            for(int i = 0; i < num_job; i++) {
+                this.idleServer[i] = false;
+            }
+        }
+
+        //statsHandller???
+
     }
-
-    /*for(int i=0; i<serverNumber;i++){
-        this.served[i] = 0;
-        this.idleServer[i] = true;
-        this.sumService[i] = 0.0;
-    }*/
-
-
 
 
     public void arrival() {
-        /*Incremento numero di job (popolazione) al centro*/
-        //num_job = state.getJobIN();
-        //state.setJobIN(num_job+1);
+        //incremento contatore dei job entranti
+        this.num_job_in++;
 
-        /*Genero prossimo istante di arrivo prossimo job*/
+        //se sono presenti job nel sistema
+        if(this.num_job >= 0){
+            //se il numero di job è minore del numero di server allora in coda non ho job
+            if(this.num_job < this.server) {
+                this.jobCoda = 0;
+            //altrimenti ho job in coda
+            } else {
+                this.jobCoda = this.num_job - this.server;
+            }
+        }
 
+        //integrali sono da gestire??
 
-        /*Gestisco istante di arrivo attuale*/
+        if(this.isThereServerIdle() > 0) {
+            //se sono presenti server inattivi
+            for(int i = 0; i < this.server; i++) {
+                if(this.idleServer[i]) {
+                    this.idleServer[i] = false;
+                    this.served[i] = 1;
+                    break;
+                }
+            }
+        } else {
+            //se non sono presenti server inattivi
+            this.jobCoda++;
+        }
 
+        this.num_job++;
 
-
+        //time event
 
 
     }
+
+
+
+
+    private int isThereServerIdle() {
+        int counter=0;
+        for(int i=0; i<server;i++){
+            if(this.idleServer[i])
+                counter += counter;
+        }
+        return counter;
+    }
+
+
+    private String returnNameOfCenter() {
+        return this.name;
+    }
+
 }
+
+
