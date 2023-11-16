@@ -19,7 +19,7 @@ public class Node1 {
     //numero di job serviti per ogni centro
     //utie?? indica il numero di job serviti dal centro i-esimo??
     private int[] served;
-    private boolean idleServer[];
+    private boolean[] idleServer;
     private int jobCoda;
     private int jobServizio;
 
@@ -74,10 +74,16 @@ public class Node1 {
 
         //integrali sono da gestire??
 
-        if(this.isThereServerIdle() > 0) {
-            int index = this.whatIsIdle();
-            idleServer[index] = false;
+        int index = this.whatIsIdle();
+
+        if(index > -1) {
+            this.idleServer[index] = false;
         }
+
+        /*if(this.isThereServerIdle() > 0) {
+            int index = this.whatIsIdle();
+            this.idleServer[index] = false;
+        }*/
 
         this.num_job++;
 
@@ -91,6 +97,22 @@ public class Node1 {
 
         if(this.num_job > 0) {
             this.checkQueueService();
+        }
+
+        //cerco un servente non libero
+        int index = this.whatIsNotIdle();
+
+        //se è presente un servente non libero lo libero
+        if(index > -1) {
+            this.idleServer[index] = true;
+        }
+
+        //se ci sono job in coda devo servirli SE un servente è libero
+        if(jobCoda > 0){
+            index = this.whatIsIdle();
+            if(index > -1) {
+                this.idleServer[index] = false;
+            }
         }
 
         this.num_job--;
@@ -107,12 +129,15 @@ public class Node1 {
 
         this.num_job--;
         this.num_job_left++;
+
+        /*qui bisogna capire se l'abbandono avviene in coda o in servizio. Nel caso un abbandono
+        * avvenga in coda allota:
+        * this.jobCoda--;
+        * altrimenti
+        * this.jobServizio--; ed in questo caso bisogna liberare il servente*/
+
         //event time
     }
-
-
-
-
 
 
 
@@ -137,14 +162,28 @@ public class Node1 {
 
 
 
-    private int isThereServerIdle() {
+    /*private int isThereServerIdle() {
         int counter=0;
         for(int i=0; i<server;i++){
             if(this.idleServer[i])
                 counter += counter;
         }
         return counter;
+    }*/
+
+    private int whatIsNotIdle() {
+        int index = -1;
+        for(int i=0; i<server;i++){
+            if(!this.idleServer[i]) {
+                index = i;
+                break;
+            }
+        }
+
+        return index;
     }
+
+
 
     private int whatIsIdle() {
         int index = -1;

@@ -19,6 +19,8 @@ public class Time {
         this.next = next;
     }
 
+
+
     public int getCurrent() {
         return current;
     }
