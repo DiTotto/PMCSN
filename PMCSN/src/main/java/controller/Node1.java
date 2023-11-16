@@ -69,13 +69,7 @@ public class Node1 {
 
         //se sono presenti job nel sistema
         if(this.num_job > 0){
-            //se il numero di job è minore del numero di server allora in coda non ho job
-            if(this.num_job < this.server) {
-                this.jobCoda = 0;
-            //altrimenti ho job in coda
-            } else {
-                this.jobCoda = this.num_job - this.server;
-            }
+            this.checkQueueService();
         }
 
         //integrali sono da gestire??
@@ -90,6 +84,55 @@ public class Node1 {
         //time event
 
 
+    }
+
+    public void completition() {
+        //handler
+
+        if(this.num_job > 0) {
+            this.checkQueueService();
+        }
+
+        this.num_job--;
+        this.num_job_out++;
+        //event time
+    }
+
+    public void abandon() {
+        //handler
+
+        if(this.num_job > 0) {
+            this.checkQueueService();
+        }
+
+        this.num_job--;
+        this.num_job_left++;
+        //event time
+    }
+
+
+
+
+
+
+
+
+    /* --------- */
+
+    private void checkQueueService() {
+        //se il numero di job è minore del numero di server allora in coda non ho job
+        if(this.num_job < this.server) {
+            this.jobCoda = 0;
+            //altrimenti ho job in coda
+        } else {
+            this.jobCoda = this.num_job - this.server;
+        }
+
+        if(this.num_job - this.jobCoda > 0) {
+            this.jobServizio = this.num_job - this.jobCoda;
+        } else {
+            this.jobServizio = 0;
+        }
     }
 
 
