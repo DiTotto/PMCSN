@@ -68,7 +68,7 @@ public class Node1 {
         this.num_job_in++;
 
         //se sono presenti job nel sistema
-        if(this.num_job >= 0){
+        if(this.num_job > 0){
             //se il numero di job è minore del numero di server allora in coda non ho job
             if(this.num_job < this.server) {
                 this.jobCoda = 0;
@@ -81,17 +81,8 @@ public class Node1 {
         //integrali sono da gestire??
 
         if(this.isThereServerIdle() > 0) {
-            //se sono presenti server inattivi
-            for(int i = 0; i < this.server; i++) {
-                if(this.idleServer[i]) {
-                    this.idleServer[i] = false;
-                    this.served[i] = 1;
-                    break;
-                }
-            }
-        } else {
-            //se non sono presenti server inattivi
-            this.jobCoda++;
+            int index = this.whatIsIdle();
+            idleServer[index] = false;
         }
 
         this.num_job++;
@@ -103,7 +94,6 @@ public class Node1 {
 
 
 
-
     private int isThereServerIdle() {
         int counter=0;
         for(int i=0; i<server;i++){
@@ -111,6 +101,18 @@ public class Node1 {
                 counter += counter;
         }
         return counter;
+    }
+
+    private int whatIsIdle() {
+        int index = -1;
+        for(int i=0; i<server;i++){
+            if(this.idleServer[i]) {
+                index = i;
+                break;
+            }
+        }
+
+        return index;
     }
 
 
