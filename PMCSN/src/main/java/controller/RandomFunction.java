@@ -1,7 +1,7 @@
-package controller;
+package main.java.controller;
 
 import static java.lang.Math.log;
-import utils.Rngs;
+import main.java.utils.Rngs;
 
 public class RandomFunction {
 
@@ -44,11 +44,11 @@ public class RandomFunction {
         return departure;
     }
 
-    public double getAbandon(double arrival) {
+    /*public double getAbandon(double arrival) {
         rngs.selectStream(2);
-        double abandon = arrival + Exponential(/*tempo di abbandono dal centro*/);
+        double abandon = arrival + Exponential(tempo di abbandono dal centro);
         return abandon;
-    }
+    }*/
 
 
 }

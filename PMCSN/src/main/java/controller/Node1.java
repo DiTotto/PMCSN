@@ -1,8 +1,7 @@
 package main.java.controller;
 
 import main.java.datastruct.*;
-
-import java.util.HashMap;
+import java.util.ArrayList;
 
 public class Node1 {
 
@@ -28,10 +27,9 @@ public class Node1 {
     //indica il nome del centro - sportello del comune
     private String name;
 
-    //HashMap che contiene tutti i job che sono stati serviti dal servente
-    private HashMap<String, Integer> jobMap = new HashMap<>();
+    private ArrayList<EventList> eventList = new ArrayList<EventList>();
 
-
+    
     public Node1(int server, int num_job, String nome) {
         this.server = server;
         this.num_job = num_job;
@@ -42,6 +40,10 @@ public class Node1 {
         this.num_job_in = 0;
 
         this.name = nome;
+
+        for(int i = 0; i < server; i++) {
+            eventList.add(new EventList(0, 0));
+        }
 
         for (int i = 0; i < server; i++) {
             this.served[i] = 0;
@@ -80,7 +82,7 @@ public class Node1 {
 
         //integrali sono da gestire??
 
-        int index = this.whatIsIdle();
+        int index = this.whatIsIdle(eventList);
 
         if(index > -1) {
             this.idleServer[index] = false;
@@ -120,7 +122,7 @@ public class Node1 {
 
         //se ci sono job in coda devo servirli SE un servente è libero
         if(jobCoda > 0){
-            index = this.whatIsIdle();
+            index = this.whatIsIdle(eventList);
             if(index > -1) {
                 this.idleServer[index] = false;
             }
@@ -196,18 +198,37 @@ public class Node1 {
     }
 
 
+    private int whatIsIdle(ArrayList<EventList> eventList) {
+        int s;
+        int i = 1;
 
-    private int whatIsIdle() {
-        int index = -1;
-        for(int i=0; i<server;i++){
-            if(this.idleServer[i]) {
-                index = i;
-                break;
+        while(eventList.get(i).getX() == 1) {
+            i++;
+        }
+        s = i;
+        while(i < this.server) {
+            i++;
+            if((eventList.get(i).getX() == 0) && (eventList.get(i).getT() < eventList.get(s).getT())) {
+                s = i;
             }
         }
-
-        return index;
+        return s;
+        
     }
+
+
+
+    // private int whatIsIdle() {
+    //     int index = -1;
+    //     for(int i=0; i<server;i++){
+    //         if(this.idleServer[i]) {
+    //             index = i;
+    //             break;
+    //         }
+    //     }
+
+    //     return index;
+    // }
 
 
     private String returnNameOfCenter() {
