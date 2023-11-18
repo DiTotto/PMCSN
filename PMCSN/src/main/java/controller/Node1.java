@@ -2,13 +2,15 @@ package main.java.controller;
 
 import main.java.datastruct.*;
 
+import java.util.HashMap;
+
 public class Node1 {
 
     //num job presenti nel centro
     private int num_job;
     //num job che entrano nel centro
     private int num_job_in;
-    //num job che escono (abbandonano?) dal centro
+    //num job che abbandonano dal centro
     private int num_job_left;
     //num job che escono dal centro per completamento
     private int num_job_out;
@@ -25,6 +27,9 @@ public class Node1 {
 
     //indica il nome del centro - sportello del comune
     private String name;
+
+    //HashMap che contiene tutti i job che sono stati serviti dal servente
+    private HashMap<String, Integer> jobMap = new HashMap<>();
 
 
     public Node1(int server, int num_job, String nome) {
@@ -79,6 +84,8 @@ public class Node1 {
 
         if(index > -1) {
             this.idleServer[index] = false;
+        } else {
+            this.jobCoda++;
         }
 
         // e nel caso in cui non si sono serventi liberi dobbiamo gestire l'inserimento in coda? ??
