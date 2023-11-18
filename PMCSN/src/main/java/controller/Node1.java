@@ -158,6 +158,7 @@ public class Node1 {
         }
 
         if(this.num_job - this.jobCoda > 0) {
+            //se entro nell'if, significa che ci sono job in servizio
             this.jobServizio = this.num_job - this.jobCoda;
         } else {
             this.jobServizio = 0;
