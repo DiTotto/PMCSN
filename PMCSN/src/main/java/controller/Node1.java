@@ -2,6 +2,8 @@ package main.java.controller;
 
 import main.java.datastruct.*;
 
+import java.util.HashMap;
+
 public class Node1 {
 
     //num job presenti nel centro
@@ -25,6 +27,9 @@ public class Node1 {
 
     //indica il nome del centro - sportello del comune
     private String name;
+
+    //HashMap che contiene tutti i job che sono stati serviti dal servente
+    private HashMap<String, Integer> jobMap = new HashMap<>();
 
 
     public Node1(int server, int num_job, String nome) {
