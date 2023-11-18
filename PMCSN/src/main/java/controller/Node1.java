@@ -4,11 +4,11 @@ import main.java.datastruct.*;
 
 public class Node1 {
 
-    //num job nel centro
+    //num job presenti nel centro
     private int num_job;
     //num job che entrano nel centro
     private int num_job_in;
-    //num job che escono dal centro
+    //num job che escono (abbandonano?) dal centro
     private int num_job_left;
     //num job che escono dal centro per completamento
     private int num_job_out;
@@ -50,6 +50,7 @@ public class Node1 {
             for(int i = 0; i < server; i++) {
                 this.idleServer[i] = false;
             }
+            // ?? non è necessario mettere i restanti job in coda ??
         } else if(num_job > 0) {
             //indica che se il numero di job entranti nel centro è minore del numero di server, allora verranno
             //occupati solo i server necessari
@@ -80,6 +81,8 @@ public class Node1 {
             this.idleServer[index] = false;
         }
 
+        // e nel caso in cui non si sono serventi liberi dobbiamo gestire l'inserimento in coda? ??
+
         /*if(this.isThereServerIdle() > 0) {
             int index = this.whatIsIdle();
             this.idleServer[index] = false;
@@ -103,6 +106,7 @@ public class Node1 {
         int index = this.whatIsNotIdle();
 
         //se è presente un servente non libero lo libero
+        // ??ma ne libero uno a caso? non è più giusto liberare esattamente quello che ha completato ai fini statistici?  ??
         if(index > -1) {
             this.idleServer[index] = true;
         }
