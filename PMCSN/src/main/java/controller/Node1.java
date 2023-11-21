@@ -109,28 +109,34 @@ public class Node1 {
 
         if(this.num_job > 0) {
             this.checkQueueService();
-        }
 
-        //cerco un servente non libero
-        int index = this.whatIsNotIdle();
+            //cerco un servente non libero
+            int index = this.whatIsNotIdle();
+            //PER LE STATISTICHE (IPOTIZZO)
+            //DEVO TROVARE SERVER CHE HA COMPLETATO E
+            //SOMMARE UNO AI SUOI JOB SERVITI
+            //MA COME TROVO IL SERVER CHE HA COMPLETATO??
 
-        //se è presente un servente non libero lo libero
-        // ??ma ne libero uno a caso? non è più giusto liberare esattamente quello che ha completato ai fini statistici?  ??
-        if(index > -1) {
-            this.idleServer[index] = true;
-        }
-
-        //se ci sono job in coda devo servirli SE un servente è libero
-        if(jobCoda > 0){
-            index = this.whatIsIdle(eventList);
+            //se è presente un servente non libero lo libero
+            // ??ma ne libero uno a caso? non è più giusto liberare esattamente quello che ha completato ai fini statistici?  ??
             if(index > -1) {
-                this.idleServer[index] = false;
+                this.idleServer[index] = true;
             }
+
+            //se ci sono job in coda devo servirli SE un servente è libero
+            if(jobCoda > 0){
+                index = this.whatIsIdle(eventList);
+                if(index > -1) {
+                    this.idleServer[index] = false;
+                }
+            }
+
+            this.num_job--;
+            this.num_job_out++;
+            //event time
         }
 
-        this.num_job--;
-        this.num_job_out++;
-        //event time
+
     }
 
     public void abandon() {
@@ -214,6 +220,13 @@ public class Node1 {
         }
         return s;
         
+    }
+
+    private int whatServerHasJob() {
+        //TROVARE SERVER CHE HA SERVITO QUEL DETERMINATO JOB
+        //COSì DA RIMUOVERLO DALLO STESSO
+
+        return 0;
     }
 
 
