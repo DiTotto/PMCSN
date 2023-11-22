@@ -163,7 +163,7 @@ typedef struct {                        /* the next-event list    */
     else {                                         /* process a departure */
       index++;                                     /* from server s       */  
       number--;
-      s                 = e;                       /* identidfico il server dal quale sta uscendo il job */
+      s                 = e;                       /* identifico il server dal quale sta uscendo il job */
       if (number >= SERVERS) {                     /* se ci sono job nel centro che stavano aspettando */
         double service   = GetService();           /* prendo il prossimo tempo di servizio del prossimo job che entrerà in servizio dalla coda sempre dalla distribuzione uniforme */
         sum[s].service += service;                 /* aggiorno il tempo totale di servizio */

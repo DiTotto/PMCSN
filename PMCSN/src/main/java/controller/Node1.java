@@ -21,13 +21,25 @@ public class Node1 {
     //utie?? indica il numero di job serviti dal centro i-esimo??
     private int[] served;
     private boolean[] idleServer;
+    //indica i job in coda
     private int jobCoda;
+    //indica i job in servizio in un centro qualasiasi
     private int jobServizio;
+    //indica il num d job serviti in totale
+    private int jobServiti = 0;
 
     //indica il nome del centro - sportello del comune
     private String name;
 
-    private ArrayList<EventList> eventList = new ArrayList<EventList>();
+    //private ArrayList<EventList> eventList = new ArrayList<EventList>();
+    //private ArrayList<Sum> sumList = new ArrayList<Sum>();
+    private EventList[] eventList;
+    private Sum[] sumList;
+
+
+
+    /* -------------DA MODIFICARE DA INSERIRE TEMPI DI INTERARRIVO ETC--------------------- */
+    private RandomFunction random = new RandomFunction();
 
     
     public Node1(int server, int num_job, String nome) {
@@ -41,8 +53,12 @@ public class Node1 {
 
         this.name = nome;
 
+        //ciclo che istanzia i singoli componenti degli arraylist EventList e SumList
         for(int i = 0; i < server; i++) {
-            eventList.add(new EventList(0, 0));
+            //eventList.add(new EventList(0, 0));
+            //sumList.add(new Sum());
+            this.eventList[i] = new EventList(0,0);
+            this.sumList[i] = new Sum();
         }
 
         for (int i = 0; i < server; i++) {
@@ -104,24 +120,32 @@ public class Node1 {
 
     }
 
-    public void completition() {
+    public void completition(int e) {
         //handler
 
         if(this.num_job > 0) {
             this.checkQueueService();
 
             //cerco un servente non libero
-            int index = this.whatIsNotIdle();
-            //PER LE STATISTICHE (IPOTIZZO)
-            //DEVO TROVARE SERVER CHE HA COMPLETATO E
-            //SOMMARE UNO AI SUOI JOB SERVITI
-            //MA COME TROVO IL SERVER CHE HA COMPLETATO??
+            //int index = this.whatIsNotIdle();
+            int index = 0;
+
+            this.jobServiti++;
+            this.num_job--;
+
+            if(this.num_job >= this.server) {
+                double service = this.random.getService();
+                this.sumList[e].incrementService(service);
+                this.sumList[e].incrementServed();
+
+            }
+
 
             //se è presente un servente non libero lo libero
             // ??ma ne libero uno a caso? non è più giusto liberare esattamente quello che ha completato ai fini statistici?  ??
-            if(index > -1) {
-                this.idleServer[index] = true;
-            }
+            // if(index > -1) {
+            //     this.idleServer[index] = true;
+            // }
 
             //se ci sono job in coda devo servirli SE un servente è libero
             if(jobCoda > 0){
@@ -204,29 +228,22 @@ public class Node1 {
     }
 
 
-    private int whatIsIdle(ArrayList<EventList> eventList) {
+    private int whatIsIdle(EventList[] eventList) {
         int s;
         int i = 1;
 
-        while(eventList.get(i).getX() == 1) {
+        while(eventList[i].getX() == 1) {
             i++;
         }
         s = i;
         while(i < this.server) {
             i++;
-            if((eventList.get(i).getX() == 0) && (eventList.get(i).getT() < eventList.get(s).getT())) {
+            if((eventList[i].getX() == 0) && (eventList[i].getT() < eventList[i].getT())) {
                 s = i;
             }
         }
         return s;
         
-    }
-
-    private int whatServerHasJob() {
-        //TROVARE SERVER CHE HA SERVITO QUEL DETERMINATO JOB
-        //COSì DA RIMUOVERLO DALLO STESSO
-
-        return 0;
     }
 
 
