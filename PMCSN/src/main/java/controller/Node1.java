@@ -5,6 +5,12 @@ import java.util.ArrayList;
 
 public class Node1 {
 
+    private double START = 0.0;
+    private double STOP = 20000.0;
+
+    private int s;
+    private double area = 0.0;
+
     //num job presenti nel centro
     private int num_job;
     //num job che entrano nel centro
@@ -19,8 +25,8 @@ public class Node1 {
     private int server;
     //numero di job serviti per ogni centro
     //utie?? indica il numero di job serviti dal centro i-esimo??
-    private int[] served;
-    private boolean[] idleServer;
+    private int[] served = new int[server + 1];
+    private boolean[] idleServer = new boolean[server + 1];
     //indica i job in coda
     private int jobCoda;
     //indica i job in servizio in un centro qualasiasi
@@ -31,10 +37,12 @@ public class Node1 {
     //indica il nome del centro - sportello del comune
     private String name;
 
+    private Time time = new Time();
+
     //private ArrayList<EventList> eventList = new ArrayList<EventList>();
     //private ArrayList<Sum> sumList = new ArrayList<Sum>();
-    private EventList[] eventList;
-    private Sum[] sumList;
+    private EventList[] eventList = new EventList[server + 1];
+    private Sum[] sumList = new Sum[server + 1];
 
 
 
@@ -52,19 +60,25 @@ public class Node1 {
         this.num_job_in = 0;
 
         this.name = nome;
+        
+        //inizializzo la posizione 0 degli arraylist con il primo arrivo 
+        double firstArrival = this.random.getJobArrival();
+        this.eventList[0] = new EventList(firstArrival,1);
+        this.sumList[0] = new Sum();
+        this.served[0] = 0;
+        this.idleServer[0] = true;
+
+        
 
         //ciclo che istanzia i singoli componenti degli arraylist EventList e SumList
-        for(int i = 0; i < server; i++) {
+        //rappresentati i serventi del nodo e li pone a 0 e idle
+        for(int i = 1; i <= server; i++) {
             //eventList.add(new EventList(0, 0));
             //sumList.add(new Sum());
             this.eventList[i] = new EventList(0,0);
             this.sumList[i] = new Sum();
-        }
-
-        for (int i = 0; i < server; i++) {
             this.served[i] = 0;
             this.idleServer[i] = true;
-            /*this.sumService[i] = 0.0;*/
         }
 
         if(num_job > server) {
@@ -87,100 +101,134 @@ public class Node1 {
     }
 
 
-    public void arrival() {
-        //incremento contatore dei job entranti
-        this.num_job_in++;
-
-        //se sono presenti job nel sistema
-        if(this.num_job > 0){
-            this.checkQueueService();
-        }
-
-        //integrali sono da gestire??
-
-        int index = this.whatIsIdle(eventList);
-
-        if(index > -1) {
-            this.idleServer[index] = false;
-        } else {
-            this.jobCoda++;
-        }
-
-        // e nel caso in cui non si sono serventi liberi dobbiamo gestire l'inserimento in coda? ??
-
-        /*if(this.isThereServerIdle() > 0) {
-            int index = this.whatIsIdle();
-            this.idleServer[index] = false;
-        }*/
-
-        this.num_job++;
-
-        //time event
-
-
-    }
-
-    public void completition(int e) {
-        //handler
-
-        if(this.num_job > 0) {
-            this.checkQueueService();
-
-            //cerco un servente non libero
-            //int index = this.whatIsNotIdle();
-            int index = 0;
-
-            this.jobServiti++;
-            this.num_job--;
-
-            if(this.num_job >= this.server) {
-                double service = this.random.getService();
-                this.sumList[e].incrementService(service);
-                this.sumList[e].incrementServed();
-
-            }
-
-
-            //se è presente un servente non libero lo libero
-            // ??ma ne libero uno a caso? non è più giusto liberare esattamente quello che ha completato ai fini statistici?  ??
-            // if(index > -1) {
-            //     this.idleServer[index] = true;
-            // }
-
-            //se ci sono job in coda devo servirli SE un servente è libero
-            if(jobCoda > 0){
-                index = this.whatIsIdle(eventList);
-                if(index > -1) {
-                    this.idleServer[index] = false;
+    public void work() {
+        while((this.eventList[0].getX() != 0) || (this.num_job > 0)) {
+            int e = EventList.NextEvent(eventList, server);
+            this.time.setNext(eventList[e].getT());
+            //gestire AREA
+            this.area = this.area + (this.time.getNext() - this.time.getCurrent()) * this.num_job;
+            this.time.setCurrent(this.time.getNext());
+            if(e == 0) {
+                this.num_job++;
+                this.eventList[0].setT(this.random.getJobArrival());
+                if(eventList[0].getT() > this.STOP) {
+                    this.eventList[0].setX(0);
+                }
+                if(num_job <= server) {
+                    double service = this.random.getService();
+                    this.s = whatIsIdle(eventList);
+                    sumList[s].incrementService(service);
+                    sumList[s].incrementServed();
+                    this.eventList[s].setT(this.time.getCurrent() + service);
+                    this.eventList[s].setX(1);
+                }
+            } else {
+                this.num_job--;
+                this.jobServiti++;
+                //this.served[e]++;
+                this.s = e;
+                if(this.num_job >= this.server) {
+                    double service = this.random.getService();
+                    //this.s = whatIsIdle(eventList);
+                    sumList[s].incrementService(service);
+                    sumList[s].incrementServed();
+                    this.eventList[s].setT(this.time.getCurrent() + service);
+                } else {
+                    this.eventList[e].setX(0);
                 }
             }
 
-            this.num_job--;
-            this.num_job_out++;
-            //event time
         }
-
-
     }
 
-    public void abandon() {
-        //handler
 
-        if(this.num_job > 0) {
-            this.checkQueueService();
-        }
+    // public void arrival() {
+    //     //incremento contatore dei job entranti
+    //     this.num_job_in++;
 
-        this.num_job--;
-        this.num_job_left++;
+    //     //se sono presenti job nel sistema
+    //     if(this.num_job > 0){
+    //         this.checkQueueService();
+    //     }
 
-        /*qui bisogna capire se l'abbandono avviene in coda o in servizio. Nel caso un abbandono
-        * avvenga in coda allota:
-        * this.jobCoda--;
-        * altrimenti
-        * this.jobServizio--; ed in questo caso bisogna liberare il servente*/
+    //     //integrali sono da gestire??
 
-        //event time
-    }
+    //     int index = this.whatIsIdle(eventList);
+
+    //     if(index > -1) {
+    //         this.idleServer[index] = false;
+    //     } else {
+    //         this.jobCoda++;
+    //     }
+
+    //     this.num_job++;
+
+    //     //time event
+
+
+    // }
+
+    // public void completition(int e) {
+    //     //handler
+
+    //     if(this.num_job > 0) {
+    //         this.checkQueueService();
+
+    //         //cerco un servente non libero
+    //         //int index = this.whatIsNotIdle();
+    //         int index = 0;
+
+    //         this.jobServiti++;
+    //         this.num_job--;
+
+    //         if(this.num_job >= this.server) {
+    //             double service = this.random.getService();
+    //             this.sumList[e].incrementService(service);
+    //             this.sumList[e].incrementServed();
+
+    //         }
+
+
+    //         //se è presente un servente non libero lo libero
+    //         // ??ma ne libero uno a caso? non è più giusto liberare esattamente quello che ha completato ai fini statistici?  ??
+    //         // if(index > -1) {
+    //         //     this.idleServer[index] = true;
+    //         // }
+
+    //         //se ci sono job in coda devo servirli SE un servente è libero
+    //         if(jobCoda > 0){
+    //             index = this.whatIsIdle(eventList);
+    //             if(index > -1) {
+    //                 this.idleServer[index] = false;
+    //             }
+    //         }
+
+    //         this.num_job--;
+    //         this.num_job_out++;
+    //         //event time
+    //     }
+
+
+    // }
+
+    // public void abandon() {
+    //     //handler
+
+    //     if(this.num_job > 0) {
+    //         this.checkQueueService();
+    //     }
+
+    //     this.num_job--;
+    //     this.num_job_left++;
+
+    //     /*qui bisogna capire se l'abbandono avviene in coda o in servizio. Nel caso un abbandono
+    //     * avvenga in coda allota:
+    //     * this.jobCoda--;
+    //     * altrimenti
+    //     * this.jobServizio--; ed in questo caso bisogna liberare il servente*/
+
+    //     //event time
+    // }
 
 
 
@@ -217,7 +265,7 @@ public class Node1 {
 
     private int whatIsNotIdle() {
         int index = -1;
-        for(int i=0; i<server;i++){
+        for(int i=1; i<=server;i++){
             if(!this.idleServer[i]) {
                 index = i;
                 break;
@@ -263,6 +311,28 @@ public class Node1 {
 
     private String returnNameOfCenter() {
         return this.name;
+    }
+
+
+    public void printStats() {
+        
+        System.out.println("for " + this.jobServiti + " jobs the service node statistics are:\n\n");
+        System.out.println("  avg interarrivals .. = " + this.eventList[0].getT() / this.jobServiti);
+        System.out.println("  avg wait ........... = " + this.area / this.jobServiti);
+        System.out.println("  avg # in node ...... = " + this.area / this.time.getCurrent());
+
+        for(int i = 1; i <= this.server; i++) {
+            this.area -= this.sumList[i].getService();
+        }
+
+        System.out.println("  avg delay .......... = " + this.area / this.jobServiti);
+        System.out.println("  avg # in queue ..... = " + this.area / this.time.getCurrent());
+        System.out.println("\nthe server statistics are:\n\n");
+        System.out.println("    server     utilization     avg service        share\n");
+        for(int i = 1; i <= this.server; i++) {
+            System.out.println(i + " " + this.sumList[i].getService() / this.time.getCurrent() + " " + this.sumList[i].getService() / this.sumList[i].getServed() + " " + this.sumList[i].getServed() / this.jobServiti);
+        }
+        System.out.println("\n");
     }
 
 }

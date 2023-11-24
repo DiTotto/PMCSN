@@ -3,8 +3,8 @@ package main.java.datastruct;
 import java.util.ArrayList;
 
 public class Time {
-    private int current;
-    private int next;
+    private double current;
+    private double next;
 
     //Utile ??
     /*ArrayList<Integer> lastTIME = new ArrayList<Integer>();*/
@@ -14,26 +14,26 @@ public class Time {
         this.next = 0;
     }
 
-    public Time(int current, int next) {
+    public Time(double current, double next) {
         this.current = current;
         this.next = next;
     }
 
 
 
-    public int getCurrent() {
+    public double getCurrent() {
         return current;
     }
 
-    public void setCurrent(int current) {
+    public void setCurrent(double current) {
         this.current = current;
     }
 
-    public int getNext() {
+    public double getNext() {
         return next;
     }
 
-    public void setNext(int next) {
+    public void setNext(double next) {
         this.next = next;
     }
 

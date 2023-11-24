@@ -12,10 +12,16 @@ public class RandomFunction {
     //tempo di abbandono dal centro
     private double abbandonTime;
 
+    private Rngs rngs = new Rngs();
+
+    private final double start = 0;
+
     public RandomFunction() {
         this.intTime = 0;
         this.abbandonTime = 0;
         this.serviceTime = 0;
+        this.rngs.plantSeeds(0);
+
     }
     public RandomFunction(double intTime, double abbandonTime, double serviceTime) {
         this.intTime = intTime;
@@ -23,24 +29,30 @@ public class RandomFunction {
         this.abbandonTime = abbandonTime;
     }
 
-    private Rngs rngs = new Rngs();
+    
 
 
     public double Exponential(double mu) {
         return (-mu * log(1.0 - rngs.random()));
     }
+    public double Uniform(double a, double b) {
+        return (a + (b - a) * rngs.random());
+    }  
 
-    public double getJobArrival(double arrival) {
+    public double getJobArrival() {
+        double arrival = this.start;
         rngs.selectStream(0);
-        arrival = arrival + Exponential(intTime);
+        //arrival += Exponential(intTime);
+        arrival += Exponential(2.0);
         return arrival;
 
     }
 
-    public double getService(double start) {
+    public double getService() {
         rngs.selectStream(1);
         //NEL NOSTRO CASO ANDREBBE USATA LA ERLANG, NON ESPONENZIALE
-        double departure = start + Exponential(abbandonTime);
+        //double departure = Exponential(abbandonTime);
+        double departure = Uniform(2.0, 10.0);
         return departure;
     }
 
