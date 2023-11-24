@@ -12,9 +12,12 @@ public class RandomFunction {
     //tempo di abbandono dal centro
     private double abbandonTime;
 
+    
     private Rngs rngs = new Rngs();
 
     private final double start = 0;
+    private double arrival = this.start;
+
 
     public RandomFunction() {
         this.intTime = 0;
@@ -40,7 +43,7 @@ public class RandomFunction {
     }  
 
     public double getJobArrival() {
-        double arrival = this.start;
+        //arrival += this.start;
         rngs.selectStream(0);
         //arrival += Exponential(intTime);
         arrival += Exponential(2.0);

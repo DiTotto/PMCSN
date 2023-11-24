@@ -25,8 +25,8 @@ public class Node1 {
     private int server;
     //numero di job serviti per ogni centro
     //utie?? indica il numero di job serviti dal centro i-esimo??
-    private int[] served = new int[server + 1];
-    private boolean[] idleServer = new boolean[server + 1];
+    private int[] served;
+    private boolean[] idleServer;
     //indica i job in coda
     private int jobCoda;
     //indica i job in servizio in un centro qualasiasi
@@ -41,8 +41,8 @@ public class Node1 {
 
     //private ArrayList<EventList> eventList = new ArrayList<EventList>();
     //private ArrayList<Sum> sumList = new ArrayList<Sum>();
-    private EventList[] eventList = new EventList[server + 1];
-    private Sum[] sumList = new Sum[server + 1];
+    private EventList[] eventList;
+    private Sum[] sumList;
 
 
 
@@ -53,6 +53,12 @@ public class Node1 {
     public Node1(int server, int num_job, String nome) {
         this.server = server;
         this.num_job = num_job;
+
+        this.served = new int[server + 1];
+        this.idleServer = new boolean[server + 1];
+        this.eventList = new EventList[server + 1];
+        this.sumList = new Sum[server + 1];
+
 
         this.num_job_feedback = 0;
         this.num_job_left = 0;
@@ -103,12 +109,14 @@ public class Node1 {
 
     public void work() {
         while((this.eventList[0].getX() != 0) || (this.num_job > 0)) {
+            //System.out.println("debug");
             int e = EventList.NextEvent(eventList, server);
             this.time.setNext(eventList[e].getT());
             //gestire AREA
             this.area = this.area + (this.time.getNext() - this.time.getCurrent()) * this.num_job;
             this.time.setCurrent(this.time.getNext());
             if(e == 0) {
+                //System.out.println(eventList[0].getT());
                 this.num_job++;
                 this.eventList[0].setT(this.random.getJobArrival());
                 if(eventList[0].getT() > this.STOP) {
@@ -123,6 +131,7 @@ public class Node1 {
                     this.eventList[s].setX(1);
                 }
             } else {
+
                 this.num_job--;
                 this.jobServiti++;
                 //this.served[e]++;
@@ -330,7 +339,13 @@ public class Node1 {
         System.out.println("\nthe server statistics are:\n\n");
         System.out.println("    server     utilization     avg service        share\n");
         for(int i = 1; i <= this.server; i++) {
-            System.out.println(i + " " + this.sumList[i].getService() / this.time.getCurrent() + " " + this.sumList[i].getService() / this.sumList[i].getServed() + " " + this.sumList[i].getServed() / this.jobServiti);
+            //System.out.println(i + "\t" + this.sumList[i].getService() / this.time.getCurrent() + "\t" + this.sumList[i].getService() / this.sumList[i].getServed() + "\t" + this.sumList[i].getServed() / this.jobServiti);
+            System.out.println(i+"\n");
+            System.out.println("get service" + this.sumList[i].getService() + "\n");
+            System.out.println("getCurrent" + this.time.getCurrent() + "\n");
+            System.out.println("getserved"+this.sumList[i].getServed() + "\n");
+            System.out.println("jobServiti"+this.jobServiti + "\n");
+             
         }
         System.out.println("\n");
     }
