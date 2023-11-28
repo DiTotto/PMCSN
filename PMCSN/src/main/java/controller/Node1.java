@@ -119,6 +119,8 @@ public class Node1 {
         int e = 0;
         while((this.eventList[0].getX() != 0) || (this.num_job > 0)) {
             //System.out.println("debug");
+
+            /* CREARE NUOVA ENTRY PER EVENTLIST IN CUI INSERIRE FEEDBACK - evento piu vicino temporalmente e da processare */
             
             if(!this.isFeedback){
                 e = EventList.NextEvent(eventList, server);
