@@ -5,7 +5,9 @@ public class Sum {
     long served; /*number served*/
 
     public Sum() {
+        //conta tempo di servizio
         this.service = 0;
+        //conta job serviti
         this.served = 0;
     }
 

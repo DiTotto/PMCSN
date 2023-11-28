@@ -295,7 +295,7 @@ public class Node1 {
         s = i;
         while(i < this.server) {
             i++;
-            if((eventList[i].getX() == 0) && (eventList[i].getT() < eventList[i].getT())) {
+            if((eventList[i].getX() == 0) && (eventList[i].getT() < eventList[s].getT())) {
                 s = i;
             }
         }
