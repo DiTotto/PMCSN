@@ -59,6 +59,11 @@ public class RandomFunction {
         return departure;
     }
 
+    public double extractProb() {
+        rngs.selectStream(2);
+        return rngs.random();
+    }
+
     /*public double getAbandon(double arrival) {
         rngs.selectStream(2);
         double abandon = arrival + Exponential(tempo di abbandono dal centro);
