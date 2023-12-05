@@ -167,6 +167,12 @@ public class Node1 {
         } else {
             this.processFeedback(feedback);
         }
+        // if(event[0].getT() > feedback.getT() allserverarebusy) {
+        //     this.processFeedback(feedback);
+        //     
+        // } else {
+        //     this.normalWork();
+        // }
 
     }
     private void checkWorkOnlyExternalArrival() {
@@ -363,6 +369,15 @@ public class Node1 {
 
         }
     }
+
+    // private boolean allserverarebusy() {
+    //     for (int i = 0; i < this.server; i++) {
+    //         if(this.eventList[i].getX() == 0) {
+    //             return false;
+    //         }
+    //     }
+    //     return true;
+    // }
 
 
     // public void arrival() {
