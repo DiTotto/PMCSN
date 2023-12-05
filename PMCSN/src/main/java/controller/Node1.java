@@ -1,7 +1,9 @@
 package main.java.controller;
 
+import jdk.jfr.Event;
 import main.java.datastruct.*;
 import java.util.ArrayList;
+import main.java.controller.EventHandler;
 
 public class Node1 {
 
@@ -49,6 +51,11 @@ public class Node1 {
 
     private boolean isFeedback = false;
 
+    /* AGGIUNTA DEL SINGLETON*/
+    private EventHandler handler;
+    private EventList[] eventList1;
+    /* --------------------- */
+
 
 
     /* -------------DA MODIFICARE DA INSERIRE TEMPI DI INTERARRIVO ETC--------------------- */
@@ -56,6 +63,13 @@ public class Node1 {
 
     
     public Node1(int server, int num_job, String nome) {
+
+        EventList[] eventList1;
+
+        /* ottengo l'istanza singleton*/
+        this.handler = EventHandler.getInstance(server);
+        /*---------*/
+
         this.server = server;
         this.num_job = num_job;
 
@@ -63,6 +77,8 @@ public class Node1 {
         this.idleServer = new boolean[server + 1];
         this.eventList = new EventList[server + 1];
         this.sumList = new Sum[server + 1];
+
+        eventList1 = new EventList[server + 1];
 
 
         this.num_job_feedback = 0;
@@ -81,6 +97,11 @@ public class Node1 {
         this.served[0] = 0;
         this.idleServer[0] = true;
 
+        /* PARTE DEL SINGLETON */
+        eventList1[0] = new EventList(firstArrival,1);
+        //this.handler.setEventNodo1(this.eventList1);
+        /*  ---------------   */
+
         
 
         //ciclo che istanzia i singoli componenti degli arraylist EventList e SumList
@@ -92,7 +113,15 @@ public class Node1 {
             this.sumList[i] = new Sum();
             this.served[i] = 0;
             this.idleServer[i] = true;
+
+            /* PARTE DEL SINGLETON*/
+            eventList1[i] = new EventList(0,0);
+            /* ------------------ */
         }
+        /* PARTE DEL SINGLETON*/
+        this.handler.setEventNodo1(eventList1);
+        /* ------------------ */
+
 
         if(num_job > server) {
             //indica il fatto che se il numero di job entranti nel centro è maggiore del numero di server
@@ -111,6 +140,126 @@ public class Node1 {
 
         //statsHandller???
 
+    }
+
+    public void startToWork() {
+        //DA AGGIUNGERE DI CONTINUARE A LAVORARE SE CI SONO ANCORA JOB DELLA CODA FEEDBACK CHE DELLA CODA ARRIVI ESTERNI
+        while ((this.handler.getEventNodo1()[0].getX() != 0) || (this.num_job > 0)) {
+            if (!this.handler.isFeedbackNodo1() && !this.handler.isExternalArrivalNodo1()) {
+                this.normalWork();
+            } else if (this.handler.isFeedbackNodo1() && !this.handler.isExternalArrivalNodo1()) {
+                this.checkWorkOnlyFeedback();
+            } else if (!this.handler.isFeedbackNodo1() && this.handler.isExternalArrivalNodo1()) {
+                this.checkWorkOnlyExternalArrival();
+            } else {
+                this.checkWorkAll();
+            }
+        }
+
+    }
+
+    private void checkWorkOnlyFeedback() {
+        EventList[] event = this.handler.getEventNodo1();
+        EventList feedback = this.handler.getFeedbackNodo1().get(0);
+
+        if(event[0].getT() < feedback.getT()) {
+            this.normalWork();
+        } else {
+            this.processFeedback(feedback);
+        }
+
+    }
+    private void checkWorkOnlyExternalArrival() {
+        /* DA IMPLEMENTARE LA LOGICA DEL SE ESEGUIRE ARRIVO ESTERNO, FEEDBACK O LAVORO NORMALE*/
+    }
+
+    private void checkWorkAll() {
+        /* DA IMPLEMENTARE LA LOGICA DEL SE ESEGUIRE ARRIVO ESTERNO, FEEDBACK O LAVORO NORMALE*/
+    }
+
+    private void normalWork() {
+        int e;
+
+        EventList[] eventList = this.handler.getEventNodo1();
+
+        e = EventList.NextEvent(eventList, server);
+        this.time.setNext(eventList[e].getT());
+
+        this.area = this.area + (this.time.getNext() - this.time.getCurrent()) * this.num_job;
+        this.time.setCurrent(this.time.getNext());
+        if (e == 0) {
+            this.num_job++; //incremento il numero di job presenti nel centro
+            eventList[0].setT(this.random.getJobArrival()); //aggiorno il tempo di arrivo del prossimo job
+            if (eventList[0].getT() > this.STOP) { //se il tempo di arrivo del prossimo job è maggiore del tempo di stop
+                eventList[0].setX(0);
+                this.handler.setEventNodo1(eventList);
+            }
+            if (num_job <= server) { //se il numero di job è minore del numero di server
+                double service = this.random.getService(); //tempo di servizio del centro s del prossimo job
+                this.s = whatIsIdle(eventList); //cerco un servente idle
+                sumList[s].incrementService(service); //aggiorno il tempo di servizio totale del centro s
+                sumList[s].incrementServed(); //aggiorno il numero di job serviti dal centro s
+                eventList[s].setT(this.time.getCurrent() + service); //aggiorno il tempo di completamento del centro s
+                eventList[s].setX(1);  //il centro s diventa busy
+                this.handler.setEventNodo1(eventList);
+            }
+
+        } else {
+            this.num_job--;  //decremento il numero di job presenti nel centro
+            this.jobServiti++; //incremento il numero di job serviti
+            //this.served[e]++;
+            this.s = e;    //indica il centro che ha completato il job
+            if (this.num_job >= this.server) { //se ci sono job in coda
+                double service = this.random.getService();    //tempo di servizio del centro s del prossimo job
+                //this.s = whatIsIdle(eventList);
+                sumList[s].incrementService(service);         //aggiorno il tempo di servizio totale del centro s
+                sumList[s].incrementServed();                 //aggiorno il numero di job serviti dal centro s
+                //this.eventList[s].setT(this.time.getCurrent() + service); //aggiorno il tempo di completamento del centro s
+                eventList[s].setT(this.time.getCurrent() + service);
+                this.handler.setEventNodo1(eventList);
+
+                this.generateFeedback();
+            }
+            else {
+                eventList[e].setX(0);                  //se non ci sono job in coda, il centro s diventa idle
+                this.handler.setEventNodo1(eventList);
+                this.generateFeedback();
+            }
+        }
+    }
+
+    private void processFeedback(EventList feedback) {
+
+        EventList[] eventList = this.handler.getEventNodo1();
+
+        //this.time.setNext(eventList[e].getT());
+        this.area = this.area + (feedback.getT() - this.time.getCurrent()) * this.num_job;
+        this.time.setCurrent(this.time.getNext());
+
+        if (feedback.getT() > this.STOP) { //se il tempo di arrivo del prossimo job è maggiore del tempo di stop
+            eventList[0].setX(0);
+        }
+        if (num_job <= server) { //se il numero di job è minore del numero di server
+            double service = this.random.getService(); //tempo di servizio del centro s del prossimo job
+            this.s = whatIsIdle(this.handler.getEventNodo1()); //cerco un servente idle
+            sumList[s].incrementService(service); //aggiorno il tempo di servizio totale del centro s
+            sumList[s].incrementServed(); //aggiorno il numero di job serviti dal centro s
+            eventList[s].setT(this.time.getCurrent() + service); //aggiorno il tempo di completamento del centro s
+            eventList[s].setX(1);  //il centro s diventa busy
+            this.handler.setEventNodo1(eventList);
+            this.handler.removeFeedbackNodo1();
+        }
+
+    }
+
+    private void generateFeedback() {
+        double feedbackRandom = this.random.extractProb();
+        if(feedbackRandom <= this.feedbackProbability) {
+            double delay = this.handler.generateDelay();
+            EventList event = new EventList(this.time.getCurrent() + delay, 1);
+            this.handler.getFeedbackNodo1().add(event);
+            this.num_job++; //incremento il numero di job presenti nel centro
+        }
     }
 
 
@@ -191,9 +340,11 @@ public class Node1 {
                         // if(feedbackIndex > 0) {
                             //this.idleServer[feedbackIndex] = false;
                         //tempEvent = new EventList(this.time.getCurrent(), 1);
-                        tTemporary = this.eventList[0].getT();
-                        this.eventList[0].setT(this.time.getCurrent()); //settiamo un nuovo arrivo al centro nel centro stesso
+                        //tTemporary = this.eventList[0].getT() + service;
+                        tTemporary = this.time.getCurrent() + service;
+                        this.eventList[0].setT(this.time.getCurrent() + service); //settiamo un nuovo arrivo nel centro stesso
                         this.eventList[0].setX(1);
+                        this.eventList[s].setT(this.time.getCurrent() + service);
                         //this.eventList[s].setX(0);
                         //} else {
                            // this.jobCoda++;
@@ -386,6 +537,8 @@ public class Node1 {
     }
 
 
+
+
     public void printStats() {
         
         System.out.println("for " + this.jobServiti + " jobs the service node statistics are:\n\n");
@@ -403,11 +556,13 @@ public class Node1 {
         System.out.println("    server     utilization     avg service        share\n");
         for(int i = 1; i <= this.server; i++) {
             //System.out.println(i + "\t" + this.sumList[i].getService() / this.time.getCurrent() + "\t" + this.sumList[i].getService() / this.sumList[i].getServed() + "\t" + this.sumList[i].getServed() / this.jobServiti);
-            System.out.println(i+"\n");
-            System.out.println("get service" + this.sumList[i].getService() + "\n");
+            //System.out.println(i+"\t");
+            /*System.out.println("get service" + this.sumList[i].getService() + "\n");
             System.out.println("getCurrent" + this.time.getCurrent() + "\n");
             System.out.println("getserved"+this.sumList[i].getServed() + "\n");
-            System.out.println("jobServiti"+this.jobServiti + "\n");
+            System.out.println("jobServiti"+this.jobServiti + "\n");*/
+            System.out.println(i + "\t" + sumList[i].getService() / this.time.getCurrent() + "\t" + this.sumList[i].getService() / this.sumList[i].getServed() + "\t" + this.sumList[i].getServed() / this.jobServiti);
+            System.out.println("\n");
             //System.out.println("jobServiti"+this.num_job_feedback + "\n");
              
         }
