@@ -23,13 +23,14 @@ public class EventHandler {
     //private ArrayList<EventList> feedbackNodo2;
     //private ArrayList<EventList> externalArrivalNodo2;
 
-    private RandomFunction random = new RandomFunction();
+    private RandomFunction random;
 
 
     private EventHandler(int server1) {
         this.eventNodo1 = new EventList[server1 + 1];
         this.feedbackNodo1 = new ArrayList<EventList>();
         this.externalArrivalNodo1 = new ArrayList<EventList>();
+        this.random = RandomFunction.getInstance();
         //this.eventNodo2 = new EventList[server2 + 1];
         //this.feedbackNodo2 = new ArrayList<EventList>();
         //this.externalArrivalNodo2 = new ArrayList<EventList>();

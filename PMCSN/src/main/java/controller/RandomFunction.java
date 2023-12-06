@@ -12,6 +12,8 @@ public class RandomFunction {
     //tempo di abbandono dal centro
     private double abbandonTime;
 
+    private static RandomFunction instance = null; 
+
     
     private Rngs rngs = new Rngs();
 
@@ -19,14 +21,22 @@ public class RandomFunction {
     private double arrival = this.start;
 
 
-    public RandomFunction() {
+    private RandomFunction() {
         this.intTime = 0;
         this.abbandonTime = 0;
         this.serviceTime = 0;
         this.rngs.plantSeeds(0);
 
     }
-    public RandomFunction(double intTime, double abbandonTime, double serviceTime) {
+
+    public static RandomFunction getInstance() {
+        if (instance == null) {
+            instance = new RandomFunction();
+        }
+        return instance;
+    }
+    
+    private RandomFunction(double intTime, double abbandonTime, double serviceTime) {
         this.intTime = intTime;
         this.serviceTime = serviceTime;
         this.abbandonTime = abbandonTime;
