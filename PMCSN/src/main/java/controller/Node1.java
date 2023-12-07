@@ -191,7 +191,6 @@ public class Node1 {
 
         e = EventList.NextEvent(eventList, server);
         this.time.setNext(eventList[e].getT());
-
         this.area = this.area + (this.time.getNext() - this.time.getCurrent()) * this.num_job;
         this.time.setCurrent(this.time.getNext());
         if (e == 0) {
