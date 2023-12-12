@@ -29,7 +29,7 @@ public class EventList {
         while (event[i].x == 0)
             i++;
         e = i;
-        while (i < servers) {
+        while (i < (servers + 1)) {
             i++;
             if ((event[i].x == 1) && (event[i].t < event[e].t))
                 e = i;

@@ -27,7 +27,7 @@ public class EventHandler {
 
 
     private EventHandler(int server1) {
-        this.eventNodo1 = new EventList[server1 + 1];
+        this.eventNodo1 = new EventList[server1 + 2];
         this.feedbackNodo1 = new ArrayList<EventList>();
         this.externalArrivalNodo1 = new ArrayList<EventList>();
         this.random = RandomFunction.getInstance();
