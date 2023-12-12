@@ -150,6 +150,8 @@ public class Node1 {
                 if (eventList[0].getT() > this.STOP) { //se il tempo di arrivo del prossimo job è maggiore del tempo di stop
                     eventList[0].setX(0);
                     this.handler.setEventNodo1(eventList);
+
+                    //insert qui il passaggio di statistiche a handler
                 }
                 if (num_job <= server) { //se il numero di job è minore del numero di server fondamentalmente sto mettendo quel job in servizio da qualche parte
                     double service = this.random.getService(); //tempo di servizio del centro s del prossimo job
@@ -208,6 +210,10 @@ public class Node1 {
                     this.handler.setEventNodo1(eventList);
                     
                 }
+
+                //inserire la gestione di inserimento dell'uscita da questo centro. Registrare l'istante di uscita che verrà utilizzato  come tempo di ingresso per il
+                //centro successivo a questo. Verrà creata quindi alla fine dell'esecuzione di questo centro, una lista con tutti i tempi di uscita dei job. Successivamente all'esecuzione
+                //di questo centro, verrà eseguito il centro successivo che avrà come tempo di ingresso il tempo di uscita di questo centro e così via
             }
         }
     }
