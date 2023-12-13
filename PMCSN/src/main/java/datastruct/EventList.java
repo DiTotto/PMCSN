@@ -37,4 +37,19 @@ public class EventList {
         return (e);
     }
 
+    public static int NextEvent2(EventList[] event, int servers) {
+        int e;
+        int i = 0;
+    
+        while (event[i].x == 0)
+            i++;
+        e = i;
+        while (i < (servers + 2)) {
+            i++;
+            if ((event[i].x == 1) && (event[i].t < event[e].t))
+                e = i;
+        }
+        return (e);
+    }
+
 }

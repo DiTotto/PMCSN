@@ -10,42 +10,36 @@ import java.util.ArrayList;
 public class EventHandler {
 
     private static EventHandler instance = null;
-    //array di gestione per eventi su nodo1
     private EventList[] eventNodo1;
-    //in questo array list gestiamo i feedback: se c'è feedback facciamo una push come ultimo
-    //se il feedback viene eseguito allora facciamo una pop del primo e uno shift dei valori
-    private ArrayList<EventList> feedbackNodo1;
-    private ArrayList<EventList> externalArrivalNodo1;
-    private boolean isFeedbackNodo1 = false;
-    private boolean isExternalArrivalNodo1 = false;
-    //array di gestione per eventi su nodo2
-    //private EventList[] eventNodo2;
-    //private ArrayList<EventList> feedbackNodo2;
-    //private ArrayList<EventList> externalArrivalNodo2;
+    private ArrayList<Double> internalArrivalNodo1;
+    private static int server1 = 1;
+
+    private EventList[] eventNodo2;
+    private ArrayList<Double> internalArrivalNodo2;
+    private static int server2 = 4;
 
     private RandomFunction random;
 
 
-    private EventHandler(int server1) {
+    private EventHandler(int server1, int server2) {
         this.eventNodo1 = new EventList[server1 + 2];
-        this.feedbackNodo1 = new ArrayList<EventList>();
-        this.externalArrivalNodo1 = new ArrayList<EventList>();
+        this.eventNodo2 = new EventList[server2 + 3];
+        this.internalArrivalNodo1 = new ArrayList<Double>();
+        this.internalArrivalNodo2 = new ArrayList<Double>();
         this.random = RandomFunction.getInstance();
-        //this.eventNodo2 = new EventList[server2 + 1];
-        //this.feedbackNodo2 = new ArrayList<EventList>();
-        //this.externalArrivalNodo2 = new ArrayList<EventList>();
     }
 
-    public static EventHandler getInstance(int server1) {
+    public static EventHandler getInstance() {
         if (instance == null) {
-            instance = new EventHandler(server1);
+            instance = new EventHandler(server1, server2);
         }
         return instance;
     }
 
-    public double generateDelay() {
-        return this.random.extractProb() * 10;
+    public int getServer1(){
+        return server1;
     }
+
     public EventList[] getEventNodo1() {
         return eventNodo1;
     }
@@ -55,46 +49,37 @@ public class EventHandler {
     public void setFirstArrival(EventList event) {
         this.eventNodo1[0] = event;
     }
-    public ArrayList<EventList> getFeedbackNodo1() {
-        return feedbackNodo1;
+    
+    public ArrayList<Double> getInternalArrivalNodo1() {
+        return internalArrivalNodo1;
     }
-    public void setFeedbackNodo1(ArrayList<EventList> feedbackNodo1) {
-        this.feedbackNodo1 = feedbackNodo1;
-    }
-    public void removeFeedbackNodo1() {
-        this.feedbackNodo1.remove(0);
-    }
-    public ArrayList<EventList> getExternalArrivalNodo1() {
-        return externalArrivalNodo1;
-    }
-    public void setExternalArrivalNodo1(ArrayList<EventList> externalArrivalNodo1) {
-        this.externalArrivalNodo1 = externalArrivalNodo1;
+    public void setInternalArrivalNodo1(ArrayList<Double> internalArrivalNodo1) {
+        this.internalArrivalNodo1 = internalArrivalNodo1;
     }
 
-    public boolean isFeedbackNodo1() {
-        return isFeedbackNodo1;
+    public int getServer2(){
+        return server2;
     }
-    public void setFeedbackNodo1(boolean feedbackNodo1) {
-        isFeedbackNodo1 = feedbackNodo1;
+
+    public EventList[] getEventNodo2() {
+        return eventNodo1;
     }
-    public boolean isExternalArrivalNodo1() {
-        return isExternalArrivalNodo1;
+    public void setEventNodo2(EventList[] eventNodo1) {
+        this.eventNodo1 = eventNodo1;
     }
-    public void setExternalArrivalNodo1(boolean externalArrivalNodo1) {
-        isExternalArrivalNodo1 = externalArrivalNodo1;
+    public void setFirstArrival2(EventList event) {
+        this.eventNodo1[0] = event;
     }
-    /*public EventList[] getEventNodo2() {
-        return eventNodo2;
+    
+    public ArrayList<Double> getInternalArrivalNodo2() {
+        return this.internalArrivalNodo1;
     }
-    public void setEventNodo2(EventList[] eventNodo2) {
-        this.eventNodo2 = eventNodo2;
-    }*/
-    /*public ArrayList<EventList> getFeedbackNodo2() {
-        return feedbackNodo2;
+    public void addInternalArrivalNodo2(Double element) {
+        this.internalArrivalNodo2.add(element);
     }
-    public void setFeedbackNodo2(ArrayList<EventList> feedbackNodo2) {
-        this.feedbackNodo2 = feedbackNodo2;
-    }*/
+    
+    
+   
 
 
 
