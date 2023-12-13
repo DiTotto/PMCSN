@@ -64,15 +64,15 @@ public class EventHandler {
     public EventList[] getEventNodo2() {
         return eventNodo1;
     }
-    public void setEventNodo2(EventList[] eventNodo1) {
-        this.eventNodo1 = eventNodo1;
+    public void setEventNodo2(EventList[] eventNodo2) {
+        this.eventNodo2 = eventNodo2;
     }
     public void setFirstArrival2(EventList event) {
         this.eventNodo1[0] = event;
     }
     
     public ArrayList<Double> getInternalArrivalNodo2() {
-        return this.internalArrivalNodo1;
+        return this.internalArrivalNodo2;
     }
     public void addInternalArrivalNodo2(Double element) {
         this.internalArrivalNodo2.add(element);
