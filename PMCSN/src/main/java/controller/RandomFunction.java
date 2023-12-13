@@ -19,6 +19,7 @@ public class RandomFunction {
 
     private final double start = 0;
     private double arrival = this.start;
+    private double arrival2 = this.start;
 
 
     private RandomFunction() {
@@ -56,7 +57,7 @@ public class RandomFunction {
         //arrival += this.start;
         rngs.selectStream(0);
         //arrival += Exponential(intTime);
-        arrival += Exponential(2.0);
+        arrival += Exponential(25);
         return arrival;
 
     }
@@ -65,12 +66,29 @@ public class RandomFunction {
         rngs.selectStream(1);
         //NEL NOSTRO CASO ANDREBBE USATA LA ERLANG, NON ESPONENZIALE
         //double departure = Exponential(abbandonTime);
+        double departure = Uniform(2.0, 5.0);
+        return departure;
+    }
+
+    public double getJobArrival2() {
+        //arrival += this.start;
+        rngs.selectStream(2);
+        //arrival += Exponential(intTime);
+        arrival2 += Exponential(2);
+        return arrival2;
+
+    }
+
+    public double getService2() {
+        rngs.selectStream(3);
+        //NEL NOSTRO CASO ANDREBBE USATA LA ERLANG, NON ESPONENZIALE
+        //double departure = Exponential(abbandonTime);
         double departure = Uniform(2.0, 10.0);
         return departure;
     }
 
     public double extractProb() {
-        rngs.selectStream(2);
+        rngs.selectStream(4);
         return rngs.random();
     }
 

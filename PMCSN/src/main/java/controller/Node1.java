@@ -59,7 +59,7 @@ public class Node1 {
 
         this.num_job = num_job;
         this.jobServiti = 0;
-        this.exitProbability = 0.1;
+        this.exitProbability = 0.02;
         this.server = this.handler.getServer1();
         
         this.sumList = new Sum[server + 2];
@@ -244,7 +244,7 @@ public class Node1 {
 
 
     public void printStats() {
-        
+        System.out.println("Hi, I'm " + this.returnNameOfCenter() + " and I'm done!\n\n");
         System.out.println("for " + this.jobServiti + " jobs the service node statistics are:\n\n");
         System.out.println("  avg interarrivals .. = " + this.handler.getEventNodo1()[0].getT() / this.jobServiti);
         System.out.println("  avg wait ........... = " + this.area / this.jobServiti);

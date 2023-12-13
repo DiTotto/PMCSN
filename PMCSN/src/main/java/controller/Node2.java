@@ -15,6 +15,12 @@ public class Node2 {
     
     //num job che hanno abbandonato il centro
     private int num_job_left;
+
+    //num job che arrivano dall'esterno
+    private int num_external_job;
+
+    //num job che arrivano dal nodo 1
+    private int num_internal_job;
  
     //numero di serventi
     private int server;
@@ -46,7 +52,9 @@ public class Node2 {
         this.server = this.handler.getServer2();
         this.num_job = num_job;
         this.jobServiti = 0;
-        this.exitProbability = 0.1;
+        this.exitProbability = 0.08;
+        this.num_external_job = 0;
+        this.num_internal_job = 0;
         
         this.sumList = new Sum[server + 3];
 
@@ -62,7 +70,7 @@ public class Node2 {
         this.name = nome;
         
         //inizializzo la posizione 0 degli arraylist con il primo arrivo 
-        double firstArrival = this.random.getJobArrival(); 
+        double firstArrival = this.random.getJobArrival2(); 
         //TODO la random.getJobArrival() non riparte da 0 ma riparte dall'istante in cui aveva finito nodo 1
         
         double firstInternalArrival = this.handler.getInternalArrivalNodo2().remove(0);
@@ -92,9 +100,8 @@ public class Node2 {
     public void normalWork() {
 
         int e;
-
+        
         while ((this.handler.getEventNodo2()[0].getX() != 0) || (this.num_job > 0)) {
-
             EventList[] eventList = this.handler.getEventNodo2();
 
             e = EventList.NextEvent2(eventList, server);
@@ -102,8 +109,9 @@ public class Node2 {
             this.area = this.area + (this.time.getNext() - this.time.getCurrent()) * this.num_job;
             this.time.setCurrent(this.time.getNext());
             if (e == 0) {
+                this.num_external_job++;
                 this.num_job++; //incremento il numero di job presenti nel centro
-                eventList[0].setT(this.random.getJobArrival()); //aggiorno il tempo di arrivo del prossimo job
+                eventList[0].setT(this.random.getJobArrival2()); //aggiorno il tempo di arrivo del prossimo job
                 if (eventList[0].getT() > this.STOP) { //se il tempo di arrivo del prossimo job è maggiore del tempo di stop
                     eventList[0].setX(0);
                     this.handler.setEventNodo2(eventList);
@@ -111,7 +119,7 @@ public class Node2 {
                     //insert qui il passaggio di statistiche a handler
                 }
                 if (num_job <= server) { //se il numero di job è minore del numero di server fondamentalmente sto mettendo quel job in servizio da qualche parte
-                    double service = this.random.getService(); //tempo di servizio del centro s del prossimo job
+                    double service = this.random.getService2(); //tempo di servizio del centro s del prossimo job
                     this.s = whatIsIdle(eventList); //cerco un servente idle
                     sumList[s].incrementService(service); //aggiorno il tempo di servizio totale del centro s
                     sumList[s].incrementServed(); //aggiorno il numero di job serviti dal centro s
@@ -138,60 +146,62 @@ public class Node2 {
             } else if(e == (server + 2)) {
                 //logica di gestione del job che arriva dal nodo 1
                 this.num_job++;
+                this.num_internal_job++;
                 if(!this.handler.getInternalArrivalNodo2().isEmpty()) {
-                    eventList[e].setT(this.handler.getInternalArrivalNodo2().remove(0));
+                    eventList[e].setT(this.handler.getInternalArrivalNodo2().remove(0));//prendo il prossimo arrivo dalla lista di arrivi dal nodo 1
                 } else {
                     eventList[e].setX(0);
                 }
-                eventList[e].setT(this.handler.getInternalArrivalNodo2().remove(0));//prendo il prossimo arrivo dalla lista di arrivi dal nodo 1
+                //eventList[e].setT(this.handler.getInternalArrivalNodo2().remove(0));
                 if(num_job <= server) {
-                    double service = this.random.getService();
+                    double service = this.random.getService2();
                     this.s = whatIsIdle(eventList);
                     sumList[s].incrementService(service);
                     sumList[s].incrementServed();
                     eventList[s].setT(this.time.getCurrent() + service);
                     eventList[s].setX(1);
                     this.handler.setEventNodo2(eventList);
-                } else {
-                    this.num_job--;  //decremento il numero di job presenti nel centro
-                    this.jobServiti++; //incremento il numero di job serviti
-                    this.s = e;    //indica il centro che ha completato il job
-                    if (this.num_job >= this.server) { //se ci sono job in coda
-                        
-                        if(this.num_job>this.server) {
-                            if(this.abbandono()){
-                                //l'indice server dell'array degli eventi indica l'evento di abbandono
-                                eventList[server + 1].setT(this.time.getCurrent()); //aggiorno il tempo del prossimo eevento di abbandono
-                                eventList[server + 1].setX(1);  //il centro s diventa busy
-                                this.handler.setEventNodo2(eventList);
-                            }
+                } 
+            } else {
+                this.num_job--;  //decremento il numero di job presenti nel centro
+                this.jobServiti++; //incremento il numero di job serviti
+                this.s = e;    //indica il centro che ha completato il job
+                if (this.num_job >= this.server) { //se ci sono job in coda
+                    
+                    if(this.num_job>this.server) {
+                        if(this.abbandono()){
+                            //l'indice server dell'array degli eventi indica l'evento di abbandono
+                            eventList[server + 1].setT(this.time.getCurrent()); //aggiorno il tempo del prossimo eevento di abbandono
+                            eventList[server + 1].setX(1);  //il centro s diventa busy
+                            this.handler.setEventNodo2(eventList);
                         }
+                    }
 
-                        double service = this.random.getService();    //tempo di servizio del centro s del prossimo job
-                        //this.s = whatIsIdle(eventList);
-                        sumList[s].incrementService(service);         //aggiorno il tempo di servizio totale del centro s
-                        sumList[s].incrementServed();                 //aggiorno il numero di job serviti dal centro s
-                        //this.eventList[s].setT(this.time.getCurrent() + service); //aggiorno il tempo di completamento del centro s
-                        eventList[s].setT(this.time.getCurrent() + service);
-                        this.handler.setEventNodo2(eventList);
+                    double service = this.random.getService2();    //tempo di servizio del centro s del prossimo job
+                    //this.s = whatIsIdle(eventList);
+                    sumList[s].incrementService(service);         //aggiorno il tempo di servizio totale del centro s
+                    sumList[s].incrementServed();                 //aggiorno il numero di job serviti dal centro s
+                    //this.eventList[s].setT(this.time.getCurrent() + service); //aggiorno il tempo di completamento del centro s
+                    eventList[s].setT(this.time.getCurrent() + service);
+                    this.handler.setEventNodo2(eventList);
 
                         
-                    }
-                    else {
-                        eventList[e].setX(0);                  //se non ci sono job in coda, il centro s diventa idle
-                        this.handler.setEventNodo2(eventList);
-                        
-                    }
+                }
+                else {
+                    eventList[e].setX(0);                  //se non ci sono job in coda, il centro s diventa idle
+                    this.handler.setEventNodo2(eventList);
+                    
+                }
 
                     //inserire la gestione di inserimento dell'uscita da questo centro. Registrare l'istante di uscita che verrà utilizzato  come tempo di ingresso per il
                     //centro successivo a questo. Verrà creata quindi alla fine dell'esecuzione di questo centro, una lista con tutti i tempi di uscita dei job. Successivamente all'esecuzione
                     //di questo centro, verrà eseguito il centro successivo che avrà come tempo di ingresso il tempo di uscita di questo centro e così via
                     //aggiunta di chiamata ad un metodo dell'handler (TODO) che aggiunge il tempo di uscita di questo centro ad una lista di tempi di ingresso
                     // di uno dei centri successivi seguendo una certa probabilità
-                }
             }
         }
     }
+    
 
 
 
@@ -231,7 +241,7 @@ public class Node2 {
 
 
     public void printStats() {
-        
+        System.out.println("Hi, I'm " + this.returnNameOfCenter() + " and I'm done!\n\n");
         System.out.println("for " + this.jobServiti + " jobs the service node statistics are:\n\n");
         System.out.println("  avg interarrivals .. = " + this.handler.getEventNodo2()[0].getT() / this.jobServiti);
         System.out.println("  avg wait ........... = " + this.area / this.jobServiti);
@@ -246,7 +256,7 @@ public class Node2 {
         System.out.println("\nthe server statistics are:\n\n");
         System.out.println("    server     utilization     avg service        share\n");
         for(int i = 1; i <= this.server; i++) {
-            System.out.println(i + "\t" + this.sumList[i].getService() / this.time.getCurrent() + "\t" + this.sumList[i].getService() / this.sumList[i].getServed() + "\t" + this.sumList[i].getServed() / this.jobServiti);
+            System.out.println(i + "\t" + this.sumList[i].getService() / this.time.getCurrent() + "\t" + this.sumList[i].getService() / this.sumList[i].getServed() + "\t" + (double)this.sumList[i].getServed() / (double)this.jobServiti);
             // System.out.println(i+"\t");
             // System.out.println("get service" + this.sumList[i].getService() + "\n");
             // System.out.println("getCurrent" + this.time.getCurrent() + "\n");
