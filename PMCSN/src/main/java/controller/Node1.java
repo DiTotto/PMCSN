@@ -42,15 +42,19 @@ public class Node1 {
     /* --------------------- */
     private double exitProbability;
 
+    private int id; //id del nodo
+
 
 
     /* -------------DA MODIFICARE DA INSERIRE TEMPI DI INTERARRIVO ETC--------------------- */
     //private RandomFunction random = new RandomFunction();
 
     
-    public Node1(int num_job, String nome) {
+    public Node1(int num_job, String nome, int id) {
 
         EventList[] eventList1;
+
+        this.id = id;
 
         /* ottengo l'istanza singleton*/
         this.handler = EventHandler.getInstance();
@@ -60,7 +64,7 @@ public class Node1 {
         this.num_job = num_job;
         this.jobServiti = 0;
         this.exitProbability = 0.02;
-        this.server = this.handler.getServer1();
+        this.server = this.handler.getServer(id);
         
         this.sumList = new Sum[server + 2];
 
@@ -94,7 +98,7 @@ public class Node1 {
             this.sumList[i] = new Sum();
         }
         /* SETTO LA NUOVA EVENTLIST MODIFICATA VERSO L'HANDLER*/
-        this.handler.setEventNodo1(eventList1);
+        this.handler.setEventNodo(id, eventList1);
         /* ------------------ */
 
     }
@@ -105,9 +109,9 @@ public class Node1 {
 
         int e;
 
-        while ((this.handler.getEventNodo1()[0].getX() != 0) || (this.num_job > 0)) {
+        while ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0)) {
 
-            EventList[] eventList = this.handler.getEventNodo1();
+            EventList[] eventList = this.handler.getEventNodo(id);
 
             e = EventList.NextEvent(eventList, server);
             this.time.setNext(eventList[e].getT());
@@ -118,7 +122,7 @@ public class Node1 {
                 eventList[0].setT(this.random.getJobArrival()); //aggiorno il tempo di arrivo del prossimo job
                 if (eventList[0].getT() > this.STOP) { //se il tempo di arrivo del prossimo job è maggiore del tempo di stop
                     eventList[0].setX(0);
-                    this.handler.setEventNodo1(eventList);
+                    this.handler.setEventNodo(id, eventList);
 
                     //insert qui il passaggio di statistiche a handler
                 }
@@ -129,14 +133,14 @@ public class Node1 {
                     sumList[s].incrementServed(); //aggiorno il numero di job serviti dal centro s
                     eventList[s].setT(this.time.getCurrent() + service); //aggiorno il tempo di completamento del centro s
                     eventList[s].setX(1);  //il centro s diventa busy
-                    this.handler.setEventNodo1(eventList);
+                    this.handler.setEventNodo(id, eventList);
                 }//se non ci sono serventi liberi, aggiungo semplicemente quel job in coda. Questa verrà poi gestita dall'else sottostante
                 else {
                     if(this.abbandono()){
                         //l'indice server dell'array degli eventi indica l'evento di abbandono
                         eventList[server + 1].setT(this.time.getCurrent()); //aggiorno il tempo del prossimo eevento di abbandono
                         eventList[server + 1].setX(1);  //il centro s diventa busy
-                        this.handler.setEventNodo1(eventList);
+                        this.handler.setEventNodo(id, eventList);
                     }
                     
                 }
@@ -145,7 +149,7 @@ public class Node1 {
                 this.num_job_left++;
                 this.num_job--;
                 eventList[e].setX(0);
-                this.handler.setEventNodo1(eventList);
+                this.handler.setEventNodo(id, eventList);
                 
             }
             else{
@@ -155,10 +159,10 @@ public class Node1 {
                 
                 //implemento logica di routing
                 if(this.random.extractProb() < 0.5) {
-                    this.handler.addInternalArrivalNodo2(this.time.getCurrent());
-                } else {
-                    this.handler.addInternalArrivalNodo3(this.time.getCurrent());
-                }
+                    this.handler.addInternalArrivalNodo(2, this.time.getCurrent());
+                }/* else {
+                    this.handler.addInternalArrivalNodo(3, this.time.getCurrent());
+                } */
                 //fine logica di routing
                 
                 
@@ -169,7 +173,7 @@ public class Node1 {
                             //l'indice server dell'array degli eventi indica l'evento di abbandono
                             eventList[server + 1].setT(this.time.getCurrent()); //aggiorno il tempo del prossimo eevento di abbandono
                             eventList[server + 1].setX(1);  //il centro s diventa busy
-                            this.handler.setEventNodo1(eventList);
+                            this.handler.setEventNodo(id, eventList);
                         }
                     }
 
@@ -179,13 +183,13 @@ public class Node1 {
                     sumList[s].incrementServed();                 //aggiorno il numero di job serviti dal centro s
                     //this.eventList[s].setT(this.time.getCurrent() + service); //aggiorno il tempo di completamento del centro s
                     eventList[s].setT(this.time.getCurrent() + service);
-                    this.handler.setEventNodo1(eventList);
+                    this.handler.setEventNodo(id, eventList);
 
                     
                 }
                 else {
                     eventList[e].setX(0);                  //se non ci sono job in coda, il centro s diventa idle
-                    this.handler.setEventNodo1(eventList);
+                    this.handler.setEventNodo(id, eventList);
                     
                 }
 
@@ -254,7 +258,7 @@ public class Node1 {
     public void printStats() {
         System.out.println("Hi, I'm " + this.returnNameOfCenter() + " and I'm done!\n\n");
         System.out.println("for " + this.jobServiti + " jobs the service node statistics are:\n\n");
-        System.out.println("  avg interarrivals .. = " + this.handler.getEventNodo1()[0].getT() / this.jobServiti);
+        System.out.println("  avg interarrivals .. = " + this.handler.getEventNodo(id)[0].getT() / this.jobServiti);
         System.out.println("  avg wait ........... = " + this.area / this.jobServiti);
         System.out.println("  avg # in node ...... = " + this.area / this.time.getCurrent());
 

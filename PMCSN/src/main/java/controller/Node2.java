@@ -41,15 +41,19 @@ public class Node2 {
     /* --------------------- */
     private double exitProbability;
 
-    public Node2(int num_job, String nome){
+    private int id;
+
+    public Node2(int num_job, String nome, int id){
         EventList[] eventList2;
+
+        this.id = id;
 
         /* ottengo l'istanza singleton*/
         this.handler = EventHandler.getInstance();
         this.random = RandomFunction.getInstance();
         /*---------*/
 
-        this.server = this.handler.getServer2();
+        this.server = this.handler.getServer(id);
         this.num_job = num_job;
         this.jobServiti = 0;
         this.exitProbability = 0.08;
@@ -73,7 +77,7 @@ public class Node2 {
         double firstArrival = this.random.getJobArrival2(); 
         
         //in questo modo pero non stiamo parametrizzando la classe, cosi funzionerà solo per lo specifico nodo che deve vedere getInternalArrivalNodo2.
-        double firstInternalArrival = this.handler.getInternalArrivalNodo2().remove(0);
+        double firstInternalArrival = this.handler.getInternalArrivalNodo(id).remove(0);
         
         this.sumList[0] = new Sum();
 
@@ -93,7 +97,7 @@ public class Node2 {
             this.sumList[i] = new Sum();
         }
         /* SETTO LA NUOVA EVENTLIST MODIFICATA VERSO L'HANDLER*/
-        this.handler.setEventNodo2(eventList2);
+        this.handler.setEventNodo(id, eventList2);
         /* ------------------ */
     }
 
@@ -101,8 +105,8 @@ public class Node2 {
 
         int e;
         
-        while ((this.handler.getEventNodo2()[0].getX() != 0) || (this.num_job > 0)) {
-            EventList[] eventList = this.handler.getEventNodo2();
+        while ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0)) {
+            EventList[] eventList = this.handler.getEventNodo(id);
 
             e = EventList.NextEvent2(eventList, server);
             this.time.setNext(eventList[e].getT());
@@ -114,7 +118,7 @@ public class Node2 {
                 eventList[0].setT(this.random.getJobArrival2()); //aggiorno il tempo di arrivo del prossimo job
                 if (eventList[0].getT() > this.STOP) { //se il tempo di arrivo del prossimo job è maggiore del tempo di stop
                     eventList[0].setX(0);
-                    this.handler.setEventNodo2(eventList);
+                    this.handler.setEventNodo(id, eventList);
 
                     //insert qui il passaggio di statistiche a handler
                 }
@@ -125,14 +129,14 @@ public class Node2 {
                     sumList[s].incrementServed(); //aggiorno il numero di job serviti dal centro s
                     eventList[s].setT(this.time.getCurrent() + service); //aggiorno il tempo di completamento del centro s
                     eventList[s].setX(1);  //il centro s diventa busy
-                    this.handler.setEventNodo2(eventList);
+                    this.handler.setEventNodo(id, eventList);
                 }//se non ci sono serventi liberi, aggiungo semplicemente quel job in coda. Questa verrà poi gestita dall'else sottostante
                 else {
                     if(this.abbandono()){
                         //l'indice server dell'array degli eventi indica l'evento di abbandono
                         eventList[server + 1].setT(this.time.getCurrent()); //aggiorno il tempo del prossimo eevento di abbandono
                         eventList[server + 1].setX(1);  //il centro s diventa busy
-                        this.handler.setEventNodo2(eventList);
+                        this.handler.setEventNodo(id, eventList);
                     }
                     
                 }
@@ -141,14 +145,14 @@ public class Node2 {
                 this.num_job_left++;
                 this.num_job--;
                 eventList[e].setX(0);
-                this.handler.setEventNodo2(eventList);
+                this.handler.setEventNodo(id, eventList);
                 
             } else if(e == (server + 2)) {
                 //logica di gestione del job che arriva dal nodo 1
                 this.num_job++;
                 this.num_internal_job++;
-                if(!this.handler.getInternalArrivalNodo2().isEmpty()) {
-                    eventList[e].setT(this.handler.getInternalArrivalNodo2().remove(0));//prendo il prossimo arrivo dalla lista di arrivi dal nodo 1
+                if(!this.handler.getInternalArrivalNodo(id).isEmpty()) {
+                    eventList[e].setT(this.handler.getInternalArrivalNodo(id).remove(0));//prendo il prossimo arrivo dalla lista di arrivi dal nodo 1
                 } else {
                     eventList[e].setX(0);
                 }
@@ -160,7 +164,7 @@ public class Node2 {
                     sumList[s].incrementServed();
                     eventList[s].setT(this.time.getCurrent() + service);
                     eventList[s].setX(1);
-                    this.handler.setEventNodo2(eventList);
+                    this.handler.setEventNodo(id, eventList);
                 } 
             } else {
                 this.num_job--;  //decremento il numero di job presenti nel centro
@@ -173,7 +177,7 @@ public class Node2 {
                             //l'indice server dell'array degli eventi indica l'evento di abbandono
                             eventList[server + 1].setT(this.time.getCurrent()); //aggiorno il tempo del prossimo eevento di abbandono
                             eventList[server + 1].setX(1);  //il centro s diventa busy
-                            this.handler.setEventNodo2(eventList);
+                            this.handler.setEventNodo(id, eventList);
                         }
                     }
 
@@ -183,13 +187,13 @@ public class Node2 {
                     sumList[s].incrementServed();                 //aggiorno il numero di job serviti dal centro s
                     //this.eventList[s].setT(this.time.getCurrent() + service); //aggiorno il tempo di completamento del centro s
                     eventList[s].setT(this.time.getCurrent() + service);
-                    this.handler.setEventNodo2(eventList);
+                    this.handler.setEventNodo(id, eventList);
 
                         
                 }
                 else {
                     eventList[e].setX(0);                  //se non ci sono job in coda, il centro s diventa idle
-                    this.handler.setEventNodo2(eventList);
+                    this.handler.setEventNodo(id, eventList);
                     
                 }
 
@@ -243,7 +247,7 @@ public class Node2 {
     public void printStats() {
         System.out.println("Hi, I'm " + this.returnNameOfCenter() + " and I'm done!\n\n");
         System.out.println("for " + this.jobServiti + " jobs the service node statistics are:\n\n");
-        System.out.println("  avg interarrivals .. = " + this.handler.getEventNodo2()[0].getT() / this.jobServiti);
+        System.out.println("  avg interarrivals .. = " + this.handler.getEventNodo(id)[0].getT() / this.jobServiti);
         System.out.println("  avg wait ........... = " + this.area / this.jobServiti);
         System.out.println("  avg # in node ...... = " + this.area / this.time.getCurrent());
 

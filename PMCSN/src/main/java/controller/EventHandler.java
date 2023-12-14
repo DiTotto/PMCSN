@@ -5,6 +5,8 @@ import main.java.datastruct.EventList;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import org.w3c.dom.events.Event;
+
 
 /* LA CLASSE DEVE ESSERE SINGLETON*/
 public class EventHandler {
@@ -108,7 +110,80 @@ public class EventHandler {
         this.internalArrivalNodo3.add(element);
     }
     
-    
+    public EventList[] getEventNodo(int number) {
+        switch(number) {
+            case 1: 
+                return eventNodo1;                      
+            case 2:
+                return eventNodo2;
+            default:
+                return eventNodo1;
+        }
+    }
+
+    public void setEventNodo(int number, EventList[] eventLists){
+        switch(number) {
+            case 1:
+                this.eventNodo1 = eventLists;
+                break;
+            case 2:
+                this.eventNodo2 = eventLists;
+                break;
+            default:
+                break;
+                
+        }
+    }
+
+    public void setFirstArrival(int number, EventList event) {
+        switch(number) {
+            case 1:
+                this.eventNodo1[0] = event;
+                break;
+            case 2:
+                this.eventNodo2[0] = event;
+                break;
+            default:
+                break;
+        }
+    }
+
+    public ArrayList<Double> getInternalArrivalNodo(int number) {
+        switch(number) {
+            case 1:
+                return this.internalArrivalNodo1;
+            case 2:
+                return this.internalArrivalNodo2;
+            default:
+                return this.internalArrivalNodo1;
+        }
+    }
+
+    public void addInternalArrivalNodo(int number, Double element) {
+        switch(number) {
+            case 1:
+                this.internalArrivalNodo1.add(element);
+                break;
+            case 2:
+                this.internalArrivalNodo2.add(element);
+                break;
+            default:
+                break;
+        }
+    }
+
+
+
+    public int getServer(int number){
+        switch(number){
+            case 1:
+                return server1;
+            case 2: 
+                return server2;
+            default:
+                return -1;
+        }
+    }
    
 
 
