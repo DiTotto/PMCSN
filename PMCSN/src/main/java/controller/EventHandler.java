@@ -18,15 +18,24 @@ public class EventHandler {
     private ArrayList<Double> internalArrivalNodo2;
     private static int server2 = 4;
 
+    private EventList[] eventNodo3;
+    private ArrayList<Double> internalArrivalNodo3;
+    private static int server3 = 4;
+
     private RandomFunction random;
 
 
     private EventHandler(int server1, int server2) {
         this.eventNodo1 = new EventList[server1 + 2];
         this.eventNodo2 = new EventList[server2 + 3];
+        this.eventNodo3 = new EventList[server3 + 3];
+
         this.internalArrivalNodo1 = new ArrayList<Double>();
         this.internalArrivalNodo2 = new ArrayList<Double>();
+        this.internalArrivalNodo3 = new ArrayList<Double>();
         this.random = RandomFunction.getInstance();
+
+        
     }
 
     public static EventHandler getInstance() {
@@ -76,6 +85,27 @@ public class EventHandler {
     }
     public void addInternalArrivalNodo2(Double element) {
         this.internalArrivalNodo2.add(element);
+    }
+    
+     public int getServer3(){
+        return server3;
+    }
+
+    public EventList[] getEventNodo3() {
+        return eventNodo3;
+    }
+    public void setEventNodo3(EventList[] eventNodo3) {
+        this.eventNodo3 = eventNodo3;
+    }
+    public void setFirstArrival3(EventList event) {
+        this.eventNodo3[0] = event;
+    }
+    
+    public ArrayList<Double> getInternalArrivalNodo3() {
+        return this.internalArrivalNodo3;
+    }
+    public void addInternalArrivalNodo3(Double element) {
+        this.internalArrivalNodo3.add(element);
     }
     
     

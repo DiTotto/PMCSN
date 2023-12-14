@@ -6,10 +6,10 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("START");
 
-        Node1 node1 = new Node1(0, "Centralino");
+        Node1 centralino = new Node1(0, "Centralino");
+        centralino.normalWork();
+        centralino.printStats();
 
-        node1.normalWork();
-        node1.printStats();
         Node2 node2 = new Node2(0, "CentrodiDio");
         node2.normalWork();
         node2.printStats();

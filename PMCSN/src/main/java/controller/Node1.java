@@ -152,8 +152,16 @@ public class Node1 {
                 this.num_job--;  //decremento il numero di job presenti nel centro
                 this.jobServiti++; //incremento il numero di job serviti
                 this.s = e;    //indica il centro che ha completato il job
-
-                this.handler.addInternalArrivalNodo2(this.time.getCurrent());
+                
+                //implemento logica di routing
+                if(this.random.extractProb() < 0.5) {
+                    this.handler.addInternalArrivalNodo2(this.time.getCurrent());
+                } else {
+                    this.handler.addInternalArrivalNodo3(this.time.getCurrent());
+                }
+                //fine logica di routing
+                
+                
                 if (this.num_job >= this.server) { //se ci sono job in coda
                     
                     if(this.num_job>this.server) {

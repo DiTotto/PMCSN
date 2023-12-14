@@ -71,8 +71,8 @@ public class Node2 {
         
         //inizializzo la posizione 0 degli arraylist con il primo arrivo 
         double firstArrival = this.random.getJobArrival2(); 
-        //TODO la random.getJobArrival() non riparte da 0 ma riparte dall'istante in cui aveva finito nodo 1
         
+        //in questo modo pero non stiamo parametrizzando la classe, cosi funzionerà solo per lo specifico nodo che deve vedere getInternalArrivalNodo2.
         double firstInternalArrival = this.handler.getInternalArrivalNodo2().remove(0);
         
         this.sumList[0] = new Sum();
