@@ -174,7 +174,7 @@ public class Node2 {
                     
                     if(this.num_job>this.server) {
                         if(this.abbandono()){
-                            //l'indice server dell'array degli eventi indica l'evento di abbandono
+                            //l'indice server + 1 dell'array degli eventi indica l'evento di abbandono
                             eventList[server + 1].setT(this.time.getCurrent()); //aggiorno il tempo del prossimo eevento di abbandono
                             eventList[server + 1].setX(1);  //il centro s diventa busy
                             this.handler.setEventNodo(id, eventList);
@@ -197,11 +197,7 @@ public class Node2 {
                     
                 }
 
-                    //inserire la gestione di inserimento dell'uscita da questo centro. Registrare l'istante di uscita che verrà utilizzato  come tempo di ingresso per il
-                    //centro successivo a questo. Verrà creata quindi alla fine dell'esecuzione di questo centro, una lista con tutti i tempi di uscita dei job. Successivamente all'esecuzione
-                    //di questo centro, verrà eseguito il centro successivo che avrà come tempo di ingresso il tempo di uscita di questo centro e così via
-                    //aggiunta di chiamata ad un metodo dell'handler (TODO) che aggiunge il tempo di uscita di questo centro ad una lista di tempi di ingresso
-                    // di uno dei centri successivi seguendo una certa probabilità
+                   
             }
         }
     }
@@ -250,6 +246,8 @@ public class Node2 {
         System.out.println("  avg interarrivals .. = " + this.handler.getEventNodo(id)[0].getT() / this.jobServiti);
         System.out.println("  avg wait ........... = " + this.area / this.jobServiti);
         System.out.println("  avg # in node ...... = " + this.area / this.time.getCurrent());
+        System.out.println("  number of internal jobs = " + this.num_internal_job);
+        System.out.println("  number of external jobs = " + this.num_external_job);
 
         for(int i = 1; i <= this.server; i++) {
             this.area -= this.sumList[i].getService();
