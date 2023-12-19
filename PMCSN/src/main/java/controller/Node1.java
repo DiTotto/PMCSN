@@ -8,7 +8,7 @@ import main.java.controller.EventHandler;
 public class Node1 {
 
     private double START = 0.0;
-    private double STOP = 20000.0;
+    private double STOP = 480.0;
 
     private int s;
     private double area = 0.0;

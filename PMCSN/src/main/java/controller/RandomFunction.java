@@ -57,7 +57,7 @@ public class RandomFunction {
         //arrival += this.start;
         rngs.selectStream(0);
         //arrival += Exponential(intTime);
-        arrival += Exponential(25);
+        arrival += Exponential(7); //ipotizziamo che all'URP arrivino 70 richieste in media al giorno, quindi una ogni circa 7 minuti
         return arrival;
 
     }
@@ -66,7 +66,20 @@ public class RandomFunction {
         rngs.selectStream(1);
         //NEL NOSTRO CASO ANDREBBE USATA LA ERLANG, NON ESPONENZIALE
         //double departure = Exponential(abbandonTime);
-        double departure = Uniform(2.0, 5.0);
+        double prob = extractProb();
+        double departure = 0.0;
+        if (prob <= 0.33) {
+            departure = Exponential((double)5);
+        }else if (prob > 0.33 && prob <= 0.4){
+            departure = Exponential((double)15);
+        }else if (prob > 0.4 && prob <= 0.69){
+            departure = Exponential((double)3);
+        }else if (prob > 0.69 && prob <= 0.97){
+            departure = Uniform(5, 10);
+        }else if (prob > 0.97){
+            departure = Uniform(15,20);    
+        }
+        //double departure = Uniform(2.0, 5.0);
         return departure;
     }
 
@@ -74,7 +87,7 @@ public class RandomFunction {
         //arrival += this.start;
         rngs.selectStream(2);
         //arrival += Exponential(intTime);
-        arrival2 += Exponential(2);
+        arrival2 += Exponential(5);
         return arrival2;
 
     }
