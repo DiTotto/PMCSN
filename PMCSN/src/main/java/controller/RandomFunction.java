@@ -1,7 +1,8 @@
 package main.java.controller;
 
 import static java.lang.Math.log;
-import main.java.utils.Rngs;
+import main.java.utils.*;
+
 
 public class RandomFunction {
 
@@ -16,6 +17,7 @@ public class RandomFunction {
 
     
     private Rngs rngs = new Rngs();
+    private Rvms rvms = new Rvms();
 
     private final double start = 0;
     private double arrival = this.start;
@@ -52,6 +54,32 @@ public class RandomFunction {
     public double Uniform(double a, double b) {
         return (a + (b - a) * rngs.random());
     }  
+
+    public double NormalTruncated(double m, double s, double a, double b) throws Exception {
+        // Genera un numero casuale dalla distribuzione normale standard
+
+        if (a >= b) {
+            throw new Exception("Il valore di a deve essere minore di b");
+        }
+
+        double u;
+        double z;
+
+        while(true) {
+            u = rngs.random();
+            z = rvms.idfNormal(m, s, u);
+
+            if (z >= a && z <= b){
+                return z;
+            }
+        }
+
+        // Scala e trasla il numero secondo la media e la deviazione standard
+        
+
+        // Verifica se il numero è all'interno dell'intervallo desiderato
+        
+    }
 
     public double getJobArrival() {
         //arrival += this.start;
