@@ -182,6 +182,12 @@ public class Node3 {
                 this.num_job--;  //decremento il numero di job presenti nel centro
                 this.jobServiti++; //incremento il numero di job serviti
                 this.s = e;    //indica il centro che ha completato il job
+
+                /*if(this.random.extractProb() < 0.5) {
+                    //this.handler.addInternalArrivalNodo(2, this.time.getCurrent());
+                    this.handler.addInternalArrivalNodo(3, this.time.getCurrent());
+                }*/
+
                 if (this.num_job >= this.server) { //se ci sono job in coda
 
                     if(this.num_job>this.server) {

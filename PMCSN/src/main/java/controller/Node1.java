@@ -159,7 +159,8 @@ public class Node1 {
                 
                 //implemento logica di routing
                 if(this.random.extractProb() < 0.5) {
-                    this.handler.addInternalArrivalNodo(2, this.time.getCurrent());
+                    //this.handler.addInternalArrivalNodo(2, this.time.getCurrent());
+                    this.handler.addInternalArrivalNodo(3, this.time.getCurrent());
                 }/* else {
                     this.handler.addInternalArrivalNodo(3, this.time.getCurrent());
                 } */

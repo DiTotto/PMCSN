@@ -9,6 +9,11 @@ import org.w3c.dom.events.Event;
 
 
 /* LA CLASSE DEVE ESSERE SINGLETON*/
+
+/* Node1 prende ingressi dall'esterno e può sia uscire fuori che andare al Node2
+   Node2 prende ingressi da Node1 e dall'esterno e fa uscire solo fuori
+   Node 3 prende ingressi solo dall'interno e può sia uscire fuori che andare al Node4
+*/
 public class EventHandler {
 
     private static EventHandler instance = null;

@@ -11,8 +11,12 @@ public class Main {
         centralino.normalWork();
         centralino.printStats();
 
-        Node2 node2 = new Node2(0, "CentroProva", 2);
+        /*Node2 node2 = new Node2(0, "CentroProva", 2);
         node2.normalWork();
-        node2.printStats();
+        node2.printStats();*/
+
+        Node3 node3 = new Node3(0, "CentroProva", 3);
+        node3.normalWork();
+        node3.printStats();
     }
 }
