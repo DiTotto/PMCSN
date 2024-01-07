@@ -265,8 +265,14 @@ public class Node3 {
         System.out.println("  number of internal jobs = " + this.num_internal_job);
         System.out.println("  number of external jobs = " + this.num_external_job);
 
+        System.out.println("  AREA: " + this.area );
+
+        System.out.println("NODO 4: " + this.sumList[4].getServed() + " " + this.sumList[4].getService());
+
         for(int i = 1; i <= this.server; i++) {
             this.area -= this.sumList[i].getService();
+            System.out.println("  avg service time " + i + " ... = " + this.sumList[i].getService());
+            System.out.println("  AREA: " + i + " " + this.area );
         }
         System.out.println("  area e time " + this.area + " " + this.time.getCurrent() + "\n");
         System.out.println("  num job left ....... = " + this.num_job_left);
