@@ -33,6 +33,10 @@ public class EventHandler {
     private ArrayList<Double> internalArrivalNodo4;
     private static int server4 = 4;
 
+    private static int numCenters = 4;
+
+    private double[][] routingMatrix = new double[numCenters][numCenters];
+
     private RandomFunction random;
 
 
@@ -47,6 +51,8 @@ public class EventHandler {
         this.internalArrivalNodo3 = new ArrayList<Double>();
         this.internalArrivalNodo4 = new ArrayList<Double>();
         this.random = RandomFunction.getInstance();
+
+        initializeRoutingMatrix();
 
         
     }
@@ -246,6 +252,26 @@ public class EventHandler {
                 return -1;
         }
     }
+
+    //si può pensare come un metodo che prende in input numero di centro di partenza (riga) e di arrivo (colonna)
+    //l'incrocio dei due è la probabilità di routing
+    //se il centro di partenza è uguale a quello di arrivo, la probabilità di routing è 0 perché abbiamo
+    //escluso il feedback
+    private void initializeRoutingMatrix() {
+        for(int i = 0; i < numCenters; i++) {
+            for(int j = 0; j < numCenters; j++) {
+                if(i == j){
+                    routingMatrix[i][j] = 0;
+                } else {
+                    routingMatrix[i][j] = 0.5;
+                }
+
+            }
+        }
+
+    }
+
+
    
 
 
