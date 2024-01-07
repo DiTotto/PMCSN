@@ -33,7 +33,7 @@ public class EventHandler {
     private ArrayList<Double> internalArrivalNodo4;
     private static int server4 = 4;
 
-    private static int numCenters = 4;
+    private static int numCenters = 8;
 
     private double[][] routingMatrix = new double[numCenters][numCenters];
 
@@ -53,6 +53,7 @@ public class EventHandler {
         this.random = RandomFunction.getInstance();
 
         initializeRoutingMatrix();
+        //printMatrix();
 
         
     }
@@ -260,15 +261,34 @@ public class EventHandler {
     private void initializeRoutingMatrix() {
         for(int i = 0; i < numCenters; i++) {
             for(int j = 0; j < numCenters; j++) {
-                if(i == j){
+                /*if(i == j){
                     routingMatrix[i][j] = 0;
-                } else {
-                    routingMatrix[i][j] = 0.5;
-                }
-
+                } else if (i > j) {
+                    //questo perché i job non possono tornare indietro (indietro rispetto i centri - cioé da 1 a 0)
+                    routingMatrix[i][j] = 0;
+                }*/
+                routingMatrix[i][j] = 0;
             }
         }
 
+        routingMatrix[0][1] = 0.25;
+        routingMatrix[0][2] = 0.25;
+        routingMatrix[0][3] = 0.25;
+        routingMatrix[0][4] = 0.25;
+
+        routingMatrix[1][5] = 0.75;
+        routingMatrix[2][6] = 0.5; //è la probabilità x
+        routingMatrix[6][7] = 0.5; //è la probabilità y
+
+    }
+
+    private void printMatrix(){
+        for(int i = 0; i < numCenters; i++) {
+            for(int j = 0; j < numCenters; j++) {
+                System.out.print(routingMatrix[i][j] + " ");
+            }
+            System.out.println();
+        }
     }
 
 

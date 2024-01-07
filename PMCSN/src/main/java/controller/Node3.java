@@ -259,7 +259,7 @@ public class Node3 {
     public void printStats() {
         System.out.println("Hi, I'm " + this.returnNameOfCenter() + " and I'm done!\n\n");
         System.out.println("for " + this.jobServiti + " jobs the service node statistics are:\n\n");
-        System.out.println("  avg interarrivals .. = " + this.handler.getEventNodo(id)[0].getT() / this.jobServiti);
+        System.out.println("  avg interarrivals .. = " + this.handler.getEventNodo(id)[server+2].getT() / this.jobServiti);
         System.out.println("  avg wait ........... = " + this.area / this.jobServiti);
         System.out.println("  avg # in node ...... = " + this.area / this.time.getCurrent());
         System.out.println("  number of internal jobs = " + this.num_internal_job);
@@ -268,6 +268,7 @@ public class Node3 {
         for(int i = 1; i <= this.server; i++) {
             this.area -= this.sumList[i].getService();
         }
+        System.out.println("  area e time " + this.area + " " + this.time.getCurrent() + "\n");
         System.out.println("  num job left ....... = " + this.num_job_left);
         System.out.println("  avg delay .......... = " + this.area / this.jobServiti);
         System.out.println("  avg # in queue ..... = " + this.area / this.time.getCurrent());
