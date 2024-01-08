@@ -16,22 +16,46 @@ import org.w3c.dom.events.Event;
 */
 public class EventHandler {
 
+    //CENTRALINO
     private static EventHandler instance = null;
+    private EventList[] eventNodo0;
+    private ArrayList<Double> internalArrivalNodo0;
+    private static int server0 = 1;
+
+    //ANAGRAFE
     private EventList[] eventNodo1;
     private ArrayList<Double> internalArrivalNodo1;
-    private static int server1 = 1;
+    private static int server1 = 4;
 
+    //URP
     private EventList[] eventNodo2;
     private ArrayList<Double> internalArrivalNodo2;
     private static int server2 = 4;
 
+    //SCOLASTICO
     private EventList[] eventNodo3;
     private ArrayList<Double> internalArrivalNodo3;
     private static int server3 = 4;
 
+    //SERVIZI SOCIALI
     private EventList[] eventNodo4;
     private ArrayList<Double> internalArrivalNodo4;
     private static int server4 = 4;
+
+    //STATO CIVILE
+    private EventList[] eventNodo5;
+    private ArrayList<Double> internalArrivalNodo5;
+    private static int server5 = 4;
+
+    //PROTOCOLLO
+    private EventList[] eventNodo6;
+    private ArrayList<Double> internalArrivalNodo6;
+    private static int server6 = 4;
+
+    //CULTURA
+    private EventList[] eventNodo7;
+    private ArrayList<Double> internalArrivalNodo7;
+    private static int server7 = 4;
 
     private static int numCenters = 8;
 
@@ -40,16 +64,27 @@ public class EventHandler {
     private RandomFunction random;
 
 
-    private EventHandler(int server1, int server2, int server3, int server4) {
-        this.eventNodo1 = new EventList[server1 + 2];
+    private EventHandler(int server0, int server1, int server2, int server3, int server4, int server5, int server6, int server7) {
+
+        this.eventNodo0 = new EventList[server0 + 2];
+        this.eventNodo1 = new EventList[server1 + 3];
         this.eventNodo2 = new EventList[server2 + 3];
         this.eventNodo3 = new EventList[server3 + 3];
         this.eventNodo4 = new EventList[server4 + 3];
+        this.eventNodo5 = new EventList[server5 + 3];
+        this.eventNodo6 = new EventList[server6 + 3];
+        this.eventNodo7 = new EventList[server7 + 3];
 
+        this.internalArrivalNodo0 = new ArrayList<Double>();
         this.internalArrivalNodo1 = new ArrayList<Double>();
         this.internalArrivalNodo2 = new ArrayList<Double>();
         this.internalArrivalNodo3 = new ArrayList<Double>();
         this.internalArrivalNodo4 = new ArrayList<Double>();
+        this.internalArrivalNodo5 = new ArrayList<Double>();
+        this.internalArrivalNodo6 = new ArrayList<Double>();
+        this.internalArrivalNodo7 = new ArrayList<Double>();
+
+
         this.random = RandomFunction.getInstance();
 
         initializeRoutingMatrix();
@@ -60,98 +95,16 @@ public class EventHandler {
 
     public static EventHandler getInstance() {
         if (instance == null) {
-            instance = new EventHandler(server1, server2, server3, server4);
+            instance = new EventHandler(server0, server1, server2, server3, server4, server5, server6, server7);
         }
         return instance;
     }
-
-    /*public int getServer1(){
-        return server1;
-    }
-
-    public EventList[] getEventNodo1() {
-        return eventNodo1;
-    }
-    public void setEventNodo1(EventList[] eventNodo1) {
-        this.eventNodo1 = eventNodo1;
-    }
-    public void setFirstArrival(EventList event) {
-        this.eventNodo1[0] = event;
-    }
-    
-    public ArrayList<Double> getInternalArrivalNodo1() {
-        return internalArrivalNodo1;
-    }
-    public void setInternalArrivalNodo1(ArrayList<Double> internalArrivalNodo1) {
-        this.internalArrivalNodo1 = internalArrivalNodo1;
-    }
-
-    public int getServer2(){
-        return server2;
-    }
-
-    public EventList[] getEventNodo2() {
-        return eventNodo2;
-    }
-    public void setEventNodo2(EventList[] eventNodo2) {
-        this.eventNodo2 = eventNodo2;
-    }
-    public void setFirstArrival2(EventList event) {
-        this.eventNodo2[0] = event;
-    }
-    
-    public ArrayList<Double> getInternalArrivalNodo2() {
-        return this.internalArrivalNodo2;
-    }
-    public void addInternalArrivalNodo2(Double element) {
-        this.internalArrivalNodo2.add(element);
-    }
-    
-    public int getServer3(){
-        return server3;
-    }
-
-    public EventList[] getEventNodo3() {
-        return eventNodo3;
-    }
-    public void setEventNodo3(EventList[] eventNodo3) {
-        this.eventNodo3 = eventNodo3;
-    }
-    public void setFirstArrival3(EventList event) {
-        this.eventNodo3[0] = event;
-    }
-    
-    public ArrayList<Double> getInternalArrivalNodo3() {
-        return this.internalArrivalNodo3;
-    }
-    public void addInternalArrivalNodo3(Double element) {
-        this.internalArrivalNodo3.add(element);
-    }
-
-    public int getServer4(){
-        return server4;
-    }
-
-    public EventList[] getEventNodo4() {
-        return eventNodo4;
-    }
-    public void setEventNodo4(EventList[] eventNodo4) {
-        this.eventNodo4 = eventNodo4;
-    }
-    public void setFirstArrival4(EventList event) {
-        this.eventNodo4[0] = event;
-    }
-
-    public ArrayList<Double> getInternalArrivalNodo4() {
-        return this.internalArrivalNodo4;
-    }
-    public void addInternalArrivalNodo4(Double element) {
-        this.internalArrivalNodo4.add(element);
-    }*/
     
     public EventList[] getEventNodo(int number) {
         switch(number) {
-            case 1: 
+            case 0:
+                return eventNodo0;
+            case 1:
                 return eventNodo1;
             case 2:
                 return eventNodo2;
@@ -159,6 +112,12 @@ public class EventHandler {
                 return eventNodo3;
             case 4:
                 return eventNodo4;
+            case 5:
+                return eventNodo5;
+            case 6:
+                return eventNodo6;
+            case 7:
+                return eventNodo7;
             default:
                 return eventNodo1;
         }
@@ -166,6 +125,9 @@ public class EventHandler {
 
     public void setEventNodo(int number, EventList[] eventLists){
         switch(number) {
+            case 0:
+                this.eventNodo0 = eventLists;
+                break;
             case 1:
                 this.eventNodo1 = eventLists;
                 break;
@@ -178,6 +140,15 @@ public class EventHandler {
             case 4:
                 this.eventNodo4 = eventLists;
                 break;
+            case 5:
+                this.eventNodo5 = eventLists;
+                break;
+            case 6:
+                this.eventNodo6 = eventLists;
+                break;
+            case 7:
+                this.eventNodo7 = eventLists;
+                break;
             default:
                 break;
                 
@@ -186,6 +157,9 @@ public class EventHandler {
 
     public void setFirstArrival(int number, EventList event) {
         switch(number) {
+            case 0:
+                this.eventNodo0[0] = event;
+                break;
             case 1:
                 this.eventNodo1[0] = event;
                 break;
@@ -198,6 +172,15 @@ public class EventHandler {
             case 4:
                 this.eventNodo4[0] = event;
                 break;
+            case 5:
+                this.eventNodo5[0] = event;
+                break;
+            case 6:
+                this.eventNodo6[0] = event;
+                break;
+            case 7:
+                this.eventNodo7[0] = event;
+                break;
             default:
                 break;
         }
@@ -205,6 +188,8 @@ public class EventHandler {
 
     public ArrayList<Double> getInternalArrivalNodo(int number) {
         switch(number) {
+            case 0:
+                return this.internalArrivalNodo0;
             case 1:
                 return this.internalArrivalNodo1;
             case 2:
@@ -213,6 +198,12 @@ public class EventHandler {
                 return this.internalArrivalNodo3;
             case 4:
                 return this.internalArrivalNodo4;
+            case 5:
+                return this.internalArrivalNodo5;
+            case 6:
+                return this.internalArrivalNodo6;
+            case 7:
+                return this.internalArrivalNodo7;
             default:
                 return this.internalArrivalNodo1;
         }
@@ -220,6 +211,9 @@ public class EventHandler {
 
     public void addInternalArrivalNodo(int number, Double element) {
         switch(number) {
+            case 0:
+                this.internalArrivalNodo0.add(element);
+                break;
             case 1:
                 this.internalArrivalNodo1.add(element);
                 break;
@@ -232,6 +226,15 @@ public class EventHandler {
             case 4:
                 this.internalArrivalNodo4.add(element);
                 break;
+            case 5:
+                this.internalArrivalNodo5.add(element);
+                break;
+            case 6:
+                this.internalArrivalNodo6.add(element);
+                break;
+            case 7:
+                this.internalArrivalNodo7.add(element);
+                break;
             default:
                 break;
         }
@@ -241,6 +244,8 @@ public class EventHandler {
 
     public int getServer(int number){
         switch(number){
+            case 0:
+                return server0;
             case 1:
                 return server1;
             case 2: 
@@ -249,6 +254,12 @@ public class EventHandler {
                 return server3;
             case 4:
                 return server4;
+            case 5:
+                return server5;
+            case 6:
+                return server6;
+            case 7:
+                return server7;
             default:
                 return -1;
         }
