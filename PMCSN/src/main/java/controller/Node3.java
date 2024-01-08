@@ -53,10 +53,18 @@ public class Node3 {
 
     private int id;
 
-    public Node3(int num_job, String nome, int id){
+    private int the_next;
+
+    private boolean routing;
+
+    public Node3(int num_job, String nome, int id, int the_next, boolean routing){
         EventList[] eventList2;
 
         this.id = id;
+
+        this.the_next = the_next;
+
+        this.routing = routing;
 
         /* ottengo l'istanza singleton*/
         this.handler = EventHandler.getInstance();
@@ -183,10 +191,14 @@ public class Node3 {
                 this.jobServiti++; //incremento il numero di job serviti
                 this.s = e;    //indica il centro che ha completato il job
 
-                /*if(this.random.extractProb() < 0.5) {
-                    //this.handler.addInternalArrivalNodo(2, this.time.getCurrent());
-                    this.handler.addInternalArrivalNodo(3, this.time.getCurrent());
-                }*/
+                if(this.routing) {
+                    double prob = this.random.extractProb();
+
+                    //implemento logica di routing - HO USATO LA MATRICE DI ROUTING
+                    if (prob <= this.handler.getRoutingProbability(id, this.the_next)) {
+                        this.handler.addInternalArrivalNodo(this.the_next, this.time.getCurrent());
+                    }
+                }
 
                 if (this.num_job >= this.server) { //se ci sono job in coda
 
@@ -265,14 +277,14 @@ public class Node3 {
         System.out.println("  number of internal jobs = " + this.num_internal_job);
         System.out.println("  number of external jobs = " + this.num_external_job);
 
-        System.out.println("  AREA: " + this.area );
+        //System.out.println("  AREA: " + this.area );
 
-        System.out.println("NODO 4: " + this.sumList[4].getServed() + " " + this.sumList[4].getService());
+        //System.out.println("NODO 4: " + this.sumList[4].getServed() + " " + this.sumList[4].getService());
 
         for(int i = 1; i <= this.server; i++) {
             this.area -= this.sumList[i].getService();
-            System.out.println("  avg service time " + i + " ... = " + this.sumList[i].getService());
-            System.out.println("  AREA: " + i + " " + this.area );
+            //System.out.println("  avg service time " + i + " ... = " + this.sumList[i].getService());
+            //System.out.println("  AREA: " + i + " " + this.area );
         }
         System.out.println("  area e time " + this.area + " " + this.time.getCurrent() + "\n");
         System.out.println("  num job left ....... = " + this.num_job_left);

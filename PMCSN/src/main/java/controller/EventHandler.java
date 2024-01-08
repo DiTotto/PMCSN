@@ -12,7 +12,9 @@ import org.w3c.dom.events.Event;
 
 /* Node1 prende ingressi dall'esterno e può sia uscire fuori che andare al Node2
    Node2 prende ingressi da Node1 e dall'esterno e fa uscire solo fuori
-   Node 3 prende ingressi solo dall'interno e può sia uscire fuori che andare al Node4
+   Node 3 prende ingressi solo dall'interno e può sia uscire fuori che andare al successivo
+   Node 4 prende ingressi da precedente e dall'esterno e fa uscire sia fuori che andare al successivo
+
 */
 public class EventHandler {
 
@@ -25,37 +27,37 @@ public class EventHandler {
     //ANAGRAFE
     private EventList[] eventNodo1;
     private ArrayList<Double> internalArrivalNodo1;
-    private static int server1 = 4;
+    private static int server1 = 2;
 
     //URP
     private EventList[] eventNodo2;
     private ArrayList<Double> internalArrivalNodo2;
-    private static int server2 = 4;
+    private static int server2 = 2;
 
     //SCOLASTICO
     private EventList[] eventNodo3;
     private ArrayList<Double> internalArrivalNodo3;
-    private static int server3 = 4;
+    private static int server3 = 1;
 
     //SERVIZI SOCIALI
     private EventList[] eventNodo4;
     private ArrayList<Double> internalArrivalNodo4;
-    private static int server4 = 4;
+    private static int server4 = 2;
 
     //STATO CIVILE
     private EventList[] eventNodo5;
     private ArrayList<Double> internalArrivalNodo5;
-    private static int server5 = 4;
+    private static int server5 = 2;
 
     //PROTOCOLLO
     private EventList[] eventNodo6;
     private ArrayList<Double> internalArrivalNodo6;
-    private static int server6 = 4;
+    private static int server6 = 2;
 
     //CULTURA
     private EventList[] eventNodo7;
     private ArrayList<Double> internalArrivalNodo7;
-    private static int server7 = 4;
+    private static int server7 = 2;
 
     private static int numCenters = 8;
 
@@ -291,6 +293,10 @@ public class EventHandler {
         routingMatrix[2][6] = 0.5; //è la probabilità x
         routingMatrix[6][7] = 0.5; //è la probabilità y
 
+    }
+
+    public double getRoutingProbability(int i, int j) {
+        return routingMatrix[i][j];
     }
 
     private void printMatrix(){

@@ -6,17 +6,67 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("START");
 
-
-        Node1 centralino = new Node1(0, "Centralino", 1);
+        //CENTRALINO
+        Node1 centralino = new Node1(0, "Centralino", 0);
         centralino.normalWork();
         centralino.printStats();
 
-        /*Node2 node2 = new Node2(0, "CentroProva", 2);
-        node2.normalWork();
-        node2.printStats();*/
+        System.out.println("------------------END CENTRALINO--------------------");
 
-        Node3 node3 = new Node3(0, "CentroProva", 3);
-        node3.normalWork();
-        node3.printStats();
+        //ANAGRAFE
+        Node4 anagrafe = new Node4(0, "Anagrafe", 1, 5);
+        anagrafe.normalWork();
+        anagrafe.printStats();
+
+        System.out.println("------------------END ANAGRAFE--------------------");
+
+        Node2 statoCivile = new Node2(0, "StatoCivile", 5);
+        statoCivile.normalWork();
+        statoCivile.printStats();
+
+        System.out.println("------------------END STATO CIVILE--------------------");
+
+        //URP
+        Node4 urp = new Node4(0, "URP", 2, 6);
+        urp.normalWork();
+        urp.printStats();
+
+        System.out.println("------------------END URP--------------------");
+
+        //PROTOCOLLO
+        Node3 protocollo = new Node3(0, "Protocollo", 6, 7, true);
+        protocollo.normalWork();
+        protocollo.printStats();
+
+        System.out.println("------------------END PROTOCOLLO--------------------");
+
+        //CULTURA
+        Node3 cultura = new Node3(0, "Cultura", 7, -1, false);
+        cultura.normalWork();
+        cultura.printStats();
+
+        System.out.println("------------------END CULTURA--------------------");
+
+        //SCOLASTICO
+        Node2 scolastico = new Node2(0, "Scolastico", 3);
+        scolastico.normalWork();
+        scolastico.printStats();
+
+        System.out.println("------------------END SCOLASTICO--------------------");
+
+        //SERVIZI SOCIALI
+        Node2 serviziSociali = new Node2(0, "ServiziSociali", 4);
+        serviziSociali.normalWork();
+        serviziSociali.printStats();
+
+        System.out.println("------------------END SERVIZI SOCIALI--------------------");
+
+        System.out.println("END");
+
+
+
+
+
+
     }
 }
