@@ -27,37 +27,37 @@ public class EventHandler {
     //ANAGRAFE
     private EventList[] eventNodo1;
     private ArrayList<Double> internalArrivalNodo1;
-    private static int server1 = 2;
+    private static int server1 = 3;
 
     //URP
     private EventList[] eventNodo2;
     private ArrayList<Double> internalArrivalNodo2;
-    private static int server2 = 2;
+    private static int server2 = 3;
 
     //SCOLASTICO
     private EventList[] eventNodo3;
     private ArrayList<Double> internalArrivalNodo3;
-    private static int server3 = 1;
+    private static int server3 = 3;
 
     //SERVIZI SOCIALI
     private EventList[] eventNodo4;
     private ArrayList<Double> internalArrivalNodo4;
-    private static int server4 = 2;
+    private static int server4 = 3;
 
     //STATO CIVILE
     private EventList[] eventNodo5;
     private ArrayList<Double> internalArrivalNodo5;
-    private static int server5 = 2;
+    private static int server5 = 3;
 
     //PROTOCOLLO
     private EventList[] eventNodo6;
     private ArrayList<Double> internalArrivalNodo6;
-    private static int server6 = 2;
+    private static int server6 = 3;
 
     //CULTURA
     private EventList[] eventNodo7;
     private ArrayList<Double> internalArrivalNodo7;
-    private static int server7 = 2;
+    private static int server7 = 3;
 
     private static int numCenters = 8;
 

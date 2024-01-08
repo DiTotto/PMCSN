@@ -83,7 +83,7 @@ public class Node4 {
         this.name = nome;
 
         //inizializzo la posizione 0 degli arraylist con il primo arrivo
-        double firstArrival = this.random.getJobArrival();
+        double firstArrival = this.random.getJobArrival(this.id);
         double firstInternalArrival = this.handler.getInternalArrivalNodo(id).remove(0);
 
         this.sumList[0] = new Sum();
@@ -125,7 +125,7 @@ public class Node4 {
             this.time.setCurrent(this.time.getNext());
             if (e == 0) {
                 this.num_job++; //incremento il numero di job presenti nel centro
-                eventList[0].setT(this.random.getJobArrival2()); //aggiorno il tempo di arrivo del prossimo job
+                eventList[0].setT(this.random.getJobArrival(this.id)); //aggiorno il tempo di arrivo del prossimo job
                 if (eventList[0].getT() > this.STOP) { //se il tempo di arrivo del prossimo job è maggiore del tempo di stop
                     eventList[0].setX(0);
                     this.handler.setEventNodo(id, eventList);
@@ -133,7 +133,7 @@ public class Node4 {
                     //insert qui il passaggio di statistiche a handler
                 }
                 if (num_job <= server) { //se il numero di job è minore del numero di server fondamentalmente sto mettendo quel job in servizio da qualche parte
-                    double service = this.random.getService2(); //tempo di servizio del centro s del prossimo job
+                    double service = this.random.getService(this.id); //tempo di servizio del centro s del prossimo job
                     this.s = whatIsIdle(eventList); //cerco un servente idle
                     sumList[s].incrementService(service); //aggiorno il tempo di servizio totale del centro s
                     sumList[s].incrementServed(); //aggiorno il numero di job serviti dal centro s
@@ -168,7 +168,7 @@ public class Node4 {
                 }
                 //eventList[e].setT(this.handler.getInternalArrivalNodo2().remove(0));
                 if (num_job <= server) {
-                    double service = this.random.getService2();
+                    double service = this.random.getService(this.id);
                     this.s = whatIsIdle(eventList);
                     sumList[s].incrementService(service);
                     sumList[s].incrementServed();
@@ -203,7 +203,7 @@ public class Node4 {
                         }
                     }
 
-                    double service = this.random.getService2();    //tempo di servizio del centro s del prossimo job
+                    double service = this.random.getService(this.id);    //tempo di servizio del centro s del prossimo job
                     //this.s = whatIsIdle(eventList);
                     sumList[s].incrementService(service);         //aggiorno il tempo di servizio totale del centro s
                     sumList[s].incrementServed();                 //aggiorno il numero di job serviti dal centro s
@@ -291,7 +291,7 @@ public class Node4 {
         System.out.println("\nthe server statistics are:\n\n");
         System.out.println("    server     utilization     avg service        share\n");
         for(int i = 1; i <= this.server; i++) {
-            System.out.println(i + "\t" + this.sumList[i].getService() / this.time.getCurrent() + "\t" + this.sumList[i].getService() / this.sumList[i].getServed() + "\t" + this.sumList[i].getServed() / this.jobServiti);
+            System.out.println(i + "\t" + this.sumList[i].getService() / this.time.getCurrent() + "\t" + this.sumList[i].getService() / this.sumList[i].getServed() + "\t" + (double)this.sumList[i].getServed() / (double)this.jobServiti);
             // System.out.println(i+"\t");
             // System.out.println("get service" + this.sumList[i].getService() + "\n");
             // System.out.println("getCurrent" + this.time.getCurrent() + "\n");

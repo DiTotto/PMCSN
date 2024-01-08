@@ -20,8 +20,10 @@ public class RandomFunction {
     private Rvms rvms = new Rvms();
 
     private final double start = 0;
-    private double arrival = this.start;
-    private double arrival2 = this.start;
+    //private double arrival = this.start;
+    //private double arrival2 = this.start;
+
+    private double[] arrival = new double[8];
 
 
     private RandomFunction() {
@@ -29,6 +31,10 @@ public class RandomFunction {
         this.abbandonTime = 0;
         this.serviceTime = 0;
         this.rngs.plantSeeds(0);
+
+        for(int i = 0; i < 8; i++) {
+            arrival[i] = this.start;
+        }
 
     }
 
@@ -81,16 +87,16 @@ public class RandomFunction {
         
     }
 
-    public double getJobArrival() {
+    /*public double getJobArrival() {
         //arrival += this.start;
         rngs.selectStream(0);
         //arrival += Exponential(intTime);
         arrival += Exponential(7); //ipotizziamo che all'URP arrivino 70 richieste in media al giorno, quindi una ogni circa 7 minuti
         return arrival;
 
-    }
+    }*/
 
-    public double getService() {
+    /*public double getService() {
         rngs.selectStream(1);
         //NEL NOSTRO CASO ANDREBBE USATA LA ERLANG, NON ESPONENZIALE
         //double departure = Exponential(abbandonTime);
@@ -126,18 +132,48 @@ public class RandomFunction {
         //double departure = Exponential(abbandonTime);
         double departure = Uniform(2.0, 10.0);
         return departure;
+    }*/
+
+    public double getJobArrival(int id) {
+        //arrival += this.start;
+        rngs.selectStream(id);
+        //arrival += Exponential(intTime);
+        arrival[id] += Exponential(7);
+        return arrival[id];
+
     }
+
+    public double getService(int id) {
+        rngs.selectStream(id+8);
+        switch(id) {
+            case 0:
+                double prob = extractProb();
+                double departure = 0.0;
+                if (prob <= 0.33) {
+                    departure = Exponential((double)5);
+                }else if (prob > 0.33 && prob <= 0.4){
+                    departure = Exponential((double)15);
+                }else if (prob > 0.4 && prob <= 0.69){
+                    departure = Exponential((double)3);
+                }else if (prob > 0.69 && prob <= 0.97){
+                    departure = Uniform(5, 10);
+                }else if (prob > 0.97){
+                    departure = Uniform(15,20);
+                }
+                //double departure = Uniform(2.0, 5.0);
+                return departure;
+            default:
+                double departure2 = Uniform(2.0, 10.0);
+                return departure2;
+        }
+    }
+
+
 
     public double extractProb() {
-        rngs.selectStream(4);
+        rngs.selectStream(20);
         return rngs.random();
     }
-
-    /*public double getAbandon(double arrival) {
-        rngs.selectStream(2);
-        double abandon = arrival + Exponential(tempo di abbandono dal centro);
-        return abandon;
-    }*/
 
 
 }

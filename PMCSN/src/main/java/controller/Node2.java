@@ -74,7 +74,7 @@ public class Node2 {
         this.name = nome;
         
         //inizializzo la posizione 0 degli arraylist con il primo arrivo 
-        double firstArrival = this.random.getJobArrival2(); 
+        double firstArrival = this.random.getJobArrival(this.id);
         
         //in questo modo pero non stiamo parametrizzando la classe, cosi funzionerà solo per lo specifico nodo che deve vedere getInternalArrivalNodo2.
         double firstInternalArrival = this.handler.getInternalArrivalNodo(id).remove(0);
@@ -115,7 +115,7 @@ public class Node2 {
             if (e == 0) {
                 this.num_external_job++;
                 this.num_job++; //incremento il numero di job presenti nel centro
-                eventList[0].setT(this.random.getJobArrival2()); //aggiorno il tempo di arrivo del prossimo job
+                eventList[0].setT(this.random.getJobArrival(this.id)); //aggiorno il tempo di arrivo del prossimo job
                 if (eventList[0].getT() > this.STOP) { //se il tempo di arrivo del prossimo job è maggiore del tempo di stop
                     eventList[0].setX(0);
                     this.handler.setEventNodo(id, eventList);
@@ -123,7 +123,7 @@ public class Node2 {
                     //insert qui il passaggio di statistiche a handler
                 }
                 if (num_job <= server) { //se il numero di job è minore del numero di server fondamentalmente sto mettendo quel job in servizio da qualche parte
-                    double service = this.random.getService2(); //tempo di servizio del centro s del prossimo job
+                    double service = this.random.getService(this.id); //tempo di servizio del centro s del prossimo job
                     this.s = whatIsIdle(eventList); //cerco un servente idle
                     sumList[s].incrementService(service); //aggiorno il tempo di servizio totale del centro s
                     sumList[s].incrementServed(); //aggiorno il numero di job serviti dal centro s
@@ -158,7 +158,7 @@ public class Node2 {
                 }
                 //eventList[e].setT(this.handler.getInternalArrivalNodo2().remove(0));
                 if(num_job <= server) {
-                    double service = this.random.getService2();
+                    double service = this.random.getService(this.id);
                     this.s = whatIsIdle(eventList);
                     sumList[s].incrementService(service);
                     sumList[s].incrementServed();
@@ -181,7 +181,7 @@ public class Node2 {
                         }
                     }
 
-                    double service = this.random.getService2();    //tempo di servizio del centro s del prossimo job
+                    double service = this.random.getService(this.id);    //tempo di servizio del centro s del prossimo job
                     //this.s = whatIsIdle(eventList);
                     sumList[s].incrementService(service);         //aggiorno il tempo di servizio totale del centro s
                     sumList[s].incrementServed();                 //aggiorno il numero di job serviti dal centro s
@@ -243,14 +243,17 @@ public class Node2 {
     public void printStats() {
         System.out.println("Hi, I'm " + this.returnNameOfCenter() + " and I'm done!\n\n");
         System.out.println("for " + this.jobServiti + " jobs the service node statistics are:\n\n");
-        System.out.println("  avg interarrivals .. = " + this.handler.getEventNodo(id)[0].getT() / this.jobServiti);
+        System.out.println("  avg external interarrivals .. = " + this.handler.getEventNodo(id)[0].getT() / this.jobServiti);
         //ci servono anche gli interarrivi dall'interno. Così prendo solo dall'esterno
+        System.out.println("  avg internal interarrivals .. = " + this.handler.getEventNodo(id)[server+2].getT() / this.jobServiti);
         System.out.println("  avg wait ........... = " + this.area / this.jobServiti);
         System.out.println("  avg # in node ...... = " + this.area / this.time.getCurrent());
         System.out.println("  number of internal jobs = " + this.num_internal_job);
         System.out.println("  number of external jobs = " + this.num_external_job);
 
+        System.out.println("Area: " + area);
         for(int i = 1; i <= this.server; i++) {
+            System.out.println("getService di " + i + " = " + this.sumList[i].getService());
             this.area -= this.sumList[i].getService();
         }
         System.out.println("  num job left ....... = " + this.num_job_left);
