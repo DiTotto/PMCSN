@@ -244,6 +244,7 @@ public class Node2 {
         System.out.println("Hi, I'm " + this.returnNameOfCenter() + " and I'm done!\n\n");
         System.out.println("for " + this.jobServiti + " jobs the service node statistics are:\n\n");
         System.out.println("  avg interarrivals .. = " + this.handler.getEventNodo(id)[0].getT() / this.jobServiti);
+        //ci servono anche gli interarrivi dall'interno. Così prendo solo dall'esterno
         System.out.println("  avg wait ........... = " + this.area / this.jobServiti);
         System.out.println("  avg # in node ...... = " + this.area / this.time.getCurrent());
         System.out.println("  number of internal jobs = " + this.num_internal_job);
