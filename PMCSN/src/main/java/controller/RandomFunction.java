@@ -25,7 +25,7 @@ public class RandomFunction {
 
     private double[] arrival = new double[8];
 
-    private int[] interarrivalTime = {7, 12, 7, 5, 5, 5, 5, 5};
+    private int[] interarrivalTime = {7, 12, 7, 3, 5, 5, 5, 5};
 
     private RandomFunction() {
         this.intTime = 0;
@@ -149,6 +149,7 @@ public class RandomFunction {
         double departure = 0.0;
         double prob;
         switch(id) {
+            //CENTRALINO
             case 0:
                 prob = extractProb();
                 rngs.selectStream(id+8);
@@ -165,6 +166,7 @@ public class RandomFunction {
                 }
                 //double departure = Uniform(2.0, 5.0);
                 return departure;
+            //ANAGRAFE
             case 1:
                 try {
                     rngs.selectStream(id+8);
@@ -173,6 +175,7 @@ public class RandomFunction {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            //URP
             case 2:
                 try {
                     prob = extractProb();
@@ -188,6 +191,33 @@ public class RandomFunction {
                     } else if (prob > 0.70) {
                         departure = NormalTruncated(7.5, 2.5, 5, 10);
                     }
+                    return departure;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            //SCOLASTICO
+            case 3:
+                try {
+                    rngs.selectStream(id+8);
+                    departure = NormalTruncated(15, 2, 13, 17);
+                    return departure;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            //SERVIZI SOCIALI
+            case 4:
+                try {
+                    rngs.selectStream(id+8);
+                    departure = NormalTruncated(25, 2, 23, 27);
+                    return departure;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            //STATO CIVILE
+            case 5:
+                try {
+                    rngs.selectStream(id+8);
+                    departure = NormalTruncated(25, 5, 20, 30);
                     return departure;
                 } catch (Exception e) {
                     e.printStackTrace();

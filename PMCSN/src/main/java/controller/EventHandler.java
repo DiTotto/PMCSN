@@ -37,7 +37,7 @@ public class EventHandler {
     //SCOLASTICO
     private EventList[] eventNodo3;
     private ArrayList<Double> internalArrivalNodo3;
-    private static int server3 = 3;
+    private static int server3 = 2;
 
     //SERVIZI SOCIALI
     private EventList[] eventNodo4;
