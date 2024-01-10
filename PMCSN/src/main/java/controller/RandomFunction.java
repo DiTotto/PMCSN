@@ -25,6 +25,7 @@ public class RandomFunction {
 
     private double[] arrival = new double[8];
 
+    private int[] interarrivalTime = {7, 12, 7, 5, 5, 5, 5, 5};
 
     private RandomFunction() {
         this.intTime = 0;
@@ -63,6 +64,7 @@ public class RandomFunction {
 
     public double NormalTruncated(double m, double s, double a, double b) throws Exception {
         // Genera un numero casuale dalla distribuzione normale standard
+        // m indica la media e s la deviazione standard
 
         if (a >= b) {
             throw new Exception("Il valore di a deve essere minore di b");
@@ -144,11 +146,12 @@ public class RandomFunction {
     }
 
     public double getService(int id) {
-        rngs.selectStream(id+8);
+        double departure = 0.0;
+        double prob;
         switch(id) {
             case 0:
-                double prob = extractProb();
-                double departure = 0.0;
+                prob = extractProb();
+                rngs.selectStream(id+8);
                 if (prob <= 0.33) {
                     departure = Exponential((double)5);
                 }else if (prob > 0.33 && prob <= 0.4){
@@ -162,9 +165,38 @@ public class RandomFunction {
                 }
                 //double departure = Uniform(2.0, 5.0);
                 return departure;
+            case 1:
+                try {
+                    rngs.selectStream(id+8);
+                    departure = NormalTruncated(17.5, 2.5, 15, 20);
+                    return departure;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            case 2:
+                try {
+                    prob = extractProb();
+                    rngs.selectStream(id+8);
+                    if (prob <= 0.30) {
+                        departure = NormalTruncated(5, 2, 3, 7);
+                    }else if (prob > 0.30 && prob <= 0.60){
+                        departure = NormalTruncated(3, 2, 1, 5);
+                    } else if (prob > 0.60 && prob <= 0.66){
+                        departure = NormalTruncated(15, 2, 13, 17);
+                    } else if (prob > 0.66 && prob <= 0.70){
+                        departure = NormalTruncated(17.5, 2.5, 15, 20);
+                    } else if (prob > 0.70) {
+                        departure = NormalTruncated(7.5, 2.5, 5, 10);
+                    }
+                    return departure;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             default:
-                double departure2 = Uniform(2.0, 10.0);
-                return departure2;
+                rngs.selectStream(id+8);
+                departure = Uniform(2.0, 10.0);
+                return departure;
         }
     }
 
