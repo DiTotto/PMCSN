@@ -25,7 +25,9 @@ public class RandomFunction {
 
     private double[] arrival = new double[8];
 
-    private int[] interarrivalTime = {7, 12, 7, 3, 5, 5, 5, 5};
+    //i tempi di interarrivo sono usati solo dai centri che prendono da fuori
+    // per correttezza inserisco tutti comunque anche se non usati
+    private int[] interarrivalTime = {7, 12, 7, 3, 10, 19, 3, 120};
 
     private RandomFunction() {
         this.intTime = 0;
@@ -218,6 +220,24 @@ public class RandomFunction {
                 try {
                     rngs.selectStream(id+8);
                     departure = NormalTruncated(25, 5, 20, 30);
+                    return departure;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            //PROTOCOLLO
+            case 6:
+                try {
+                    rngs.selectStream(id+8);
+                    departure = NormalTruncated(6.5, 1.5, 5, 8);
+                    return departure;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            //CULTURA
+            case 7:
+                try {
+                    rngs.selectStream(id+8);
+                    departure = NormalTruncated(12.5, 2.5, 10, 15);
                     return departure;
                 } catch (Exception e) {
                     e.printStackTrace();

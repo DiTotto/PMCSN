@@ -277,10 +277,10 @@ public class Node3 {
         System.out.println("  number of internal jobs = " + this.num_internal_job);
         System.out.println("  number of external jobs = " + this.num_external_job);
 
-        System.out.println("  AREA: " + this.area );
+
         for(int i = 1; i <= this.server; i++) {
             this.area -= this.sumList[i].getService();
-            System.out.println(" service time " + i + " ... = " + this.sumList[i].getService());
+
 
         }
 

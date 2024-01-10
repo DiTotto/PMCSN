@@ -251,9 +251,8 @@ public class Node2 {
         System.out.println("  number of internal jobs = " + this.num_internal_job);
         System.out.println("  number of external jobs = " + this.num_external_job);
 
-        System.out.println("Area: " + area);
+
         for(int i = 1; i <= this.server; i++) {
-            System.out.println("getService di " + i + " = " + this.sumList[i].getService());
             this.area -= this.sumList[i].getService();
         }
         System.out.println("  num job left ....... = " + this.num_job_left);
