@@ -14,7 +14,7 @@ public class Node3 {
     //nel nodo precedente a Node3
 
     private double START = 0.0;
-    private double STOP = 480.0;
+    private double STOP = 1000000.0;
 
     private int s;
     private double area = 0.0;
