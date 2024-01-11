@@ -3,7 +3,10 @@ package main.java.org.example;
 import main.java.controller.*;
 
 public class Main {
+
+    private final static CSVController csvController = CSVController.getInstance();
     public static void main(String[] args) {
+
         System.out.println("START");
 
         //CENTRALINO
@@ -60,6 +63,8 @@ public class Main {
         serviziSociali.printStats();
 
         System.out.println("------------------END SERVIZI SOCIALI--------------------");
+
+        csvController.closeAll();
 
         System.out.println("END");
 

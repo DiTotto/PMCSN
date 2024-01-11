@@ -45,6 +45,8 @@ public class Node1 {
 
     private int id; //id del nodo
 
+    private CSVController csvController;
+
 
 
     /* -------------DA MODIFICARE DA INSERIRE TEMPI DI INTERARRIVO ETC--------------------- */
@@ -60,6 +62,7 @@ public class Node1 {
         /* ottengo l'istanza singleton*/
         this.handler = EventHandler.getInstance();
         this.random = RandomFunction.getInstance();
+        this.csvController = CSVController.getInstance();
         /*---------*/
 
         this.num_job = num_job;
@@ -81,6 +84,7 @@ public class Node1 {
         
         //inizializzo la posizione 0 degli arraylist con il primo arrivo 
         double firstArrival = this.random.getJobArrival(this.id);
+
         
         this.sumList[0] = new Sum();
 
@@ -120,6 +124,8 @@ public class Node1 {
             this.time.setCurrent(this.time.getNext());
             if (e == 0) {
                 this.num_job++; //incremento il numero di job presenti nel centro
+                //inserisco nel csvcontroller arrivo di un job
+                this.csvController.writeNumJob("Arrival", this.time.getCurrent(), this.num_job);
                 eventList[0].setT(this.random.getJobArrival(this.id)); //aggiorno il tempo di arrivo del prossimo job
                 if (eventList[0].getT() > this.STOP) { //se il tempo di arrivo del prossimo job è maggiore del tempo di stop
                     eventList[0].setX(0);
@@ -149,12 +155,14 @@ public class Node1 {
             } else if(e == (server + 1)) {
                 this.num_job_left++;
                 this.num_job--;
+                this.csvController.writeNumJob("Abbandon", this.time.getCurrent(), this.num_job);
                 eventList[e].setX(0);
                 this.handler.setEventNodo(id, eventList);
                 
             }
             else{
                 this.num_job--;  //decremento il numero di job presenti nel centro
+                this.csvController.writeNumJob("Service", this.time.getCurrent(), this.num_job);
                 this.jobServiti++; //incremento il numero di job serviti
                 this.s = e;    //indica il centro che ha completato il job
 
