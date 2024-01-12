@@ -19,6 +19,7 @@ public class Node4 {
     //num job che hanno abbandonato il centro
     private int num_job_left;
 
+
     //numero di serventi
     private int server;
 
@@ -42,7 +43,8 @@ public class Node4 {
     private double exitProbability;
 
     private int id; //id del nodo
-    private int num_internal_job;
+    private int num_internal_job = 0;
+    private int num_external_job = 0;
 
     private int the_next;
 
@@ -67,7 +69,7 @@ public class Node4 {
 
         this.num_job = num_job;
         this.jobServiti = 0;
-        this.exitProbability = 0.08;
+        this.exitProbability = this.handler.getExitProbability(id);
         this.server = this.handler.getServer(id);
 
         this.sumList = new Sum[server + 3];
@@ -124,6 +126,7 @@ public class Node4 {
             this.area = this.area + (this.time.getNext() - this.time.getCurrent()) * this.num_job;
             this.time.setCurrent(this.time.getNext());
             if (e == 0) {
+                this.num_external_job++;
                 this.num_job++; //incremento il numero di job presenti nel centro
                 eventList[0].setT(this.random.getJobArrival(this.id)); //aggiorno il tempo di arrivo del prossimo job
                 if (eventList[0].getT() > this.STOP) { //se il tempo di arrivo del prossimo job è maggiore del tempo di stop
@@ -281,6 +284,9 @@ public class Node4 {
         System.out.println("  avg interarrivals .. = " + this.handler.getEventNodo(id)[0].getT() / this.jobServiti);
         System.out.println("  avg wait ........... = " + this.area / this.jobServiti);
         System.out.println("  avg # in node ...... = " + this.area / this.time.getCurrent());
+        System.out.println("  number of internal jobs = " + this.num_internal_job);
+        System.out.println("  number of external jobs = " + this.num_external_job);
+
 
         for(int i = 1; i <= this.server; i++) {
             this.area -= this.sumList[i].getService();

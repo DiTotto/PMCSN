@@ -17,6 +17,8 @@ public class Node1 {
 
     //num job presenti nel centro
     private int num_job;
+
+    private int external_num_job = 0;
     
     //num job che hanno abbandonato il centro
     private int num_job_left;
@@ -67,7 +69,7 @@ public class Node1 {
 
         this.num_job = num_job;
         this.jobServiti = 0;
-        this.exitProbability = 0.02;
+        this.exitProbability = this.handler.getExitProbability(id);
         this.server = this.handler.getServer(id);
         
         this.sumList = new Sum[server + 2];
@@ -123,6 +125,7 @@ public class Node1 {
             this.area = this.area + (this.time.getNext() - this.time.getCurrent()) * this.num_job;
             this.time.setCurrent(this.time.getNext());
             if (e == 0) {
+                this.external_num_job++;
                 this.num_job++; //incremento il numero di job presenti nel centro
                 //inserisco nel csvcontroller arrivo di un job
                 this.csvController.writeNumJob("Arrival", this.time.getCurrent(), this.num_job);
@@ -278,6 +281,7 @@ public class Node1 {
         System.out.println("  avg interarrivals .. = " + this.handler.getEventNodo(id)[0].getT() / this.jobServiti);
         System.out.println("  avg wait ........... = " + this.area / this.jobServiti);
         System.out.println("  avg # in node ...... = " + this.area / this.time.getCurrent());
+        System.out.println("  external num_job ..... = " + this.external_num_job);
 
         for(int i = 1; i <= this.server; i++) {
             this.area -= this.sumList[i].getService();

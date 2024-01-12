@@ -142,7 +142,7 @@ public class RandomFunction {
         //arrival += this.start;
         rngs.selectStream(id);
         //arrival += Exponential(intTime);
-        arrival[id] += Exponential(7);
+        arrival[id] += Exponential(interarrivalTime[id]);
         return arrival[id];
 
     }

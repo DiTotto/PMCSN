@@ -56,7 +56,7 @@ public class Node2 {
         this.server = this.handler.getServer(id);
         this.num_job = num_job;
         this.jobServiti = 0;
-        this.exitProbability = 0.08;
+        this.exitProbability = this.handler.getExitProbability(id);
         this.num_external_job = 0;
         this.num_internal_job = 0;
         

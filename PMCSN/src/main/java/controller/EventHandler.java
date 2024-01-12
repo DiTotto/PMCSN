@@ -65,6 +65,8 @@ public class EventHandler {
 
     private RandomFunction random;
 
+    private double[] exitProb = {0.02, 0.05, 0.01, 0.03, 0.04, 0.02, 0.01, 0.02};
+
 
     private EventHandler(int server0, int server1, int server2, int server3, int server4, int server5, int server6, int server7) {
 
@@ -284,19 +286,23 @@ public class EventHandler {
             }
         }
 
-        routingMatrix[0][1] = 0.25;
-        routingMatrix[0][2] = 0.25;
-        routingMatrix[0][3] = 0.25;
+        routingMatrix[0][1] = 0.35;
+        routingMatrix[0][2] = 0.1;
+        routingMatrix[0][3] = 0.3;
         routingMatrix[0][4] = 0.25;
 
         routingMatrix[1][5] = 0.75;
-        routingMatrix[2][6] = 0.5; //è la probabilità x
-        routingMatrix[6][7] = 0.5; //è la probabilità y
+        routingMatrix[2][6] = 0.9; //è la probabilità x
+        routingMatrix[6][7] = 0.95; //è la probabilità y
 
     }
 
     public double getRoutingProbability(int i, int j) {
         return routingMatrix[i][j];
+    }
+
+    public double getExitProbability(int i) {
+        return exitProb[i];
     }
 
     private void printMatrix(){
