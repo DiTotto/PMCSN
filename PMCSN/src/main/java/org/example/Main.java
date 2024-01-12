@@ -23,7 +23,7 @@ public class Main {
 
         System.out.println("------------------END ANAGRAFE--------------------");
 
-        Node2 statoCivile = new Node2(0, "StatoCivile", 5);
+        Node3 statoCivile = new Node3(0, "StatoCivile", 5, -1 , false);
         statoCivile.normalWork();
         statoCivile.printStats();
 

@@ -172,14 +172,14 @@ public class Node1 {
                 double prob = this.random.extractProb();
                 
                 //implemento logica di routing
-                if(prob <= 0.25) {
+                if(prob <= this.handler.getRoutingProbability(id, 1)) {
                     //this.handler.addInternalArrivalNodo(2, this.time.getCurrent());
                     this.handler.addInternalArrivalNodo(1, this.time.getCurrent());
-                } else if(prob > 0.25 && prob <= 0.5){
+                } else if(prob > this.handler.getRoutingProbability(id, 1) && prob <= (this.handler.getRoutingProbability(id, 1) + this.handler.getRoutingProbability(id, 2))) {
                     this.handler.addInternalArrivalNodo(2, this.time.getCurrent());
-                } else if(prob > 0.5 && prob <= 0.75) {
+                } else if(prob > (this.handler.getRoutingProbability(id, 1) + this.handler.getRoutingProbability(id, 2)) && prob <= (this.handler.getRoutingProbability(id, 1) + this.handler.getRoutingProbability(id, 2) + this.handler.getRoutingProbability(id, 3))) {
                     this.handler.addInternalArrivalNodo(3, this.time.getCurrent());
-                } else if(prob > 0.75) {
+                } else if(prob > (this.handler.getRoutingProbability(id, 1) + this.handler.getRoutingProbability(id, 2) + this.handler.getRoutingProbability(id, 3)) && prob <= (this.handler.getRoutingProbability(id, 1) + this.handler.getRoutingProbability(id, 2) + this.handler.getRoutingProbability(id, 3) + this.handler.getRoutingProbability(id, 4))) {
                     this.handler.addInternalArrivalNodo(4, this.time.getCurrent());
                 }
 

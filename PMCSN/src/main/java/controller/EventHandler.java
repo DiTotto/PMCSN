@@ -276,12 +276,6 @@ public class EventHandler {
     private void initializeRoutingMatrix() {
         for(int i = 0; i < numCenters; i++) {
             for(int j = 0; j < numCenters; j++) {
-                /*if(i == j){
-                    routingMatrix[i][j] = 0;
-                } else if (i > j) {
-                    //questo perché i job non possono tornare indietro (indietro rispetto i centri - cioé da 1 a 0)
-                    routingMatrix[i][j] = 0;
-                }*/
                 routingMatrix[i][j] = 0;
             }
         }
