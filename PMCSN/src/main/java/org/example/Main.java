@@ -7,7 +7,7 @@ public class Main {
     private final static CSVController csvController = CSVController.getInstance();
     public static void main(String[] args) {
 
-        System.out.println("START");
+        /*System.out.println("START");
 
         //CENTRALINO
         Node1 centralino = new Node1(0, "Centralino", 0);
@@ -66,7 +66,11 @@ public class Main {
 
         csvController.closeAll();
 
-        System.out.println("END");
+        System.out.println("END");*/
+
+        Node1 centralino = new Node1(0, "Centralino", 0);
+        centralino.bathMeans();
+        //centralino.printStats();
 
 
 
