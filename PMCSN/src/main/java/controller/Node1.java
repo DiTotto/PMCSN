@@ -2,8 +2,14 @@ package main.java.controller;
 
 import jdk.jfr.Event;
 import main.java.datastruct.*;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import main.java.controller.EventHandler;
+import main.java.utils.Acs;
+import main.java.utils.Estimate;
 
 public class Node1 {
 
@@ -230,14 +236,27 @@ public class Node1 {
         for(int i = 0; i < 64; i++) {
             this.workforBatch();
         }
+
+        System.out.println("Calcolo delle autocorrelazioni...");
+        System.out.println("Calcolo AVG WAIT...");
+        Acs.calculate("outputWait.txt");
+        System.out.println("Calcolo UTILIZZAZIONE...");
+        Acs.calculate("outputRoh.txt");
+
+        System.out.println("Calcolo delle stime...");
+        System.out.println("Calcolo AVG WAIT...");
+        Estimate.estimate("outputWait.txt");
+        System.out.println("Calcolo UTILIZZAZIONE...");
+        Estimate.estimate("outputRoh.txt");
     }
 
     public void workforBatch() {
 
         int e;
         int job_batch = 0;
+        double timeLimit = this.time.getCurrent();
 
-        while (job_batch < 1028) {
+        while (job_batch < 512) {
 
             EventList[] eventList = this.handler.getEventNodo(id);
 
@@ -247,6 +266,7 @@ public class Node1 {
             this.time.setCurrent(this.time.getNext());
             if (e == 0) {
                 job_batch++;
+
                 this.external_num_job++;
                 this.num_job++; //incremento il numero di job presenti nel centro
                 //inserisco nel csvcontroller arrivo di un job
@@ -286,6 +306,7 @@ public class Node1 {
 
             }
             else{
+                //job_batch++;
                 this.num_job--;  //decremento il numero di job presenti nel centro
                 this.csvController.writeNumJob("Service", this.time.getCurrent(), this.num_job);
                 this.jobServiti++; //incremento il numero di job serviti
@@ -344,15 +365,18 @@ public class Node1 {
             }
         }
 
-        printStats();
+        printStatsBatch(timeLimit);
+        //System.out.println("Area: " + this.area);
 
-        //this.area = 0.0;
+        this.area = 0.0;
         this.jobServiti = 0;
         this.num_job_left = 0;
-        /*for(int i = 0; i < server; i++) {
+        this.external_num_job = 0;
+
+        for(int i = 1; i <= server; i++) {
             this.sumList[i].setService(0.0);
             this.sumList[i].setServed(0);
-        }*/
+        }
 
     }
     
@@ -436,6 +460,48 @@ public class Node1 {
              
         }
         System.out.println("\n");
+    }
+
+    public void printStatsBatch(double limitTime) {
+
+        String output = "outputWait.txt";
+        File file = new File(output);
+        String output2 = "outputRoh.txt";
+        File file2 = new File(output2);
+
+        try{
+            FileWriter fw = new FileWriter(file, true);
+            PrintWriter writer = new PrintWriter(fw);
+            FileWriter fw2 = new FileWriter(file2, true);
+            PrintWriter writer2 = new PrintWriter(fw2);
+            writer.println(this.area / this.jobServiti);
+            writer2.println(this.sumList[1].getService() / (this.time.getCurrent() - limitTime));
+            writer.close();
+            writer2.close();
+        } catch (Exception e) {
+            System.out.println("Errore nella creazione del file");
+        }
+
+        /*System.out.println("Hi, I'm " + this.returnNameOfCenter() + " and I'm done!\n\n");
+        System.out.println("for " + this.jobServiti + " jobs the service node statistics are:\n\n");
+        System.out.println("  avg interarrivals .. = " + (this.handler.getEventNodo(id)[0].getT() - limitTime) / this.jobServiti);
+        System.out.println("  avg wait ........... = " + this.area / this.jobServiti);
+        System.out.println("  avg # in node ...... = " + this.area / (this.time.getCurrent() - limitTime));
+        System.out.println("  external num_job ..... = " + this.external_num_job);
+
+        for(int i = 1; i <= this.server; i++) {
+            this.area -= this.sumList[i].getService();
+        }
+        System.out.println("  num job left ....... = " + this.num_job_left);
+        System.out.println("  avg delay .......... = " + this.area / this.jobServiti);
+        System.out.println("  avg # in queue ..... = " + this.area / (this.time.getCurrent() - limitTime));
+        System.out.println("\nthe server statistics are:\n\n");
+        System.out.println("    server     utilization     avg service        share\n");
+        for(int i = 1; i <= this.server; i++) {
+            System.out.println(i + "\t" + this.sumList[i].getService() / (this.time.getCurrent() - limitTime) + "\t" + this.sumList[i].getService() / this.sumList[i].getServed() + "\t" + (double)this.sumList[i].getServed() / (double)this.jobServiti);
+
+        }
+        System.out.println("\n");*/
     }
 
 }
