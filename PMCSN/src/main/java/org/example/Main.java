@@ -77,13 +77,16 @@ public class Main {
 
         try {
             File directory = new File("output/centralino/");
-
             FileUtils.cleanDirectory(directory);
 
-
+            File directory2 = new File("output/anagrafe/");
+            FileUtils.cleanDirectory(directory2);
 
             Node1 centralino = new Node1(0, "Centralino", 0, "output/centralino/", true);
             centralino.bathMeans();
+
+            Node4 anagrafe = new Node4(0, "Anagrafe", 1, 5, "output/anagrafe/", true);
+            anagrafe.bathMeans();
             //centralino.printStats();
         } catch (IOException e) {
             e.printStackTrace();

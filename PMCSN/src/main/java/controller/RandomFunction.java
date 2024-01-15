@@ -27,7 +27,7 @@ public class RandomFunction {
 
     //i tempi di interarrivo sono usati solo dai centri che prendono da fuori
     // per correttezza inserisco tutti comunque anche se non usati
-    private double[] lambda = {0.51, 0.05, 0.085, 0.205, 0.065, 0.065, 0.13, 0.0008};
+    private double[] interarrival = {0.51, 0.05, 0.085, 0.205, 0.065, 0.065, 0.13, 0.0008};
 
     private RandomFunction() {
         this.intTime = 0;
@@ -142,7 +142,7 @@ public class RandomFunction {
         //arrival += this.start;
         rngs.selectStream(id);
         //arrival += Exponential(intTime);
-        arrival[id] += Exponential(lambda[id]);
+        arrival[id] += Exponential(interarrival[id]);
         return arrival[id];
 
     }
