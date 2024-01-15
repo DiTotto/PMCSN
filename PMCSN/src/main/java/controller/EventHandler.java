@@ -32,12 +32,12 @@ public class EventHandler {
     //URP
     private EventList[] eventNodo2;
     private ArrayList<Double> internalArrivalNodo2;
-    private static int server2 = 3;
+    private static int server2 = 1;
 
     //SCOLASTICO
     private EventList[] eventNodo3;
     private ArrayList<Double> internalArrivalNodo3;
-    private static int server3 = 2;
+    private static int server3 = 4;
 
     //SERVIZI SOCIALI
     private EventList[] eventNodo4;
@@ -47,7 +47,7 @@ public class EventHandler {
     //STATO CIVILE
     private EventList[] eventNodo5;
     private ArrayList<Double> internalArrivalNodo5;
-    private static int server5 = 3;
+    private static int server5 = 2;
 
     //PROTOCOLLO
     private EventList[] eventNodo6;
@@ -57,7 +57,7 @@ public class EventHandler {
     //CULTURA
     private EventList[] eventNodo7;
     private ArrayList<Double> internalArrivalNodo7;
-    private static int server7 = 3;
+    private static int server7 = 1;
 
     private static int numCenters = 8;
 
@@ -280,14 +280,14 @@ public class EventHandler {
             }
         }
 
-        routingMatrix[0][1] = 0.35;
-        routingMatrix[0][2] = 0.1;
-        routingMatrix[0][3] = 0.3;
-        routingMatrix[0][4] = 0.25;
+        routingMatrix[0][1] = 0.1;
+        routingMatrix[0][2] = 0.15;
+        routingMatrix[0][3] = 0.4;
+        routingMatrix[0][4] = 0.125;
 
-        routingMatrix[1][5] = 0.75;
-        routingMatrix[2][6] = 0.9; //è la probabilità x
-        routingMatrix[6][7] = 0.95; //è la probabilità y
+        routingMatrix[1][5] = 0.625;
+        routingMatrix[2][6] = 0.7575; //è la probabilità x
+        routingMatrix[6][7] = 0.06; //è la probabilità y
 
     }
 

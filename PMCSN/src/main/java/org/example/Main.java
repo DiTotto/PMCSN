@@ -2,6 +2,13 @@ package main.java.org.example;
 
 import main.java.controller.*;
 
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
+
+//seed 12345
+
 public class Main {
 
     private final static CSVController csvController = CSVController.getInstance();
@@ -68,9 +75,21 @@ public class Main {
 
         System.out.println("END");*/
 
-        Node1 centralino = new Node1(0, "Centralino", 0);
-        centralino.bathMeans();
-        //centralino.printStats();
+        try {
+            File directory = new File("output/centralino/");
+
+            FileUtils.cleanDirectory(directory);
+
+
+
+            Node1 centralino = new Node1(0, "Centralino", 0, "output/centralino/", true);
+            centralino.bathMeans();
+            //centralino.printStats();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
 
 
 

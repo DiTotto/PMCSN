@@ -27,7 +27,7 @@ public class RandomFunction {
 
     //i tempi di interarrivo sono usati solo dai centri che prendono da fuori
     // per correttezza inserisco tutti comunque anche se non usati
-    private int[] interarrivalTime = {7, 12, 7, 3, 10, 19, 3, 120};
+    private double[] lambda = {0.51, 0.05, 0.085, 0.205, 0.065, 0.065, 0.13, 0.0008};
 
     private RandomFunction() {
         this.intTime = 0;
@@ -142,9 +142,16 @@ public class RandomFunction {
         //arrival += this.start;
         rngs.selectStream(id);
         //arrival += Exponential(intTime);
-        arrival[id] += Exponential(interarrivalTime[id]);
+        arrival[id] += Exponential(lambda[id]);
         return arrival[id];
 
+    }
+
+    public double getServiceBatch(int id){
+        double departure = 0.0;
+        rngs.selectStream(id+8);
+        departure = Exponential(0.2);
+        return departure;
     }
 
     public double getService(int id) {
@@ -153,9 +160,9 @@ public class RandomFunction {
         switch(id) {
             //CENTRALINO
             case 0:
-                prob = extractProb();
+                //prob = extractProb();
                 rngs.selectStream(id+8);
-                if (prob <= 0.33) {
+                /*if (prob <= 0.33) {
                     departure = Exponential((double)5);
                 }else if (prob > 0.33 && prob <= 0.4){
                     departure = Exponential((double)15);
@@ -165,14 +172,20 @@ public class RandomFunction {
                     departure = Uniform(5, 10);
                 }else if (prob > 0.97){
                     departure = Uniform(15,20);
+                }*/
+                try {
+                    departure = NormalTruncated(1, 0.40, 0.10, 2);
+                    //double departure = Uniform(2.0, 5.0);
+                    return departure;
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                //double departure = Uniform(2.0, 5.0);
-                return departure;
+
             //ANAGRAFE
             case 1:
                 try {
                     rngs.selectStream(id+8);
-                    departure = NormalTruncated(17.5, 2.5, 15, 20);
+                    departure = NormalTruncated(20, 5, 5, 35);
                     return departure;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -183,15 +196,15 @@ public class RandomFunction {
                     prob = extractProb();
                     rngs.selectStream(id+8);
                     if (prob <= 0.30) {
-                        departure = NormalTruncated(5, 2, 3, 7);
+                        departure = NormalTruncated(5, 2, 2, 8);
                     }else if (prob > 0.30 && prob <= 0.60){
-                        departure = NormalTruncated(3, 2, 1, 5);
+                        departure = NormalTruncated(3, 1.5, 1, 5);
                     } else if (prob > 0.60 && prob <= 0.66){
-                        departure = NormalTruncated(15, 2, 13, 17);
+                        departure = NormalTruncated(15, 5, 8, 20);
                     } else if (prob > 0.66 && prob <= 0.70){
-                        departure = NormalTruncated(17.5, 2.5, 15, 20);
+                        departure = NormalTruncated(17.5, 5, 10, 25);
                     } else if (prob > 0.70) {
-                        departure = NormalTruncated(7.5, 2.5, 5, 10);
+                        departure = NormalTruncated(7.5, 2.5, 3, 12);
                     }
                     return departure;
                 } catch (Exception e) {
@@ -201,7 +214,7 @@ public class RandomFunction {
             case 3:
                 try {
                     rngs.selectStream(id+8);
-                    departure = NormalTruncated(15, 2, 13, 17);
+                    departure = NormalTruncated(15, 4, 10, 25);
                     return departure;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -210,7 +223,7 @@ public class RandomFunction {
             case 4:
                 try {
                     rngs.selectStream(id+8);
-                    departure = NormalTruncated(25, 2, 23, 27);
+                    departure = NormalTruncated(25, 10, 10, 40);
                     return departure;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -219,7 +232,7 @@ public class RandomFunction {
             case 5:
                 try {
                     rngs.selectStream(id+8);
-                    departure = NormalTruncated(25, 5, 20, 30);
+                    departure = NormalTruncated(25, 5, 10, 35);
                     return departure;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -228,7 +241,7 @@ public class RandomFunction {
             case 6:
                 try {
                     rngs.selectStream(id+8);
-                    departure = NormalTruncated(6.5, 1.5, 5, 8);
+                    departure = NormalTruncated(6.5, 2, 3, 10);
                     return departure;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -237,7 +250,7 @@ public class RandomFunction {
             case 7:
                 try {
                     rngs.selectStream(id+8);
-                    departure = NormalTruncated(12.5, 2.5, 10, 15);
+                    departure = NormalTruncated(120, 30, 60, 240);
                     return departure;
                 } catch (Exception e) {
                     e.printStackTrace();
