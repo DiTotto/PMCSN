@@ -296,6 +296,8 @@ public class Node1 {
         Estimate.estimate(this.path + "outputPopolazioneNelCentro.txt");
         System.out.println("Calcolo E[Ts]...");
         Estimate.estimate(this.path + "outputTempoMedioRisposta.txt");
+        System.out.println("Calcolo E[JOB SERVITI]...");
+        Estimate.estimate(this.path + "outputServiti.txt");
     }
 
     private int whatIsIdle(EventList[] eventList) {
@@ -372,6 +374,9 @@ public class Node1 {
         //E[Ts]
         String output5 = this.path + "outputTempoMedioRisposta.txt";
         File file5 = new File(output5);
+        //JOB serviti
+        String output6 = this.path + "outputServiti.txt";
+        File file6 = new File(output6);
 
         try{
 
@@ -382,6 +387,13 @@ public class Node1 {
             writer2.println(this.sumList[1].getService() / (this.time.getCurrent() - limitTime));
             writer2.close();
             fw2.close();
+
+            //serviti
+            FileWriter fw6 = new FileWriter(file6, true);
+            PrintWriter writer6 = new PrintWriter(fw6);
+            writer6.println(this.jobServiti/(this.time.getCurrent() - limitTime));
+            writer6.close();
+            fw6.close();
 
 
 

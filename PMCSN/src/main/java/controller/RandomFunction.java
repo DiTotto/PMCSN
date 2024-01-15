@@ -149,9 +149,21 @@ public class RandomFunction {
 
     public double getServiceBatch(int id){
         double departure = 0.0;
-        rngs.selectStream(id+8);
+        switch(id) {
+            case 0:
+                rngs.selectStream(id+8);
+                departure = Exponential(0.2);
+                return departure;
+            case 1:
+                rngs.selectStream(id+8);
+                departure = Exponential(0.1);
+                return departure;
+            default:
+                return 0.0;
+        }
+        /*rngs.selectStream(id+8);
         departure = Exponential(0.2);
-        return departure;
+        return departure;*/
     }
 
     public double getService(int id) {
