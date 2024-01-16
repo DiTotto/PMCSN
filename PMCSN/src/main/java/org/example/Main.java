@@ -82,14 +82,25 @@ public class Main {
             File directory2 = new File("output/anagrafe/");
             FileUtils.cleanDirectory(directory2);
 
+            File directory3 = new File("output/scolastico/");
+            FileUtils.cleanDirectory(directory3);
+
             Node1 centralino = new Node1(0, "Centralino", 0, "output/centralino/", true);
             centralino.bathMeans();
+
+            System.out.println("------------------END CENTRALINO--------------------");
 
             Node4 anagrafe = new Node4(0, "Anagrafe", 1, 5, "output/anagrafe/", true);
             anagrafe.bathMeans();
 
+            System.out.println("------------------END ANAGRAFE--------------------");
+
             Node2 scolastico = new Node2(0, "Scolastico", 3, "output/scolastico/", true);
             scolastico.bathMeans();
+
+            System.out.println("------------------END SCOLASTICO--------------------");
+
+
             //centralino.printStats();
         } catch (IOException e) {
             e.printStackTrace();

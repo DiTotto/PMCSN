@@ -158,6 +158,14 @@ public class RandomFunction {
                 rngs.selectStream(id+8);
                 departure = Exponential(0.1);
                 return departure;
+            case 2:
+                rngs.selectStream(id+8);
+                departure = Exponential(0.1);
+                return departure;
+            case 3:
+                rngs.selectStream(id+8);
+                departure = Exponential(0.5);
+                return departure;
             default:
                 return 0.0;
         }
