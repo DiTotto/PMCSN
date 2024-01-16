@@ -117,7 +117,7 @@ public class Node2 {
 
         int job_batch = 0;
         double timeLimit = this.time.getCurrent();
-        while ((batch) ? (job_batch < 1200) : ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0))) {
+        while ((batch) ? (job_batch < 2048) : ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0))) {
             EventList[] eventList = this.handler.getEventNodo(id);
 
             e = EventList.NextEvent2(eventList, server);
@@ -254,7 +254,7 @@ public class Node2 {
         //k = 64
         //ipotizzo b = 1028
         if (batch) {
-            for (int i = 0; i < 100; i++) {
+            for (int i = 0; i < 512; i++) {
                 //this.workforBatch();
                 this.normalWork();
             }

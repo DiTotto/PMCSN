@@ -41,11 +41,20 @@ public class EventList {
         int e;
         int i = 0;
     
-        while (event[i].x == 0)
+        while (event[i].x == 0) {
             i++;
+            if (i == event.length) {
+                System.out.println("No event found in the range.");
+                return -1; // Handle this case appropriately
+            }
+        }
         e = i;
         while (i < (servers + 2)) {
             i++;
+            if (i == event.length) {
+                System.out.println("No event found in the range." + i);
+                return -1; // Handle this case appropriately
+            }
             if ((event[i].x == 1) && (event[i].t < event[e].t))
                 e = i;
         }

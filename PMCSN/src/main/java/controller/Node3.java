@@ -67,6 +67,7 @@ public class Node3 {
 
     private boolean batch;
 
+    private boolean end = false;
     public Node3(int num_job, String nome, int id, int the_next, boolean routing, String path, boolean batch){
         EventList[] eventList2;
 
@@ -140,10 +141,19 @@ public class Node3 {
         int job_batch = 0;
         double timeLimit = this.time.getCurrent();
 
-        while ((batch) ? (job_batch < 1200) : ((this.handler.getEventNodo(id)[server + 2].getX() != 0) || (this.num_job > 0))) {
+        while ((batch) ? (job_batch < 665) : ((this.handler.getEventNodo(id)[server + 2].getX() != 0) || (this.num_job > 0))) {
             EventList[] eventList = this.handler.getEventNodo(id);
+            if(job_batch == 500){
+
+                //System.out.println("Ultimo job");
+            }
 
             e = EventList.NextEvent2(eventList, server);
+            if(e == -1) {
+                System.out.println("Finiti i job interni da processare");
+                this.end = true;
+                break;
+            }
             this.time.setNext(eventList[e].getT());
             this.area = this.area + (this.time.getNext() - this.time.getCurrent()) * this.num_job;
             this.time.setCurrent(this.time.getNext());
@@ -282,7 +292,7 @@ public class Node3 {
         //k = 64
         //ipotizzo b = 1028
         if (batch) {
-            for (int i = 0; i < 100; i++) {
+            for (int i = 0; i < 100 && this.end == false; i++) {
                 //this.workforBatch();
                 this.normalWork();
             }

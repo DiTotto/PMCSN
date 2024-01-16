@@ -24,7 +24,7 @@ public class Acs {
         try {
             Scanner scanner = new Scanner(new FileInputStream(file));
 
-            while (i < SIZE) { // initialize the hold array with
+            while (i < SIZE && scanner.hasNext()) { // initialize the hold array with
                 //x = scanner.nextDouble(); // the first K + 1 data values
                 String s = scanner.next();
                 x = Double.parseDouble(s);
@@ -61,8 +61,9 @@ public class Acs {
             System.out.printf("the mean is ... %8.2f\n", mean);
             System.out.printf("the stdev is .. %8.2f\n\n", Math.sqrt(cosum[0]));
             System.out.println("  j (lag)   r[j] (autocorrelation)");
-            for (j = 1; j < 5; j++)
+            for (j = 1; j < 3; j++)
                 System.out.printf("%3d  %11.3f\n", j, cosum[(int) j] / cosum[0]);
+            System.out.println();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

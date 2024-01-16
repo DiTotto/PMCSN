@@ -134,7 +134,7 @@ public class Node4 {
         double timeLimit = this.time.getCurrent();
 
         //while ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0)) {
-        while ((batch) ? (job_batch < 1200) : ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0))) {
+        while ((batch) ? (job_batch < 1024) : ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0))) {
 
             EventList[] eventList = this.handler.getEventNodo(id);
 
@@ -287,6 +287,8 @@ public class Node4 {
     public void bathMeans(){
         //k = 64
         //ipotizzo b = 1028
+
+        //soluzione migliore si ha con k = 4096 e b = 4092
         if(batch) {
             for (int i = 0; i < 100; i++) {
                 //this.workforBatch();
@@ -416,6 +418,11 @@ public class Node4 {
             //p
             FileWriter fw2 = new FileWriter(file2, true);
             PrintWriter writer2 = new PrintWriter(fw2);
+            double totalServiceTime = 0;
+            for (int i = 1; i <= this.server; i++) {
+                totalServiceTime += ((this.sumList[i].getService() ));
+            }
+            //writer2.println(totalServiceTime / (this.server*(this.time.getCurrent() - limitTime)));
             writer2.println(this.sumList[1].getService() / (this.time.getCurrent() - limitTime));
             writer2.close();
             fw2.close();
