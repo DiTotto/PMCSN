@@ -278,36 +278,42 @@ public class Node1 {
         //ipotizzo k = 50 -> b = 1310
         //ipotizzo k = 64 -> b = 1028
         //ipotizzo k = 100 -> b = 655
-        for(int i = 0; i < 100; i++) {
-            //this.workforBatch();
-            this.normalWork();
+        if(batch) {
+            for (int i = 0; i < 100; i++) {
+                //this.workforBatch();
+                this.normalWork();
+            }
+
+            System.out.println("Calcolo delle autocorrelazioni...");
+            System.out.println("Calcolo E[Tq]...");
+            Acs.calculate(this.path + "outputWait.txt");
+            System.out.println("Calcolo UTILIZZAZIONE...");
+            Acs.calculate(this.path + "outputRoh.txt");
+            System.out.println("Calcolo E[Nq]...");
+            Acs.calculate(this.path + "outputPopolazioneInCoda.txt");
+            System.out.println("Calcolo E[Ns]...");
+            Acs.calculate(this.path + "outputPopolazioneNelCentro.txt");
+            System.out.println("Calcolo E[Ts]...");
+            Acs.calculate(this.path + "outputTempoMedioRisposta.txt");
+
+            System.out.println("Calcolo delle stime...");
+            System.out.println("Calcolo AVG WAIT...");
+            Estimate.estimate(this.path + "outputWait.txt");
+            System.out.println("Calcolo UTILIZZAZIONE...");
+            Estimate.estimate(this.path + "outputRoh.txt");
+            System.out.println("Calcolo E[Nq]...");
+            Estimate.estimate(this.path + "outputPopolazioneInCoda.txt");
+            System.out.println("Calcolo E[Ns]...");
+            Estimate.estimate(this.path + "outputPopolazioneNelCentro.txt");
+            System.out.println("Calcolo E[Ts]...");
+            Estimate.estimate(this.path + "outputTempoMedioRisposta.txt");
+            System.out.println("Calcolo E[JOB SERVITI]...");
+            Estimate.estimate(this.path + "outputServiti.txt");
         }
-
-        System.out.println("Calcolo delle autocorrelazioni...");
-        System.out.println("Calcolo E[Tq]...");
-        Acs.calculate(this.path + "outputWait.txt");
-        System.out.println("Calcolo UTILIZZAZIONE...");
-        Acs.calculate(this.path + "outputRoh.txt");
-        System.out.println("Calcolo E[Nq]...");
-        Acs.calculate(this.path + "outputPopolazioneInCoda.txt");
-        System.out.println("Calcolo E[Ns]...");
-        Acs.calculate(this.path + "outputPopolazioneNelCentro.txt");
-        System.out.println("Calcolo E[Ts]...");
-        Acs.calculate(this.path + "outputTempoMedioRisposta.txt");
-
-        System.out.println("Calcolo delle stime...");
-        System.out.println("Calcolo AVG WAIT...");
-        Estimate.estimate(this.path + "outputWait.txt");
-        System.out.println("Calcolo UTILIZZAZIONE...");
-        Estimate.estimate(this.path + "outputRoh.txt");
-        System.out.println("Calcolo E[Nq]...");
-        Estimate.estimate(this.path + "outputPopolazioneInCoda.txt");
-        System.out.println("Calcolo E[Ns]...");
-        Estimate.estimate(this.path + "outputPopolazioneNelCentro.txt");
-        System.out.println("Calcolo E[Ts]...");
-        Estimate.estimate(this.path + "outputTempoMedioRisposta.txt");
-        System.out.println("Calcolo E[JOB SERVITI]...");
-        Estimate.estimate(this.path + "outputServiti.txt");
+        else {
+            this.normalWork();
+            this.printStats();
+        }
     }
 
     private int whatIsIdle(EventList[] eventList) {

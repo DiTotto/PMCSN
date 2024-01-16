@@ -134,7 +134,7 @@ public class Node4 {
         double timeLimit = this.time.getCurrent();
 
         //while ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0)) {
-        while ((batch) ? (job_batch < 655) : ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0))) {
+        while ((batch) ? (job_batch < 1200) : ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0))) {
 
             EventList[] eventList = this.handler.getEventNodo(id);
 
@@ -287,35 +287,38 @@ public class Node4 {
     public void bathMeans(){
         //k = 64
         //ipotizzo b = 1028
+        if(batch) {
+            for (int i = 0; i < 100; i++) {
+                //this.workforBatch();
+                this.normalWork();
+            }
+            System.out.println("Calcolo delle autocorrelazioni...");
+            System.out.println("Calcolo E[Tq]...");
+            Acs.calculate(this.path + "outputWait.txt");
+            System.out.println("Calcolo UTILIZZAZIONE...");
+            Acs.calculate(this.path + "outputRoh.txt");
+            System.out.println("Calcolo E[Nq]...");
+            Acs.calculate(this.path + "outputPopolazioneInCoda.txt");
+            System.out.println("Calcolo E[Ns]...");
+            Acs.calculate(this.path + "outputPopolazioneNelCentro.txt");
+            System.out.println("Calcolo E[Ts]...");
+            Acs.calculate(this.path + "outputTempoMedioRisposta.txt");
 
-        for(int i = 0; i < 100; i++) {
-            //this.workforBatch();
+            System.out.println("Calcolo delle stime...");
+            System.out.println("Calcolo AVG WAIT...");
+            Estimate.estimate(this.path + "outputWait.txt");
+            System.out.println("Calcolo UTILIZZAZIONE...");
+            Estimate.estimate(this.path + "outputRoh.txt");
+            System.out.println("Calcolo E[Nq]...");
+            Estimate.estimate(this.path + "outputPopolazioneInCoda.txt");
+            System.out.println("Calcolo E[Ns]...");
+            Estimate.estimate(this.path + "outputPopolazioneNelCentro.txt");
+            System.out.println("Calcolo E[Ts]...");
+            Estimate.estimate(this.path + "outputTempoMedioRisposta.txt");
+        }else{
             this.normalWork();
+            this.printStats();
         }
-
-        System.out.println("Calcolo delle autocorrelazioni...");
-        System.out.println("Calcolo E[Tq]...");
-        Acs.calculate(this.path + "outputWait.txt");
-        System.out.println("Calcolo UTILIZZAZIONE...");
-        Acs.calculate(this.path + "outputRoh.txt");
-        System.out.println("Calcolo E[Nq]...");
-        Acs.calculate(this.path + "outputPopolazioneInCoda.txt");
-        System.out.println("Calcolo E[Ns]...");
-        Acs.calculate(this.path + "outputPopolazioneNelCentro.txt");
-        System.out.println("Calcolo E[Ts]...");
-        Acs.calculate(this.path + "outputTempoMedioRisposta.txt");
-
-        System.out.println("Calcolo delle stime...");
-        System.out.println("Calcolo AVG WAIT...");
-        Estimate.estimate(this.path + "outputWait.txt");
-        System.out.println("Calcolo UTILIZZAZIONE...");
-        Estimate.estimate(this.path + "outputRoh.txt");
-        System.out.println("Calcolo E[Nq]...");
-        Estimate.estimate(this.path + "outputPopolazioneInCoda.txt");
-        System.out.println("Calcolo E[Ns]...");
-        Estimate.estimate(this.path + "outputPopolazioneNelCentro.txt");
-        System.out.println("Calcolo E[Ts]...");
-        Estimate.estimate(this.path + "outputTempoMedioRisposta.txt");
     }
 
 

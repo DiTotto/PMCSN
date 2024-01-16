@@ -3,6 +3,12 @@ package main.java.controller;
 import main.java.datastruct.EventList;
 import main.java.datastruct.Sum;
 import main.java.datastruct.Time;
+import main.java.utils.Acs;
+import main.java.utils.Estimate;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 
 public class Node3 {
 
@@ -57,8 +63,16 @@ public class Node3 {
 
     private boolean routing;
 
-    public Node3(int num_job, String nome, int id, int the_next, boolean routing){
+    private String path;
+
+    private boolean batch;
+
+    public Node3(int num_job, String nome, int id, int the_next, boolean routing, String path, boolean batch){
         EventList[] eventList2;
+
+        this.path = path;
+
+        this.batch = batch;
 
         this.id = id;
 
@@ -123,8 +137,10 @@ public class Node3 {
     public void normalWork() {
 
         int e;
+        int job_batch = 0;
+        double timeLimit = this.time.getCurrent();
 
-        while ((this.handler.getEventNodo(id)[server + 2].getX() != 0) || (this.num_job > 0)) {
+        while ((batch) ? (job_batch < 1200) : ((this.handler.getEventNodo(id)[server + 2].getX() != 0) || (this.num_job > 0))) {
             EventList[] eventList = this.handler.getEventNodo(id);
 
             e = EventList.NextEvent2(eventList, server);
@@ -169,6 +185,9 @@ public class Node3 {
 
             } else if(e == (server + 2)) {
                 //logica di gestione del job che arriva dal nodo 1
+                if(batch) {
+                    job_batch++;
+                }
                 this.num_job++;
                 this.num_internal_job++;
                 if(!this.handler.getInternalArrivalNodo(id).isEmpty()) {
@@ -178,7 +197,13 @@ public class Node3 {
                 }
                 //eventList[e].setT(this.handler.getInternalArrivalNodo2().remove(0));
                 if(num_job <= server) {
-                    double service = this.random.getService(this.id);
+                    //double service = this.random.getService(this.id);
+                    double service = 0.0;
+                    if(batch) {
+                        service = this.random.getServiceBatch(this.id); //tempo di servizio del centro s del prossimo job
+                    } else {
+                        service = this.random.getService(this.id); //tempo di servizio del centro s del prossimo job
+                    }
                     this.s = whatIsIdle(eventList);
                     sumList[s].incrementService(service);
                     sumList[s].incrementServed();
@@ -211,7 +236,13 @@ public class Node3 {
                         }
                     }
 
-                    double service = this.random.getService(this.id);    //tempo di servizio del centro s del prossimo job
+                    //double service = this.random.getService(this.id);    //tempo di servizio del centro s del prossimo job
+                    double service = 0.0;
+                    if(batch) {
+                        service = this.random.getServiceBatch(this.id);
+                    } else {
+                        service = this.random.getService(this.id);
+                    }
                     //this.s = whatIsIdle(eventList);
                     sumList[s].incrementService(service);         //aggiorno il tempo di servizio totale del centro s
                     sumList[s].incrementServed();                 //aggiorno il numero di job serviti dal centro s
@@ -229,6 +260,59 @@ public class Node3 {
 
 
             }
+        }
+
+        if (batch) {
+            printStatsBatch(timeLimit);
+            //System.out.println("Area: " + this.area);
+
+            this.area = 0.0;
+            this.jobServiti = 0;
+            this.num_job_left = 0;
+            this.num_external_job = 0;
+
+            for(int i = 1; i <= server; i++) {
+                this.sumList[i].setService(0.0);
+                this.sumList[i].setServed(0);
+            }
+        }
+    }
+
+    public void bathMeans(){
+        //k = 64
+        //ipotizzo b = 1028
+        if (batch) {
+            for (int i = 0; i < 100; i++) {
+                //this.workforBatch();
+                this.normalWork();
+            }
+            System.out.println("Calcolo delle autocorrelazioni...");
+            System.out.println("Calcolo E[Tq]...");
+            Acs.calculate(this.path + "outputWait.txt");
+            System.out.println("Calcolo UTILIZZAZIONE...");
+            Acs.calculate(this.path + "outputRoh.txt");
+            System.out.println("Calcolo E[Nq]...");
+            Acs.calculate(this.path + "outputPopolazioneInCoda.txt");
+            System.out.println("Calcolo E[Ns]...");
+            Acs.calculate(this.path + "outputPopolazioneNelCentro.txt");
+            System.out.println("Calcolo E[Ts]...");
+            Acs.calculate(this.path + "outputTempoMedioRisposta.txt");
+
+            System.out.println("Calcolo delle stime...");
+            System.out.println("Calcolo AVG WAIT...");
+            Estimate.estimate(this.path + "outputWait.txt");
+            System.out.println("Calcolo UTILIZZAZIONE...");
+            Estimate.estimate(this.path + "outputRoh.txt");
+            System.out.println("Calcolo E[Nq]...");
+            Estimate.estimate(this.path + "outputPopolazioneInCoda.txt");
+            System.out.println("Calcolo E[Ns]...");
+            Estimate.estimate(this.path + "outputPopolazioneNelCentro.txt");
+            System.out.println("Calcolo E[Ts]...");
+            Estimate.estimate(this.path + "outputTempoMedioRisposta.txt");
+        }
+        else{
+            this.normalWork();
+            this.printStats();
         }
     }
 
@@ -291,16 +375,77 @@ public class Node3 {
         System.out.println("    server     utilization     avg service        share\n");
         for(int i = 1; i <= this.server; i++) {
             System.out.println(i + "\t" + this.sumList[i].getService() / this.time.getCurrent() + "\t" + this.sumList[i].getService() / this.sumList[i].getServed() + "\t" + (double)this.sumList[i].getServed() / (double)this.jobServiti);
-            // System.out.println(i+"\t");
-            // System.out.println("get service" + this.sumList[i].getService() + "\n");
-            // System.out.println("getCurrent" + this.time.getCurrent() + "\n");
-            // System.out.println("getserved"+this.sumList[i].getServed() + "\n");
-            // System.out.println("jobServiti"+this.jobServiti + "\n");
-            //System.out.println(i + "\t" + sumList[i].getService() / this.time.getCurrent() + "\t" + this.sumList[i].getService() / this.sumList[i].getServed() + "\t" + this.sumList[i].getServed() / this.jobServiti);
-            System.out.println("\n");
-            //System.out.println("jobServiti"+this.num_job_feedback + "\n");
-
         }
         System.out.println("\n");
+    }
+
+    public void printStatsBatch(double limitTime) {
+
+        //E[Tq]
+        String output = this.path + "outputWait.txt";
+        File file = new File(output);
+        //p
+        String output2 = this.path + "outputRoh.txt";
+        File file2 = new File(output2);
+        //E[Nq]
+        String output3 = this.path + "outputPopolazioneInCoda.txt";
+        File file3 = new File(output3);
+        //E[Ns]
+        String output4 = this.path + "outputPopolazioneNelCentro.txt";
+        File file4 = new File(output4);
+        //E[Ts]
+        String output5 = this.path + "outputTempoMedioRisposta.txt";
+        File file5 = new File(output5);
+
+        try{
+
+
+            //p
+            FileWriter fw2 = new FileWriter(file2, true);
+            PrintWriter writer2 = new PrintWriter(fw2);
+            writer2.println(this.sumList[1].getService() / (this.time.getCurrent() - limitTime));
+            writer2.close();
+            fw2.close();
+
+
+
+            //E[Ns]
+            FileWriter fw4 = new FileWriter(file4, true);
+            PrintWriter writer4 = new PrintWriter(fw4);
+            writer4.println(this.area / (this.time.getCurrent() - limitTime));
+            writer4.close();
+            fw4.close();
+
+            //E[Ts]
+            FileWriter fw5 = new FileWriter(file5, true);
+            PrintWriter writer5 = new PrintWriter(fw5);
+            writer5.println(this.area / this.jobServiti);
+            writer5.close();
+            fw5.close();
+
+            for(int i = 1; i <= this.server; i++) {
+                this.area -= this.sumList[i].getService();
+            }
+
+
+            //E[Tq]
+            FileWriter fw = new FileWriter(file, true);
+            PrintWriter writer = new PrintWriter(fw);
+            double totalQueueTime = this.area / this.jobServiti;
+            writer.println(this.area / this.jobServiti);
+            writer.close();
+            fw.close();
+
+            //E[Nq]
+            FileWriter fw3 = new FileWriter(file3, true);
+            PrintWriter writer3 = new PrintWriter(fw3);
+            writer3.println(this.area / (this.time.getCurrent() - limitTime));
+            writer3.close();
+            fw3.close();
+
+
+        } catch (Exception e) {
+            System.out.println("Errore nella creazione del file");
+        }
     }
 }

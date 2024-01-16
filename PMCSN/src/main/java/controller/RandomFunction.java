@@ -27,7 +27,7 @@ public class RandomFunction {
 
     //i tempi di interarrivo sono usati solo dai centri che prendono da fuori
     // per correttezza inserisco tutti comunque anche se non usati
-    private double[] interarrival = {0.51, 0.05, 0.085, 0.205, 0.065, 0.065, 0.13, 0.0008};
+    private double[] interarrival = {1.96, 20, 11.76, 4.878, 15.385, 15.385, 7.69, 1250};
 
     private RandomFunction() {
         this.intTime = 0;
@@ -152,19 +152,35 @@ public class RandomFunction {
         switch(id) {
             case 0:
                 rngs.selectStream(id+8);
-                departure = Exponential(0.2);
+                departure = Exponential(1);
                 return departure;
             case 1:
                 rngs.selectStream(id+8);
-                departure = Exponential(0.1);
+                departure = Exponential(20);
                 return departure;
             case 2:
                 rngs.selectStream(id+8);
-                departure = Exponential(0.1);
+                departure = Exponential(5);
                 return departure;
             case 3:
                 rngs.selectStream(id+8);
-                departure = Exponential(0.5);
+                departure = Exponential(5);
+                return departure;
+            case 4:
+                rngs.selectStream(id+8);
+                departure = Exponential(20);
+                return departure;
+            case 5:
+                rngs.selectStream(id+8);
+                departure = Exponential(25);
+                return departure;
+            case 6:
+                rngs.selectStream(id+8);
+                departure = Exponential(6.5);
+                return departure;
+            case 7:
+                rngs.selectStream(id+8);
+                departure = Exponential(120);
                 return departure;
             default:
                 return 0.0;

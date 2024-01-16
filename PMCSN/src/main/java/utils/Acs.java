@@ -61,7 +61,7 @@ public class Acs {
             System.out.printf("the mean is ... %8.2f\n", mean);
             System.out.printf("the stdev is .. %8.2f\n\n", Math.sqrt(cosum[0]));
             System.out.println("  j (lag)   r[j] (autocorrelation)");
-            for (j = 1; j < SIZE; j++)
+            for (j = 1; j < 5; j++)
                 System.out.printf("%3d  %11.3f\n", j, cosum[(int) j] / cosum[0]);
         } catch (FileNotFoundException e) {
             e.printStackTrace();

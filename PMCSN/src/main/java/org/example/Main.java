@@ -85,20 +85,64 @@ public class Main {
             File directory3 = new File("output/scolastico/");
             FileUtils.cleanDirectory(directory3);
 
-            Node1 centralino = new Node1(0, "Centralino", 0, "output/centralino/", true);
+            File directory4 = new File("output/serviziSociali/");
+            FileUtils.cleanDirectory(directory4);
+
+            File directory5 = new File("output/URP/");
+            FileUtils.cleanDirectory(directory5);
+
+            File directory6 = new File("output/statoCivile/");
+            FileUtils.cleanDirectory(directory6);
+
+            File directory7 = new File("output/protocollo/");
+            FileUtils.cleanDirectory(directory7);
+
+            File directory8 = new File("output/cultura/");
+            FileUtils.cleanDirectory(directory8);
+
+            boolean batch = true;
+
+            Node1 centralino = new Node1(0, "Centralino", 0, "output/centralino/", batch);
             centralino.bathMeans();
 
             System.out.println("------------------END CENTRALINO--------------------");
 
-            Node4 anagrafe = new Node4(0, "Anagrafe", 1, 5, "output/anagrafe/", true);
+            Node4 anagrafe = new Node4(0, "Anagrafe", 1, 5, "output/anagrafe/", batch);
             anagrafe.bathMeans();
 
             System.out.println("------------------END ANAGRAFE--------------------");
 
-            Node2 scolastico = new Node2(0, "Scolastico", 3, "output/scolastico/", true);
+            Node4 URP = new Node4(0, "URP", 2, 6, "output/URP/", batch);
+            URP.bathMeans();
+
+            System.out.println("------------------END URP--------------------");
+
+            Node2 scolastico = new Node2(0, "Scolastico", 3, "output/scolastico/", batch);
             scolastico.bathMeans();
 
             System.out.println("------------------END SCOLASTICO--------------------");
+
+
+            Node2 serviziSociali = new Node2(0, "Servizi Sociali", 4, "output/serviziSociali/", batch);
+            serviziSociali.bathMeans();
+
+            System.out.println("------------------END SERVIZI SOCIALI--------------------");
+
+            Node3 statoCivile = new Node3(0, "StatoCivile", 5, -1 , false, "output/statoCivile/", batch);
+            statoCivile.bathMeans();
+
+            System.out.println("------------------END STATO CIVILE--------------------");
+
+            Node3 protocollo = new Node3(0, "Protocollo", 6, 7, true, "output/protocollo/", batch);
+            protocollo.bathMeans();
+
+            System.out.println("------------------END PROTOCOLLO--------------------");
+
+            Node3 cultura = new Node3(0, "Cultura", 7, -1, false, "output/cultura/", batch);
+            cultura.bathMeans();
+
+            System.out.println("------------------END CULTURA--------------------");
+
 
 
             //centralino.printStats();
