@@ -58,6 +58,8 @@ public class Node4 {
 
     private boolean batch;
 
+    private boolean exit = false;
+
 
 
     /* -------------DA MODIFICARE DA INSERIRE TEMPI DI INTERARRIVO ETC--------------------- */
@@ -127,14 +129,14 @@ public class Node4 {
 
 
 
-    public void normalWork() {
+    public int normalWork() {
 
         int e;
         int job_batch = 0;
         double timeLimit = this.time.getCurrent();
 
         //while ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0)) {
-        while ((batch) ? (job_batch < 1024) : ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0))) {
+        while ((batch) ? (job_batch < 128) : ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0))) {
 
             EventList[] eventList = this.handler.getEventNodo(id);
 
@@ -199,6 +201,11 @@ public class Node4 {
                     eventList[e].setT(this.handler.getInternalArrivalNodo(id).remove(0));//prendo il prossimo arrivo dalla lista di arrivi dal nodo 1
                 } else {
                     eventList[e].setX(0);
+                    if(batch) {
+                        this.exit = true;
+                        break;
+                    }
+
                 }
                 //eventList[e].setT(this.handler.getInternalArrivalNodo2().remove(0));
                 if (num_job <= server) {
@@ -272,15 +279,24 @@ public class Node4 {
             printStatsBatch(timeLimit);
             //System.out.println("Area: " + this.area);
 
+
+
             this.area = 0.0;
             this.jobServiti = 0;
             this.num_job_left = 0;
             this.num_external_job = 0;
+            this.num_internal_job = 0;
 
             for(int i = 1; i <= server; i++) {
                 this.sumList[i].setService(0.0);
                 this.sumList[i].setServed(0);
             }
+        }
+
+        if(this.exit) {
+            return 1;
+        } else {
+            return 0;
         }
     }
 
@@ -290,9 +306,11 @@ public class Node4 {
 
         //soluzione migliore si ha con k = 4096 e b = 4092
         if(batch) {
-            for (int i = 0; i < 100; i++) {
+            for (int i = 0; i < 64; i++) {
                 //this.workforBatch();
-                this.normalWork();
+                if (this.normalWork() == 1) {
+                    break;
+                }
             }
             System.out.println("Calcolo delle autocorrelazioni...");
             System.out.println("Calcolo E[Tq]...");
@@ -422,8 +440,8 @@ public class Node4 {
             for (int i = 1; i <= this.server; i++) {
                 totalServiceTime += ((this.sumList[i].getService() ));
             }
-            //writer2.println(totalServiceTime / (this.server*(this.time.getCurrent() - limitTime)));
-            writer2.println(this.sumList[1].getService() / (this.time.getCurrent() - limitTime));
+            writer2.println(totalServiceTime / (this.server*(this.time.getCurrent() - limitTime)));
+            //writer2.println(this.sumList[1].getService() / (this.time.getCurrent() - limitTime));
             writer2.close();
             fw2.close();
 

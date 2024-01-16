@@ -57,7 +57,7 @@ public class EventHandler {
     //CULTURA
     private EventList[] eventNodo7;
     private ArrayList<Double> internalArrivalNodo7;
-    private static int server7 = 1;
+    private static int server7 = 2;
 
     private static int numCenters = 8;
 
@@ -287,7 +287,8 @@ public class EventHandler {
 
         routingMatrix[1][5] = 0.625;
         routingMatrix[2][6] = 0.7575; //è la probabilità x
-        routingMatrix[6][7] = 0.06; //è la probabilità y
+        //routingMatrix[6][7] = 0.06; //è la probabilità y
+        routingMatrix[6][7] = 0.35;
 
     }
 

@@ -180,7 +180,7 @@ public class RandomFunction {
                 return departure;
             case 7:
                 rngs.selectStream(id+8);
-                departure = Exponential(120);
+                departure = Exponential(20);
                 return departure;
             default:
                 return 0.0;

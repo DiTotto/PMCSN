@@ -51,6 +51,8 @@ public class Node2 {
 
     private String path;
     private boolean batch;
+
+    private boolean exit = false;
     public Node2(int num_job, String nome, int id,String path, boolean batch) {
         EventList[] eventList2;
 
@@ -111,13 +113,13 @@ public class Node2 {
         /* ------------------ */
     }
 
-    public void normalWork() {
+    public int normalWork() {
 
         int e;
 
         int job_batch = 0;
         double timeLimit = this.time.getCurrent();
-        while ((batch) ? (job_batch < 2048) : ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0))) {
+        while ((batch) ? (job_batch < 128) : ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0))) {
             EventList[] eventList = this.handler.getEventNodo(id);
 
             e = EventList.NextEvent2(eventList, server);
@@ -180,6 +182,10 @@ public class Node2 {
                     eventList[e].setT(this.handler.getInternalArrivalNodo(id).remove(0));//prendo il prossimo arrivo dalla lista di arrivi dal nodo 1
                 } else {
                     eventList[e].setX(0);
+                    if(batch) {
+                        this.exit = true;
+                        break;
+                    }
                 }
                 //eventList[e].setT(this.handler.getInternalArrivalNodo2().remove(0));
                 if(num_job <= server) {
@@ -239,24 +245,34 @@ public class Node2 {
             printStatsBatch(timeLimit);
             //System.out.println("Area: " + this.area);
 
+
+
             this.area = 0.0;
             this.jobServiti = 0;
             this.num_job_left = 0;
             this.num_external_job = 0;
+            this.num_internal_job = 0;
 
             for(int i = 1; i <= server; i++) {
                 this.sumList[i].setService(0.0);
                 this.sumList[i].setServed(0);
             }
         }
+
+        if(this.exit) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
     public void bathMeans(){
         //k = 64
         //ipotizzo b = 1028
         if (batch) {
-            for (int i = 0; i < 512; i++) {
-                //this.workforBatch();
-                this.normalWork();
+            for (int i = 0; i < 30; i++) {
+                if (this.normalWork() == 1) {
+                    break;
+                }
             }
             System.out.println("Calcolo delle autocorrelazioni...");
             System.out.println("Calcolo E[Tq]...");

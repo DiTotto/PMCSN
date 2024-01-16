@@ -67,6 +67,8 @@ public class Node3 {
 
     private boolean batch;
 
+    private boolean exit = false;
+
     private boolean end = false;
     public Node3(int num_job, String nome, int id, int the_next, boolean routing, String path, boolean batch){
         EventList[] eventList2;
@@ -135,19 +137,14 @@ public class Node3 {
         /* ------------------ */
     }
 
-    public void normalWork() {
+    public int normalWork() {
 
         int e;
         int job_batch = 0;
         double timeLimit = this.time.getCurrent();
 
-        while ((batch) ? (job_batch < 665) : ((this.handler.getEventNodo(id)[server + 2].getX() != 0) || (this.num_job > 0))) {
+        while ((batch) ? (job_batch < 128) : ((this.handler.getEventNodo(id)[server + 2].getX() != 0) || (this.num_job > 0))) {
             EventList[] eventList = this.handler.getEventNodo(id);
-            if(job_batch == 500){
-
-                //System.out.println("Ultimo job");
-            }
-
             e = EventList.NextEvent2(eventList, server);
             if(e == -1) {
                 System.out.println("Finiti i job interni da processare");
@@ -204,6 +201,11 @@ public class Node3 {
                     eventList[e].setT(this.handler.getInternalArrivalNodo(id).remove(0));//prendo il prossimo arrivo dalla lista di arrivi dal nodo 1
                 } else {
                     eventList[e].setX(0);
+                    if(batch) {
+                        this.exit = true;
+                        break;
+                    }
+
                 }
                 //eventList[e].setT(this.handler.getInternalArrivalNodo2().remove(0));
                 if(num_job <= server) {
@@ -275,16 +277,24 @@ public class Node3 {
         if (batch) {
             printStatsBatch(timeLimit);
             //System.out.println("Area: " + this.area);
+            System.out.println("INT " + (this.num_internal_job / (this.time.getCurrent() - timeLimit)));
 
             this.area = 0.0;
             this.jobServiti = 0;
             this.num_job_left = 0;
             this.num_external_job = 0;
+            this.num_internal_job = 0;
 
             for(int i = 1; i <= server; i++) {
                 this.sumList[i].setService(0.0);
                 this.sumList[i].setServed(0);
             }
+        }
+
+        if(this.exit) {
+            return 1;
+        } else {
+            return 0;
         }
     }
 
@@ -292,9 +302,11 @@ public class Node3 {
         //k = 64
         //ipotizzo b = 1028
         if (batch) {
-            for (int i = 0; i < 100 && this.end == false; i++) {
+            for (int i = 0; i < 30 && this.end == false; i++) {
                 //this.workforBatch();
-                this.normalWork();
+                if (this.normalWork() == 1) {
+                    break;
+                }
             }
             System.out.println("Calcolo delle autocorrelazioni...");
             System.out.println("Calcolo E[Tq]...");
