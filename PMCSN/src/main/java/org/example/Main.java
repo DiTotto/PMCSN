@@ -85,11 +85,11 @@ public class Main {
             Node1 centralino = new Node1(0, "Centralino", 0, "output/centralino/", true);
             centralino.bathMeans();
 
-            Node2 scolastico = new Node2(0, "Scolastico", 0, "output/scolastico/", true);
-            scolastico.bathMeans();
-
             Node4 anagrafe = new Node4(0, "Anagrafe", 1, 5, "output/anagrafe/", true);
             anagrafe.bathMeans();
+
+            Node2 scolastico = new Node2(0, "Scolastico", 3, "output/scolastico/", true);
+            scolastico.bathMeans();
             //centralino.printStats();
         } catch (IOException e) {
             e.printStackTrace();
