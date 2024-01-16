@@ -133,7 +133,7 @@ public class Node1 {
         double timeLimit = this.time.getCurrent();
 
         //while ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0)) {
-        while ((batch) ? (job_batch < 256) : ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0))) {
+        while ((batch) ? (job_batch < 1200) : ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0))) {
 
             EventList[] eventList = this.handler.getEventNodo(id);
 
@@ -267,8 +267,18 @@ public class Node1 {
     public void bathMeans(){
         //k = 64
         //ipotizzo b = 1028
+        //b*k = 65536
 
-        for(int i = 0; i < 64; i++) {
+        //ipotizzo k = 10 -> b = 6553
+        //ipotizzo k = 15 -> b = 4370
+        //ipotizzo k = 20 -> b = 3277
+        //ipotizzo k = 25 -> b = 2621
+        //ipotizzo k = 30 -> b = 2184
+        //ipotizzo k = 35 -> b = 1872
+        //ipotizzo k = 50 -> b = 1310
+        //ipotizzo k = 64 -> b = 1028
+        //ipotizzo k = 100 -> b = 655
+        for(int i = 0; i < 100; i++) {
             //this.workforBatch();
             this.normalWork();
         }

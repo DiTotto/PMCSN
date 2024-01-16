@@ -134,7 +134,7 @@ public class Node4 {
         double timeLimit = this.time.getCurrent();
 
         //while ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0)) {
-        while ((batch) ? (job_batch < 256) : ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0))) {
+        while ((batch) ? (job_batch < 655) : ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0))) {
 
             EventList[] eventList = this.handler.getEventNodo(id);
 
@@ -288,7 +288,7 @@ public class Node4 {
         //k = 64
         //ipotizzo b = 1028
 
-        for(int i = 0; i < 64; i++) {
+        for(int i = 0; i < 100; i++) {
             //this.workforBatch();
             this.normalWork();
         }

@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class Acs {
 
     public static void calculate(String nomeFile) {
-        final int K = 50; // K is the maximum lag
+        final int K = 99; // K is the maximum lag
         final int SIZE = K + 1;
 
         long i = 0; // data point index
