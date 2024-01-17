@@ -106,12 +106,12 @@ public class Main {
 
             System.out.println("------------------END CENTRALINO--------------------");
 
-            Node4 anagrafe = new Node4(0, "Anagrafe", 1, 5, "output/anagrafe/", batch);
+            Node4 anagrafe = new Node4(0, "Anagrafe", 1, 5, "output/anagrafe/", batch, "anagrafe/");
             anagrafe.bathMeans();
 
             System.out.println("------------------END ANAGRAFE--------------------");
 
-            Node4 URP = new Node4(0, "URP", 2, 6, "output/URP/", batch);
+            Node4 URP = new Node4(0, "URP", 2, 6, "output/URP/", batch, "URP/");
             URP.bathMeans();
 
             System.out.println("------------------END URP--------------------");
@@ -127,17 +127,17 @@ public class Main {
 
             System.out.println("------------------END SERVIZI SOCIALI--------------------");
 
-            Node3 statoCivile = new Node3(0, "StatoCivile", 5, -1 , false, "output/statoCivile/", batch);
+            Node3 statoCivile = new Node3(0, "StatoCivile", 5, -1 , false, "output/statoCivile/", batch, "statoCivile/");
             statoCivile.bathMeans();
 
             System.out.println("------------------END STATO CIVILE--------------------");
 
-            Node3 protocollo = new Node3(0, "Protocollo", 6, 7, true, "output/protocollo/", batch);
+            Node3 protocollo = new Node3(0, "Protocollo", 6, 7, true, "output/protocollo/", batch, "protocollo/");
             protocollo.bathMeans();
 
             System.out.println("------------------END PROTOCOLLO--------------------");
 
-            Node3 cultura = new Node3(0, "Cultura", 7, -1, false, "output/cultura/", batch);
+            Node3 cultura = new Node3(0, "Cultura", 7, -1, false, "output/cultura/", batch,"cultura/");
             cultura.bathMeans();
 
             System.out.println("------------------END CULTURA--------------------");

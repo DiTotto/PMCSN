@@ -56,6 +56,10 @@ public class Node4 {
 
     private String path;
 
+    private String relativePath;
+
+    private CSVController csvController;
+
     private boolean batch;
 
     private boolean exit = false;
@@ -66,11 +70,13 @@ public class Node4 {
     //private RandomFunction random = new RandomFunction();
 
 
-    public Node4(int num_job, String nome, int id, int the_next, String path, boolean batch) {
+    public Node4(int num_job, String nome, int id, int the_next, String path, boolean batch, String relativePath) {
 
         EventList[] eventList1;
 
         this.path = path;
+
+        this.relativePath = relativePath;
 
         this.batch = batch;
 
@@ -81,6 +87,7 @@ public class Node4 {
         /* ottengo l'istanza singleton*/
         this.handler = EventHandler.getInstance();
         this.random = RandomFunction.getInstance();
+        this.csvController = new CSVController(relativePath);
         /*---------*/
 
         this.num_job = num_job;
@@ -135,6 +142,8 @@ public class Node4 {
         int job_batch = 0;
         double timeLimit = this.time.getCurrent();
 
+        double timeService = 0.0;
+
         //while ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0)) {
         while ((batch) ? (job_batch < 200) : ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0))) {
 
@@ -144,6 +153,26 @@ public class Node4 {
             this.time.setNext(eventList[e].getT());
             this.area = this.area + (this.time.getNext() - this.time.getCurrent()) * this.num_job;
             this.time.setCurrent(this.time.getNext());
+
+            /*----------------------------------------*/
+
+            timeService = 0.0;
+
+            for(int i = 1; i <= server; i++) {
+                timeService += sumList[i].getService();
+            }
+
+            this.csvController.writeRho(this.time.getCurrent() , (timeService / (this.server*this.time.getCurrent())));
+
+            timeService = this.area;
+
+            /*for(int i = 1; i <= server; i++) {
+                timeService -= sumList[i].getService();
+            }*/
+
+            this.csvController.writeAttesa(this.time.getCurrent(), (timeService/ this.jobServiti));
+
+            /*----------------------------------------*/
             if (e == 0) {
                 if(batch) {
                     job_batch++;
@@ -227,6 +256,7 @@ public class Node4 {
             else{
                 this.num_job--;  //decremento il numero di job presenti nel centro
                 this.jobServiti++; //incremento il numero di job serviti
+                this.csvController.writeNumJob("Service", this.time.getCurrent(), this.num_job);
                 this.s = e;    //indica il centro che ha completato il job
 
                 double prob = this.random.extractProb();
