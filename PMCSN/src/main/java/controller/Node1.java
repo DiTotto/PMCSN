@@ -159,9 +159,9 @@ public class Node1 {
 
             timeService = this.area;
 
-            for(int i = 1; i <= server; i++) {
+            /*for(int i = 1; i <= server; i++) {
                 timeService -= sumList[i].getService();
-            }
+            }*/
 
             this.csvController.writeAttesa(this.time.getCurrent(), (timeService/ this.jobServiti));
 

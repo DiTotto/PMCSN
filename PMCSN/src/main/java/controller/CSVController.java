@@ -21,7 +21,7 @@ public class CSVController {
             this.csvWriterRho.writeNext(new String[]{"Time", "Rho"});
 
             this.csvWriterAttesa = new CSVWriter(new FileWriter((path + relativePath + "attesa.csv"), false));
-            this.csvWriterAttesa.writeNext(new String[]{"Time", "Attesa"});
+            this.csvWriterAttesa.writeNext(new String[]{"Time", "Risposta"});
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -62,10 +62,10 @@ public class CSVController {
         }
     }
 
-    public void writeAttesa(double time, double attesa) {
+    public void writeAttesa(double time, double risposta) {
         try {
 
-            String[] record = {String.valueOf(time), String.valueOf(attesa)};
+            String[] record = {String.valueOf(time), String.valueOf(risposta)};
             this.csvWriterAttesa.writeNext(record);
             this.csvWriterAttesa.flush();
 

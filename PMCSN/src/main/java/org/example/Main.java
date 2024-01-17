@@ -75,28 +75,28 @@ public class Main {
         System.out.println("END");*/
 
         try {
-            File directory = new File("output/centralino/");
+            File directory = new File("PMCSN/output/centralino/");
             FileUtils.cleanDirectory(directory);
 
-            File directory2 = new File("output/anagrafe/");
+            File directory2 = new File("PMCSN/output/anagrafe/");
             FileUtils.cleanDirectory(directory2);
 
-            File directory3 = new File("output/scolastico/");
+            File directory3 = new File("PMCSN/output/scolastico/");
             FileUtils.cleanDirectory(directory3);
 
-            File directory4 = new File("output/serviziSociali/");
+            File directory4 = new File("PMCSN/output/serviziSociali/");
             FileUtils.cleanDirectory(directory4);
 
-            File directory5 = new File("output/URP/");
+            File directory5 = new File("PMCSN/output/URP/");
             FileUtils.cleanDirectory(directory5);
 
-            File directory6 = new File("output/statoCivile/");
+            File directory6 = new File("PMCSN/output/statoCivile/");
             FileUtils.cleanDirectory(directory6);
 
-            File directory7 = new File("output/protocollo/");
+            File directory7 = new File("PMCSN/output/protocollo/");
             FileUtils.cleanDirectory(directory7);
 
-            File directory8 = new File("output/cultura/");
+            File directory8 = new File("PMCSN/output/cultura/");
             FileUtils.cleanDirectory(directory8);
 
             boolean batch = false;
