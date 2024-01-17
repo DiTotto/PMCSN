@@ -136,7 +136,7 @@ public class Node4 {
         double timeLimit = this.time.getCurrent();
 
         //while ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0)) {
-        while ((batch) ? (job_batch < 128) : ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0))) {
+        while ((batch) ? (job_batch < 200) : ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0))) {
 
             EventList[] eventList = this.handler.getEventNodo(id);
 
@@ -306,7 +306,7 @@ public class Node4 {
 
         //soluzione migliore si ha con k = 4096 e b = 4092
         if(batch) {
-            for (int i = 0; i < 64; i++) {
+            for (int i = 0; i < 48; i++) {
                 //this.workforBatch();
                 if (this.normalWork() == 1) {
                     break;

@@ -279,7 +279,7 @@ public class Node1 {
         //ipotizzo k = 64 -> b = 1028
         //ipotizzo k = 100 -> b = 655
         if(batch) {
-            for (int i = 0; i < 30; i++) {
+            for (int i = 0; i < 48; i++) {
                 //this.workforBatch();
                 this.normalWork();
             }
