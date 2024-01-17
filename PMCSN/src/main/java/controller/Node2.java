@@ -119,7 +119,7 @@ public class Node2 {
 
         int job_batch = 0;
         double timeLimit = this.time.getCurrent();
-        while ((batch) ? (job_batch < 128) : ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0))) {
+        while ((batch) ? (job_batch < 200) : ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0))) {
             EventList[] eventList = this.handler.getEventNodo(id);
 
             e = EventList.NextEvent2(eventList, server);
@@ -243,9 +243,6 @@ public class Node2 {
         }
         if (batch) {
             printStatsBatch(timeLimit);
-            //System.out.println("Area: " + this.area);
-
-
 
             this.area = 0.0;
             this.jobServiti = 0;
@@ -269,7 +266,7 @@ public class Node2 {
         //k = 64
         //ipotizzo b = 1028
         if (batch) {
-            for (int i = 0; i < 30; i++) {
+            for (int i = 0; i < 50; i++) {
                 if (this.normalWork() == 1) {
                     break;
                 }

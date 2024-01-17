@@ -277,9 +277,6 @@ public class Node4 {
 
         if (batch) {
             printStatsBatch(timeLimit);
-            //System.out.println("Area: " + this.area);
-
-
 
             this.area = 0.0;
             this.jobServiti = 0;

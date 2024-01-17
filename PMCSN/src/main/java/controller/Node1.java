@@ -250,7 +250,6 @@ public class Node1 {
 
         if (batch) {
             printStatsBatch(timeLimit);
-            //System.out.println("Area: " + this.area);
 
             this.area = 0.0;
             this.jobServiti = 0;
@@ -279,7 +278,7 @@ public class Node1 {
         //ipotizzo k = 64 -> b = 1028
         //ipotizzo k = 100 -> b = 655
         if(batch) {
-            for (int i = 0; i < 48; i++) {
+            for (int i = 0; i < 50; i++) {
                 //this.workforBatch();
                 this.normalWork();
             }
