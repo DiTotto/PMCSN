@@ -59,13 +59,15 @@ public class Node1 {
 
     private boolean batch;
 
+    private String relativePath;
+
 
 
     /* -------------DA MODIFICARE DA INSERIRE TEMPI DI INTERARRIVO ETC--------------------- */
     //private RandomFunction random = new RandomFunction();
 
     
-    public Node1(int num_job, String nome, int id, String path, boolean batch) {
+    public Node1(int num_job, String nome, int id, String path, boolean batch, String relativePath) {
 
         EventList[] eventList1;
 
@@ -73,12 +75,14 @@ public class Node1 {
 
         this.batch = batch;
 
+        this.relativePath = relativePath;
+
         this.id = id;
 
         /* ottengo l'istanza singleton*/
         this.handler = EventHandler.getInstance();
         this.random = RandomFunction.getInstance();
-        this.csvController = CSVController.getInstance();
+        this.csvController = new CSVController(relativePath);
         /*---------*/
 
         this.num_job = num_job;
@@ -148,7 +152,7 @@ public class Node1 {
                 this.external_num_job++;
                 this.num_job++; //incremento il numero di job presenti nel centro
                 //inserisco nel csvcontroller arrivo di un job
-                this.csvController.writeNumJob("Arrival", this.time.getCurrent(), this.num_job);
+                //this.csvController.writeNumJob("Arrival", this.time.getCurrent(), this.num_job);
                 eventList[0].setT(this.random.getJobArrival(this.id)); //aggiorno il tempo di arrivo del prossimo job
                 if(!batch) {
                     if (eventList[0].getT() > this.STOP) { //se il tempo di arrivo del prossimo job è maggiore del tempo di stop
@@ -185,7 +189,7 @@ public class Node1 {
             } else if(e == (server + 1)) {
                 this.num_job_left++;
                 this.num_job--;
-                this.csvController.writeNumJob("Abbandon", this.time.getCurrent(), this.num_job);
+                //this.csvController.writeNumJob("Abbandon", this.time.getCurrent(), this.num_job);
                 eventList[e].setX(0);
                 this.handler.setEventNodo(id, eventList);
                 
@@ -370,6 +374,8 @@ public class Node1 {
             System.out.println(i + "\t" + this.sumList[i].getService() / this.time.getCurrent() + "\t" + this.sumList[i].getService() / this.sumList[i].getServed() + "\t" + (double)this.sumList[i].getServed() / (double)this.jobServiti);
         }
         System.out.println("\n");
+
+        this.csvController.closeAll();
     }
 
     public void printStatsBatch(double limitTime) {

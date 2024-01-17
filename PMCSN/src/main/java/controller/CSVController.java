@@ -5,27 +5,20 @@ import java.io.IOException;
 
 public class CSVController {
 
-    private static CSVController instance = null;
-
     private CSVWriter csvWriterNumJob;
 
-    private String interarrivalTime = "interarrivalTime.csv";
+    private String path = "outputCSV/";
 
-    private CSVController() {
+    public CSVController(String relativePath) {
         try {
-            this.csvWriterNumJob = new CSVWriter(new FileWriter("job_data.csv"));
+            this.csvWriterNumJob = new CSVWriter(new FileWriter((path + relativePath + "jobServiti.csv"), false));
             this.csvWriterNumJob.writeNext(new String[]{"Event", "Time", "TotalJobs"});
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static CSVController getInstance() {
-        if (instance == null) {
-            instance = new CSVController();
-        }
-        return instance;
-    }
+
 
     /*public void writeInterarrivalTime(double interarrivalTime) {
         try (CSVWriter writer = new CSVWriter(new FileWriter(String.valueOf(interarrivalTime), true))) {
@@ -41,6 +34,7 @@ public class CSVController {
 
             String[] record = {event, String.valueOf(time), String.valueOf(totalJobs)};
             this.csvWriterNumJob.writeNext(record);
+            this.csvWriterNumJob.flush();
 
         } catch (Exception e) {
             e.printStackTrace();

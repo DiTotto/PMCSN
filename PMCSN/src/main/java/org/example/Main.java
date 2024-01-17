@@ -11,7 +11,6 @@ import java.io.IOException;
 
 public class Main {
 
-    private final static CSVController csvController = CSVController.getInstance();
     public static void main(String[] args) {
 
         /*System.out.println("START");
@@ -102,7 +101,7 @@ public class Main {
 
             boolean batch = false;
 
-            Node1 centralino = new Node1(0, "Centralino", 0, "output/centralino/", batch);
+            Node1 centralino = new Node1(0, "Centralino", 0, "output/centralino/", batch, "centralino/");
             centralino.bathMeans();
 
             System.out.println("------------------END CENTRALINO--------------------");

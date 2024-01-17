@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Leggi i dati dal file CSV
-df = pd.read_csv('job_data.csv')
+df = pd.read_csv('outputCSV/centralino/jobServiti.csv')
 # Ordina il DataFrame in base alla colonna 'Time'
 df = df.sort_values(by='Time')
 
