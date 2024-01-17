@@ -296,8 +296,8 @@ public class RandomFunction {
             case 7:
                 try {
                     rngs.selectStream(id+8);
-                    //departure = NormalTruncated(120, 30, 60, 240);
-                    departure = NormalTruncated(240, 60, 45, 300);
+                    departure = NormalTruncated(120, 30, 60, 240);
+                    //departure = NormalTruncated(240, 60, 45, 300);
                     return departure;
                 } catch (Exception e) {
                     e.printStackTrace();
