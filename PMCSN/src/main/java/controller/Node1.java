@@ -135,6 +135,7 @@ public class Node1 {
         int e;
         int job_batch = 0;
         double timeLimit = this.time.getCurrent();
+        double timeService = 0.0;
 
         //while ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0)) {
         while ((batch) ? (job_batch < 2048) : ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0))) {
@@ -145,6 +146,28 @@ public class Node1 {
             this.time.setNext(eventList[e].getT());
             this.area = this.area + (this.time.getNext() - this.time.getCurrent()) * this.num_job;
             this.time.setCurrent(this.time.getNext());
+
+            /*----------------------------------------*/
+
+            timeService = 0.0;
+
+            for(int i = 1; i <= server; i++) {
+                timeService += sumList[i].getService();
+            }
+
+            this.csvController.writeRho(this.time.getCurrent() , (timeService / (this.server*this.time.getCurrent())));
+
+            timeService = this.area;
+
+            for(int i = 1; i <= server; i++) {
+                timeService -= sumList[i].getService();
+            }
+
+            this.csvController.writeAttesa(this.time.getCurrent(), (timeService/ this.jobServiti));
+
+            /*----------------------------------------*/
+
+
             if (e == 0) {
                 if(batch) {
                     job_batch++;

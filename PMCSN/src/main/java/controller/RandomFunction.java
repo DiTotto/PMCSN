@@ -211,7 +211,7 @@ public class RandomFunction {
                 }*/
                 try {
                     departure = NormalTruncated(1, 0.40, 0.10, 2);
-                    //double departure = Uniform(2.0, 5.0);
+                    //departure = NormalTruncated(0.30, 0.15, 0.10, 1);
                     return departure;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -250,7 +250,8 @@ public class RandomFunction {
             case 3:
                 try {
                     rngs.selectStream(id+8);
-                    departure = NormalTruncated(15, 4, 10, 25);
+                    //departure = NormalTruncated(15, 4, 10, 25);
+                    departure = NormalTruncated(7.5, 2, 5, 25);
                     return departure;
                 } catch (Exception e) {
                     e.printStackTrace();

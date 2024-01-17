@@ -116,13 +116,13 @@ public class Main {
 
             System.out.println("------------------END URP--------------------");
 
-            Node2 scolastico = new Node2(0, "Scolastico", 3, "output/scolastico/", batch);
+            Node2 scolastico = new Node2(0, "Scolastico", 3, "output/scolastico/", batch, "scolastico/");
             scolastico.bathMeans();
 
             System.out.println("------------------END SCOLASTICO--------------------");
 
 
-            Node2 serviziSociali = new Node2(0, "Servizi Sociali", 4, "output/serviziSociali/", batch);
+            Node2 serviziSociali = new Node2(0, "Servizi Sociali", 4, "output/serviziSociali/", batch, "serviziSociali/");
             serviziSociali.bathMeans();
 
             System.out.println("------------------END SERVIZI SOCIALI--------------------");
