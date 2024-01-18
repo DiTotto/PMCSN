@@ -10,7 +10,7 @@ public class CSVController {
 
     private CSVWriter csvWriterAttesa;
 
-    private String path = "outputCSV/";
+    private String path = "PMCSN/outputCSV/";
 
     public CSVController(String relativePath) {
         try {

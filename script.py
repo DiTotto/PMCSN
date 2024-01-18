@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-df = pd.read_csv('outputCSV/cultura/jobServiti.csv')
+df = pd.read_csv('PMCSN/outputCSV/centralino/jobServiti.csv')
 df = df.sort_values(by='Time')
 
 
@@ -15,7 +15,7 @@ plt.legend()
 plt.show()
 
 
-df = pd.read_csv('outputCSV/cultura/rho.csv')
+df = pd.read_csv('PMCSN/outputCSV/centralino/rho.csv')
 df = df.sort_values(by='Time')
 
 
@@ -23,11 +23,11 @@ plt.plot(df['Time'], df['Rho'], linestyle='-', color='black', label='Utilizzazio
 
 plt.xlabel('Time')
 plt.ylabel('Utilizzazione nodo')
-plt.title('Utilizzazione nel centro cultura con E(S) = 240 minuti')
+plt.title('Utilizzazione nel centro Centralino con E(S) = 30 secondi')
 plt.legend()
 plt.show()
 
-df = pd.read_csv('outputCSV/cultura/attesa.csv')
+df = pd.read_csv('PMCSN/outputCSV/centralino/attesa.csv')
 df = df.sort_values(by='Time')
 
 
