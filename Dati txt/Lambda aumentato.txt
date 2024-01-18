@@ -1,0 +1,234 @@
+------------------------private double[] interarrival = {1, 10, 6, 3, 11, 15.385, 7.69, 1250};----------------------------------
+
+
+"C:\Program Files\Java\jdk-17.0.2\bin\java.exe" "-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2023.2.5\lib\idea_rt.jar=51076:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2023.2.5\bin" -Dfile.encoding=UTF-8 -classpath C:\Users\lucad\Documents\Progetto_PMCSN\PMCSN\out\production\pmcsn;C:\Users\lucad\Downloads\commons-io-2.15.1.jar;C:\Users\lucad\Downloads\opencsv-3.8.jar main.java.org.example.Main
+
+Enter a positive integer seed (9 digits or less) >> 12345
+Hi, I'm Centralino and I'm done!
+
+
+for 366 jobs the service node statistics are:
+
+
+  avg interarrivals .. = 1.0687713891170831
+  avg wait ........... = 3.7220607811131035
+  avg # in node ...... = 3.49257052321056
+  external num_job ..... = 379
+  num job left ....... = 13
+  avg delay .......... = 2.7384952113577317
+  avg # in queue ..... = 2.5696484328450437
+
+the server statistics are:
+
+
+    server     utilization     avg service        share
+
+1	0.9229220903655161	0.9835655697553717	1.0
+
+
+------------------END CENTRALINO--------------------
+Hi, I'm Anagrafe and I'm done!
+
+
+for 87 jobs the service node statistics are:
+
+
+  avg interarrivals .. = 4.505336334361188
+  avg wait ........... = 139.4976255686888
+  avg # in node ...... = 20.219772666731036
+  number of internal jobs = 42
+  number of external jobs = 49
+  num job left ....... = 4
+  avg delay .......... = 119.23763532979173
+  avg # in queue ..... = 17.283146360794557
+
+the server statistics are:
+
+
+    server     utilization     avg service        share
+
+1	0.9747189395641385	20.173962374426175	0.3333333333333333
+
+
+2	0.9864581063063073	21.146106455885953	0.3218390804597701
+
+
+3	0.9754492600660343	19.51610870536268	0.3448275862068966
+
+
+
+
+------------------END ANAGRAFE--------------------
+Hi, I'm URP and I'm done!
+
+
+for 109 jobs the service node statistics are:
+
+
+  avg interarrivals .. = 3.584488294258459
+  avg wait ........... = 197.81195318605893
+  avg # in node ...... = 29.041468327807884
+  number of internal jobs = 46
+  number of external jobs = 64
+  num job left ....... = 1
+  avg delay .......... = 191.031470390505
+  avg # in queue ..... = 28.046001809315392
+
+the server statistics are:
+
+
+    server     utilization     avg service        share
+
+1	0.9954665184924907	6.780482795553928	1.0
+
+
+
+
+------------------END URP--------------------
+Hi, I'm Scolastico and I'm done!
+
+
+for 280 jobs the service node statistics are:
+
+
+  avg external interarrivals .. = 1.4013187289153197
+  avg internal interarrivals .. = 1.3930327624168177
+  avg wait ........... = 381.08608146671304
+  avg # in node ...... = 95.09908146318247
+  number of internal jobs = 157
+  number of external jobs = 137
+  num job left ....... = 14
+  avg delay .......... = 365.21379485344573
+  avg # in queue ..... = 91.13819191341827
+
+the server statistics are:
+
+
+    server     utilization     avg service        share
+
+1	0.9976044185708405	15.765393374100428	0.25357142857142856
+
+
+2	0.9937805959746473	15.929321180846637	0.25
+
+
+3	0.9927165873987058	16.142878727780335	0.24642857142857144
+
+
+4	0.9767879478200185	15.656945818251906	0.25
+
+
+
+
+------------------END SCOLASTICO--------------------
+Hi, I'm Servizi Sociali and I'm done!
+
+
+for 66 jobs the service node statistics are:
+
+
+  avg external interarrivals .. = 6.518804858775083
+  avg internal interarrivals .. = 5.8985562129718785
+  avg wait ........... = 105.92400767453162
+  avg # in node ...... = 12.817549799379371
+  number of internal jobs = 38
+  number of external jobs = 34
+  num job left ....... = 6
+  avg delay .......... = 81.925651437833
+  avg # in queue ..... = 9.913579935320964
+
+the server statistics are:
+
+
+    server     utilization     avg service        share
+
+1	0.980070793149948	25.45490488188728	0.3181818181818182
+
+
+2	0.9459382312381448	22.432014061621725	0.3484848484848485
+
+
+3	0.9779608396703133	24.24555389478077	0.3333333333333333
+
+
+
+
+------------------END SERVIZI SOCIALI--------------------
+Hi, I'm StatoCivile and I'm done!
+
+
+for 53 jobs the service node statistics are:
+
+
+  avg interarrivals .. = 11.324888373404193
+  avg wait ........... = 64.84680417624394
+  avg # in node ...... = 4.801131510019522
+  number of internal jobs = 53
+  number of external jobs = 0
+  num job left ....... = 0
+  avg delay .......... = 39.49843876446361
+  avg # in queue ..... = 2.9243877374933884
+
+the server statistics are:
+
+
+    server     utilization     avg service        share
+
+1	0.9487845936230366	26.122523063611524	0.49056603773584906
+2	0.9279591789030975	24.6028802655725	0.5094339622641509
+
+
+------------------END STATO CIVILE--------------------
+Hi, I'm Protocollo and I'm done!
+
+
+for 83 jobs the service node statistics are:
+
+
+  avg interarrivals .. = 8.945041635239404
+  avg wait ........... = 6.77731584045417
+  avg # in node ...... = 0.7527248930566502
+  number of internal jobs = 83
+  number of external jobs = 0
+  num job left ....... = 0
+  avg delay .......... = -3.424302341012531E-16
+  avg # in queue ..... = -3.803213062679935E-17
+
+the server statistics are:
+
+
+    server     utilization     avg service        share
+
+1	0.24555889778352155	6.327865164162218	0.3493975903614458
+2	0.24918603436083012	6.89698805057766	0.3253012048192771
+3	0.2579799609122986	7.140386949310925	0.3253012048192771
+
+
+------------------END PROTOCOLLO--------------------
+Hi, I'm Cultura and I'm done!
+
+
+for 36 jobs the service node statistics are:
+
+
+  avg interarrivals .. = 20.587564005165575
+  avg wait ........... = 854.9317795132578
+  avg # in node ...... = 14.053855708671412
+  number of internal jobs = 37
+  number of external jobs = 0
+  num job left ....... = 1
+  avg delay .......... = 736.9851364798283
+  avg # in queue ..... = 12.114981587676956
+
+the server statistics are:
+
+
+    server     utilization     avg service        share
+
+1	0.9765422879754208	112.55788529373663	0.5277777777777778
+2	0.962331833019034	123.9693722719098	0.4722222222222222
+
+
+------------------END CULTURA--------------------
+
+Process finished with exit code 0

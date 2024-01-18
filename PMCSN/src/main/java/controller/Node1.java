@@ -339,6 +339,7 @@ public class Node1 {
         else {
             this.normalWork();
             this.printStats();
+            //this.printStatsFile();
         }
     }
 
@@ -397,6 +398,38 @@ public class Node1 {
             System.out.println(i + "\t" + this.sumList[i].getService() / this.time.getCurrent() + "\t" + this.sumList[i].getService() / this.sumList[i].getServed() + "\t" + (double)this.sumList[i].getServed() / (double)this.jobServiti);
         }
         System.out.println("\n");
+
+        this.csvController.closeAll();
+    }
+
+    public void printStatsFile() {
+        String filePath = "PMCSN/"+ this.path + "outputArriviNormali.txt";
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filePath))) {
+            writer.println("Hi, I'm " + this.returnNameOfCenter() + " and I'm done!\n\n");
+            writer.println("for " + this.jobServiti + " jobs the service node statistics are:\n\n");
+            writer.println("  avg interarrivals .. = " + this.handler.getEventNodo(id)[0].getT() / this.jobServiti);
+            writer.println("  avg wait ........... = " + this.area / this.jobServiti);
+            writer.println("  avg # in node ...... = " + this.area / this.time.getCurrent());
+            writer.println("  external num_job ..... = " + this.external_num_job);
+
+            for (int i = 1; i <= this.server; i++) {
+                this.area -= this.sumList[i].getService();
+            }
+            writer.println("  num job left ....... = " + this.num_job_left);
+            writer.println("  avg delay .......... = " + this.area / this.jobServiti);
+            writer.println("  avg # in queue ..... = " + this.area / this.time.getCurrent());
+            writer.println("\nthe server statistics are:\n\n");
+            writer.println("    server     utilization     avg service        share\n");
+
+            for (int i = 1; i <= this.server; i++) {
+                writer.println(i + "\t" + this.sumList[i].getService() / this.time.getCurrent() + "\t" +
+                        this.sumList[i].getService() / this.sumList[i].getServed() + "\t" +
+                        (double)this.sumList[i].getServed() / (double)this.jobServiti);
+            }
+            writer.println("\n");
+        } catch (Exception e) {
+            System.err.println("Error writing to file: " + e.getMessage());
+        }
 
         this.csvController.closeAll();
     }

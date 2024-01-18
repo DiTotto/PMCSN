@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-df = pd.read_csv('PMCSN/outputCSV/cultura/jobServiti.csv')
+df = pd.read_csv('outputCSV/cultura/jobServiti.csv')
 df = df.sort_values(by='Time')
 
 
@@ -15,7 +15,7 @@ plt.legend()
 plt.show()
 
 
-df = pd.read_csv('PMCSN/outputCSV/cultura/rho.csv')
+df = pd.read_csv('outputCSV/cultura/rho.csv')
 df = df.sort_values(by='Time')
 
 
@@ -27,7 +27,7 @@ plt.title('Utilizzazione nel centro cultura con E(S) = 240 minuti')
 plt.legend()
 plt.show()
 
-df = pd.read_csv('PMCSN/outputCSV/cultura/attesa.csv')
+df = pd.read_csv('outputCSV/cultura/attesa.csv')
 df = df.sort_values(by='Time')
 
 

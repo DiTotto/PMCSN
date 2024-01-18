@@ -27,8 +27,8 @@ public class RandomFunction {
 
     //i tempi di interarrivo sono usati solo dai centri che prendono da fuori
     // per correttezza inserisco tutti comunque anche se non usati
-    private double[] interarrival = {1.96, 20, 11.76, 4.878, 15.385, 15.385, 7.69, 1250};
-
+    //private double[] interarrival = {1.96, 20, 11.76, 4.878, 15.385, 15.385, 7.69, 1250};
+    private double[] interarrival = {1, 10, 6, 3, 11, 15.385, 7.69, 1250};
     private RandomFunction() {
         this.intTime = 0;
         this.abbandonTime = 0;
