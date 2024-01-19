@@ -75,69 +75,69 @@ public class Main {
         System.out.println("END");*/
 
         try {
-            File directory = new File("PMCSN/output/centralino/");
+            File directory = new File("output/centralino/");
             FileUtils.cleanDirectory(directory);
 
-            File directory2 = new File("PMCSN/output/anagrafe/");
+            File directory2 = new File("output/anagrafe/");
             FileUtils.cleanDirectory(directory2);
 
-            File directory3 = new File("PMCSN/output/scolastico/");
+            File directory3 = new File("output/scolastico/");
             FileUtils.cleanDirectory(directory3);
 
-            File directory4 = new File("PMCSN/output/serviziSociali/");
+            File directory4 = new File("output/serviziSociali/");
             FileUtils.cleanDirectory(directory4);
 
-            File directory5 = new File("PMCSN/output/URP/");
+            File directory5 = new File("output/URP/");
             FileUtils.cleanDirectory(directory5);
 
-            File directory6 = new File("PMCSN/output/statoCivile/");
+            File directory6 = new File("output/statoCivile/");
             FileUtils.cleanDirectory(directory6);
 
-            File directory7 = new File("PMCSN/output/protocollo/");
+            File directory7 = new File("output/protocollo/");
             FileUtils.cleanDirectory(directory7);
 
-            File directory8 = new File("PMCSN/output/cultura/");
+            File directory8 = new File("output/cultura/");
             FileUtils.cleanDirectory(directory8);
 
             boolean batch = false;
 
-            Node1 centralino = new Node1(0, "Centralino", 0, "PMCSN/output/centralino/", batch, "centralino/");
+            Node1 centralino = new Node1(0, "Centralino", 0, "output/centralino/", batch, "centralino/");
             centralino.bathMeans();
 
             System.out.println("------------------END CENTRALINO--------------------");
 
-            Node4 anagrafe = new Node4(0, "Anagrafe", 1, 5, "PMCSN/output/anagrafe/", batch, "anagrafe/");
+            Node4 anagrafe = new Node4(0, "Anagrafe", 1, 5, "output/anagrafe/", batch, "anagrafe/");
             anagrafe.bathMeans();
 
             System.out.println("------------------END ANAGRAFE--------------------");
 
-            Node4 URP = new Node4(0, "URP", 2, 6, "PMCSN/output/URP/", batch, "URP/");
+            Node4 URP = new Node4(0, "URP", 2, 6, "output/URP/", batch, "URP/");
             URP.bathMeans();
 
             System.out.println("------------------END URP--------------------");
 
-            Node2 scolastico = new Node2(0, "Scolastico", 3, "PMCSN/output/scolastico/", batch, "scolastico/");
+            Node2 scolastico = new Node2(0, "Scolastico", 3, "output/scolastico/", batch, "scolastico/");
             scolastico.bathMeans();
 
             System.out.println("------------------END SCOLASTICO--------------------");
 
 
-            Node2 serviziSociali = new Node2(0, "Servizi Sociali", 4, "PMCSN/output/serviziSociali/", batch, "serviziSociali/");
+            Node2 serviziSociali = new Node2(0, "Servizi Sociali", 4, "output/serviziSociali/", batch, "serviziSociali/");
             serviziSociali.bathMeans();
 
             System.out.println("------------------END SERVIZI SOCIALI--------------------");
 
-            Node3 statoCivile = new Node3(0, "StatoCivile", 5, -1 , false, "PMCSN/output/statoCivile/", batch, "statoCivile/");
+            Node3 statoCivile = new Node3(0, "StatoCivile", 5, -1 , false, "output/statoCivile/", batch, "statoCivile/");
             statoCivile.bathMeans();
 
             System.out.println("------------------END STATO CIVILE--------------------");
 
-            Node3 protocollo = new Node3(0, "Protocollo", 6, 7, true, "PMCSN/output/protocollo/", batch, "protocollo/");
+            Node3 protocollo = new Node3(0, "Protocollo", 6, 7, true, "output/protocollo/", batch, "protocollo/");
             protocollo.bathMeans();
 
             System.out.println("------------------END PROTOCOLLO--------------------");
 
-            Node3 cultura = new Node3(0, "Cultura", 7, -1, false, "PMCSN/output/cultura/", batch,"cultura/");
+            Node3 cultura = new Node3(0, "Cultura", 7, -1, false, "output/cultura/", batch,"cultura/");
             cultura.bathMeans();
 
             System.out.println("------------------END CULTURA--------------------");

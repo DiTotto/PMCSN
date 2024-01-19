@@ -213,8 +213,8 @@ public class RandomFunction {
                     departure = Uniform(15,20);
                 }*/
                 try {
-                    //departure = NormalTruncated(1, 0.40, 0.10, 2);
-                    departure = NormalTruncated(0.50, 0.2, 0.10, 1);
+                    departure = NormalTruncated(1, 0.40, 0.10, 2);
+                    //departure = NormalTruncated(0.50, 0.2, 0.10, 1);
                     return departure;
                 } catch (Exception e) {
                     e.printStackTrace();
