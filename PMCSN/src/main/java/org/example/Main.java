@@ -99,7 +99,7 @@ public class Main {
             File directory8 = new File("output/cultura/");
             FileUtils.cleanDirectory(directory8);
 
-            boolean batch = false;
+            boolean batch = true;
 
             Node1 centralino = new Node1(0, "Centralino", 0, "output/centralino/", batch, "centralino/");
             centralino.bathMeans();

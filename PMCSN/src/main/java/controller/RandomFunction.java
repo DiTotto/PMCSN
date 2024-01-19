@@ -149,7 +149,7 @@ public class RandomFunction {
     }
 
     //getServiceBatch
-    public double getServiceBatch(int id){
+    public double getService(int id){
         double departure = 0.0;
         switch(id) {
             case 0:
@@ -193,7 +193,7 @@ public class RandomFunction {
     }
 
     //getService
-    public double getService(int id) {
+    public double getServiceBatch(int id) {
         double departure = 0.0;
         double prob;
         switch(id) {

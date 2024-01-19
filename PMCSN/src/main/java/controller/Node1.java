@@ -138,7 +138,7 @@ public class Node1 {
         double timeService = 0.0;
 
         //while ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0)) {
-        while ((batch) ? (job_batch < 2048) : ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0))) {
+        while ((batch) ? (job_batch < 8192) : ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0))) {
 
             EventList[] eventList = this.handler.getEventNodo(id);
 
