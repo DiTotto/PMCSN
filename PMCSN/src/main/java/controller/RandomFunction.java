@@ -34,7 +34,7 @@ public class RandomFunction {
         this.intTime = 0;
         this.abbandonTime = 0;
         this.serviceTime = 0;
-        this.rngs.plantSeeds(0);
+        this.rngs.plantSeeds(12345);
 
         for(int i = 0; i < 8; i++) {
             arrival[i] = this.start;
@@ -139,6 +139,12 @@ public class RandomFunction {
         return departure;
     }*/
 
+    public void cleanArrival(int id) {
+
+        arrival[id] = this.start;
+
+    }
+
     public double getJobArrival(int id) {
         //arrival += this.start;
         rngs.selectStream(id);
@@ -149,7 +155,7 @@ public class RandomFunction {
     }
 
     //getServiceBatch
-    public double getService(int id){
+    public double getServiceBatch(int id){
         double departure = 0.0;
         switch(id) {
             case 0:
@@ -193,7 +199,7 @@ public class RandomFunction {
     }
 
     //getService
-    public double getServiceBatch(int id) {
+    public double getService(int id) {
         double departure = 0.0;
         double prob;
         switch(id) {

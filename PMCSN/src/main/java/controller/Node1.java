@@ -61,7 +61,7 @@ public class Node1 {
 
     private String relativePath;
 
-
+    private boolean finiteHorizon = true;
 
     /* -------------DA MODIFICARE DA INSERIRE TEMPI DI INTERARRIVO ETC--------------------- */
     //private RandomFunction random = new RandomFunction();
@@ -103,28 +103,28 @@ public class Node1 {
         this.name = nome;
         
         //inizializzo la posizione 0 degli arraylist con il primo arrivo 
-        double firstArrival = this.random.getJobArrival(this.id);
 
         
         this.sumList[0] = new Sum();
 
-        /* PARTE DEL SINGLETON */
-        eventList1[0] = new EventList(firstArrival,1);
-        /*  ---------------   */
-
-        
-
-        //ciclo che istanzia i singoli componenti degli arraylist EventList e SumList
-        //rappresentati i serventi del nodo e li pone a 0 e idle
-        for(int i = 1; i <= (server + 1); i++) {
-            eventList1[i] = new EventList(0,0);
+        if(!finiteHorizon){
+            double firstArrival = this.random.getJobArrival(this.id);
+            /* PARTE DEL SINGLETON */
+            eventList1[0] = new EventList(firstArrival,1);
+            /*  ---------------   */
+            //ciclo che istanzia i singoli componenti degli arraylist EventList e SumList
+            //rappresentati i serventi del nodo e li pone a 0 e idle
+            for(int i = 1; i <= (server + 1); i++) {
+                eventList1[i] = new EventList(0,0);
+            }
+            /* SETTO LA NUOVA EVENTLIST MODIFICATA VERSO L'HANDLER*/
+            this.handler.setEventNodo(id, eventList1);
+            /* ------------------ */
         }
-        for(int i = 1; i <= server; i++) {
+
+        for(int i = 1; i <= server + 1; i++) {
             this.sumList[i] = new Sum();
         }
-        /* SETTO LA NUOVA EVENTLIST MODIFICATA VERSO L'HANDLER*/
-        this.handler.setEventNodo(id, eventList1);
-        /* ------------------ */
 
     }
 
@@ -291,19 +291,7 @@ public class Node1 {
     }
 
     public void bathMeans(){
-        //k = 64
-        //ipotizzo b = 1028
-        //b*k = 65536
 
-        //ipotizzo k = 10 -> b = 6553
-        //ipotizzo k = 15 -> b = 4370
-        //ipotizzo k = 20 -> b = 3277
-        //ipotizzo k = 25 -> b = 2621
-        //ipotizzo k = 30 -> b = 2184
-        //ipotizzo k = 35 -> b = 1872
-        //ipotizzo k = 50 -> b = 1310
-        //ipotizzo k = 64 -> b = 1028
-        //ipotizzo k = 100 -> b = 655
         if(batch) {
             for (int i = 0; i < 50; i++) {
                 //this.workforBatch();
@@ -341,6 +329,144 @@ public class Node1 {
             this.printStats();
             //this.printStatsFile();
         }
+    }
+
+    public void finiteHorizon() {
+
+
+        this.area = 0.0;
+        this.jobServiti = 0;
+        this.num_job_left = 0;
+        this.num_job = 0;
+        this.time.setCurrent(0.0);
+        this.time.setNext(0.0);
+        this.external_num_job = 0;
+
+
+        this.random.cleanArrival(this.id);
+        this.handler.resetAll();
+
+
+        EventList[] eventList1;
+        eventList1 = new EventList[server + 2];
+        double firstArrival = this.random.getJobArrival(this.id);
+        eventList1[0] = new EventList(firstArrival,1);
+
+        for(int i = 1; i <= (server + 1); i++) {
+            eventList1[i] = new EventList(0,0);
+        }
+
+        for(int i = 0; i <= server + 1; i++) {
+            this.sumList[i].setServed(0);
+            this.sumList[i].setService(0.0);
+        }
+
+        this.handler.setEventNodo(id, eventList1);
+
+        int e;
+
+
+        //while ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0)) {
+        while ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0)) {
+
+            EventList[] eventList = this.handler.getEventNodo(id);
+
+            e = EventList.NextEvent(eventList, server);
+            this.time.setNext(eventList[e].getT());
+            this.area = this.area + (this.time.getNext() - this.time.getCurrent()) * this.num_job;
+            this.time.setCurrent(this.time.getNext());
+
+            if (e == 0) {
+
+                this.external_num_job++;
+                this.num_job++; //incremento il numero di job presenti nel centro
+                //inserisco nel csvcontroller arrivo di un job
+                //this.csvController.writeNumJob("Arrival", this.time.getCurrent(), this.num_job);
+                eventList[0].setT(this.random.getJobArrival(this.id)); //aggiorno il tempo di arrivo del prossimo job
+
+                if (eventList[0].getT() > this.STOP) { //se il tempo di arrivo del prossimo job è maggiore del tempo di stop
+                    eventList[0].setX(0);
+                    this.handler.setEventNodo(id, eventList);
+                }
+
+
+                if (num_job <= server) {
+                    double service = 0.0;
+                    service = this.random.getService(this.id); //tempo di servizio del centro s del prossimo job
+                    this.s = whatIsIdle(eventList); //cerco un servente idle
+                    sumList[s].incrementService(service); //aggiorno il tempo di servizio totale del centro s
+                    sumList[s].incrementServed(); //aggiorno il numero di job serviti dal centro s
+                    eventList[s].setT(this.time.getCurrent() + service); //aggiorno il tempo di completamento del centro s
+                    eventList[s].setX(1);  //il centro s diventa busy
+                    this.handler.setEventNodo(id, eventList);
+                }
+                else {
+                    if(this.abbandono()){
+                        eventList[server + 1].setT(this.time.getCurrent());
+                        eventList[server + 1].setX(1);
+                        this.handler.setEventNodo(id, eventList);
+                    }
+
+                }
+
+            } else if(e == (server + 1)) {
+                this.num_job_left++;
+                this.num_job--;
+                eventList[e].setX(0);
+                this.handler.setEventNodo(id, eventList);
+
+            }
+            else{
+                this.num_job--;
+                this.jobServiti++;
+                this.s = e;
+
+                double prob = this.random.extractProb();
+
+                if(prob <= this.handler.getRoutingProbability(id, 1)) {
+                    //this.handler.addInternalArrivalNodo(2, this.time.getCurrent());
+                    this.handler.addInternalArrivalNodo(1, this.time.getCurrent());
+                } else if(prob > this.handler.getRoutingProbability(id, 1) && prob <= (this.handler.getRoutingProbability(id, 1) + this.handler.getRoutingProbability(id, 2))) {
+                    this.handler.addInternalArrivalNodo(2, this.time.getCurrent());
+                } else if(prob > (this.handler.getRoutingProbability(id, 1) + this.handler.getRoutingProbability(id, 2)) && prob <= (this.handler.getRoutingProbability(id, 1) + this.handler.getRoutingProbability(id, 2) + this.handler.getRoutingProbability(id, 3))) {
+                    this.handler.addInternalArrivalNodo(3, this.time.getCurrent());
+                } else if(prob > (this.handler.getRoutingProbability(id, 1) + this.handler.getRoutingProbability(id, 2) + this.handler.getRoutingProbability(id, 3)) && prob <= (this.handler.getRoutingProbability(id, 1) + this.handler.getRoutingProbability(id, 2) + this.handler.getRoutingProbability(id, 3) + this.handler.getRoutingProbability(id, 4))) {
+                    this.handler.addInternalArrivalNodo(4, this.time.getCurrent());
+                }
+
+                if (this.num_job >= this.server) { //se ci sono job in coda
+
+                    if(this.num_job>this.server) {
+                        if(this.abbandono()){
+                            //l'indice server dell'array degli eventi indica l'evento di abbandono
+                            eventList[server + 1].setT(this.time.getCurrent()); //aggiorno il tempo del prossimo eevento di abbandono
+                            eventList[server + 1].setX(1);  //il centro s diventa busy
+                            this.handler.setEventNodo(id, eventList);
+                        }
+                    }
+
+                    double service = 0.0;
+                    service = this.random.getService(this.id);
+
+                    //this.s = whatIsIdle(eventList);
+                    sumList[s].incrementService(service);         //aggiorno il tempo di servizio totale del centro s
+                    sumList[s].incrementServed();                 //aggiorno il numero di job serviti dal centro s
+                    //this.eventList[s].setT(this.time.getCurrent() + service); //aggiorno il tempo di completamento del centro s
+                    eventList[s].setT(this.time.getCurrent() + service);
+                    this.handler.setEventNodo(id, eventList);
+
+
+                }
+                else {
+                    eventList[e].setX(0);                  //se non ci sono job in coda, il centro s diventa idle
+                    this.handler.setEventNodo(id, eventList);
+
+                }
+
+            }
+        }
+
+
     }
 
     private int whatIsIdle(EventList[] eventList) {
@@ -508,41 +634,94 @@ public class Node1 {
             writer3.close();
             fw3.close();
 
-            /*double totalServiceTime = 0;
-            for(int i = 1; i <= this.server; i++) {
-                totalServiceTime += ((this.sumList[i].getService()/this.sumList[i].getServed())*((double)this.sumList[i].getServed() / (double)this.jobServiti));
-            }
-
-            //E[Ts]
-            FileWriter fw5 = new FileWriter(file5, true);
-            PrintWriter writer5 = new PrintWriter(fw5);
-            writer5.println(totalServiceTime + totalQueueTime);
-            writer5.close();
-            fw5.close();*/
         } catch (Exception e) {
             System.out.println("Errore nella creazione del file");
         }
 
-        /*System.out.println("Hi, I'm " + this.returnNameOfCenter() + " and I'm done!\n\n");
-        System.out.println("for " + this.jobServiti + " jobs the service node statistics are:\n\n");
-        System.out.println("  avg interarrivals .. = " + (this.handler.getEventNodo(id)[0].getT() - limitTime) / this.jobServiti);
-        System.out.println("  avg wait ........... = " + this.area / this.jobServiti);
-        System.out.println("  avg # in node ...... = " + this.area / (this.time.getCurrent() - limitTime));
-        System.out.println("  external num_job ..... = " + this.external_num_job);
+    }
 
-        for(int i = 1; i <= this.server; i++) {
-            this.area -= this.sumList[i].getService();
-        }
-        System.out.println("  num job left ....... = " + this.num_job_left);
-        System.out.println("  avg delay .......... = " + this.area / this.jobServiti);
-        System.out.println("  avg # in queue ..... = " + this.area / (this.time.getCurrent() - limitTime));
-        System.out.println("\nthe server statistics are:\n\n");
-        System.out.println("    server     utilization     avg service        share\n");
-        for(int i = 1; i <= this.server; i++) {
-            System.out.println(i + "\t" + this.sumList[i].getService() / (this.time.getCurrent() - limitTime) + "\t" + this.sumList[i].getService() / this.sumList[i].getServed() + "\t" + (double)this.sumList[i].getServed() / (double)this.jobServiti);
+    public void printFinitHorizonStats() {
+        //E[Tq]
+        String output = this.path + "transient/outputWait.txt";
+        File file = new File(output);
+        //p
+        String output2 = this.path + "transient/outputRoh.txt";
+        File file2 = new File(output2);
+        //E[Nq]
+        String output3 = this.path + "transient/outputPopolazioneInCoda.txt";
+        File file3 = new File(output3);
+        //E[Ns]
+        String output4 = this.path + "transient/outputPopolazioneNelCentro.txt";
+        File file4 = new File(output4);
+        //E[Ts]
+        String output5 = this.path + "transient/outputTempoMedioRisposta.txt";
+        File file5 = new File(output5);
 
+
+        try{
+
+
+            //p
+            FileWriter fw2 = new FileWriter(file2, true);
+            PrintWriter writer2 = new PrintWriter(fw2);
+            writer2.println(this.sumList[1].getService() / (this.time.getCurrent()));
+            writer2.close();
+            fw2.close();
+
+
+
+            //E[Ns]
+            FileWriter fw4 = new FileWriter(file4, true);
+            PrintWriter writer4 = new PrintWriter(fw4);
+            writer4.println(this.area / (this.time.getCurrent()));
+            writer4.close();
+            fw4.close();
+
+            //E[Ts]
+            FileWriter fw5 = new FileWriter(file5, true);
+            PrintWriter writer5 = new PrintWriter(fw5);
+            writer5.println(this.area / this.jobServiti);
+            writer5.close();
+            fw5.close();
+
+            for(int i = 1; i <= this.server; i++) {
+                this.area -= this.sumList[i].getService();
+            }
+
+
+            //E[Tq]
+            FileWriter fw = new FileWriter(file, true);
+            PrintWriter writer = new PrintWriter(fw);
+            double totalQueueTime = this.area / this.jobServiti;
+            writer.println(this.area / this.jobServiti);
+            writer.close();
+            fw.close();
+
+            //E[Nq]
+            FileWriter fw3 = new FileWriter(file3, true);
+            PrintWriter writer3 = new PrintWriter(fw3);
+            writer3.println(this.area / (this.time.getCurrent()));
+            writer3.close();
+            fw3.close();
+
+        } catch (Exception e) {
+            System.out.println("Errore nella creazione del file");
         }
-        System.out.println("\n");*/
+    }
+
+    public void finiteHorizonCalculate(){
+        System.out.println("Calcolo delle stime...");
+        System.out.println("Calcolo AVG WAIT...");
+        Estimate.estimate(this.path + "transient/outputWait.txt");
+        System.out.println("Calcolo UTILIZZAZIONE...");
+        Estimate.estimate(this.path + "transient/outputRoh.txt");
+        System.out.println("Calcolo E[Nq]...");
+        Estimate.estimate(this.path + "transient/outputPopolazioneInCoda.txt");
+        System.out.println("Calcolo E[Ns]...");
+        Estimate.estimate(this.path + "transient/outputPopolazioneNelCentro.txt");
+        System.out.println("Calcolo E[Ts]...");
+        Estimate.estimate(this.path + "transient/outputTempoMedioRisposta.txt");
+
     }
 
 }

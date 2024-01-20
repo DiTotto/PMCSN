@@ -159,6 +159,114 @@ public class EventHandler {
         }
     }
 
+    public void resetInternal(int id) {
+        switch(id) {
+            case 0:
+                this.internalArrivalNodo0 = new ArrayList<Double>();
+                break;
+            case 1:
+                this.internalArrivalNodo1 = new ArrayList<Double>();
+                break;
+            case 2:
+                this.internalArrivalNodo2 = new ArrayList<Double>();
+                break;
+            case 3:
+                this.internalArrivalNodo3 = new ArrayList<Double>();
+                break;
+            case 4:
+                this.internalArrivalNodo4 = new ArrayList<Double>();
+                break;
+            case 5:
+                this.internalArrivalNodo5 = new ArrayList<Double>();
+                break;
+            case 6:
+                this.internalArrivalNodo6 = new ArrayList<Double>();
+                break;
+            case 7:
+                this.internalArrivalNodo7 = new ArrayList<Double>();
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void resetAll() {
+        this.internalArrivalNodo0.clear();
+        this.internalArrivalNodo1.clear();
+        this.internalArrivalNodo2.clear();
+        this.internalArrivalNodo3.clear();
+        this.internalArrivalNodo4.clear();
+
+        /*this.eventNodo0 = new EventList[server0 + 2];
+        this.eventNodo1 = new EventList[server1 + 3];
+        this.eventNodo2 = new EventList[server2 + 3];
+        this.eventNodo3 = new EventList[server3 + 3];
+        this.eventNodo4 = new EventList[server4 + 3];
+        this.eventNodo5 = new EventList[server5 + 3];
+        this.eventNodo6 = new EventList[server6 + 3];
+        this.eventNodo7 = new EventList[server7 + 3];*/
+    }
+
+    public void resetID(int id) {
+        switch(id) {
+            case 1:
+                this.internalArrivalNodo5.clear();
+                break;
+            case 2:
+                this.internalArrivalNodo6.clear();
+                break;
+            case 6:
+                this.internalArrivalNodo7.clear();
+                break;
+        }
+    }
+
+    public void orderList(int id){
+        switch(id) {
+            case(0):
+                if(!this.internalArrivalNodo0.isEmpty()) {
+                    this.internalArrivalNodo0.sort(null);
+                    break;
+                }
+            case(1):
+                if(!this.internalArrivalNodo1.isEmpty()) {
+                    this.internalArrivalNodo1.sort(null);
+                    break;
+                }
+            case(2):
+                if(!this.internalArrivalNodo2.isEmpty()) {
+                    this.internalArrivalNodo2.sort(null);
+                    break;
+                }
+            case(3):
+                if(!this.internalArrivalNodo3.isEmpty()) {
+                    this.internalArrivalNodo3.sort(null);
+                    break;
+                }
+            case(4):
+                if(!this.internalArrivalNodo4.isEmpty()) {
+                    this.internalArrivalNodo4.sort(null);
+                    break;
+                }
+            case(5):
+                if(!this.internalArrivalNodo5.isEmpty()) {
+                    this.internalArrivalNodo5.sort(null);
+                    break;
+                }
+            case(6):
+                if(!this.internalArrivalNodo6.isEmpty()) {
+                    this.internalArrivalNodo6.sort(null);
+                    break;
+                }
+            case(7):
+                if(!this.internalArrivalNodo7.isEmpty()) {
+                    this.internalArrivalNodo7.sort(null);
+                    break;
+                }
+        }
+
+    }
+
     public void setFirstArrival(int number, EventList event) {
         switch(number) {
             case 0:
