@@ -38,11 +38,13 @@ public class EventHandler {
     private EventList[] eventNodo3;
     private ArrayList<Double> internalArrivalNodo3;
     private static int server3 = 4;
+    //private static int server3 = 6;
 
     //SERVIZI SOCIALI
     private EventList[] eventNodo4;
     private ArrayList<Double> internalArrivalNodo4;
     private static int server4 = 3;
+    //private static int server4 = 4;
 
     //STATO CIVILE
     private EventList[] eventNodo5;
@@ -58,6 +60,7 @@ public class EventHandler {
     private EventList[] eventNodo7;
     private ArrayList<Double> internalArrivalNodo7;
     private static int server7 = 2;
+    //private static int server7 = 4;
 
     private static int numCenters = 8;
 
