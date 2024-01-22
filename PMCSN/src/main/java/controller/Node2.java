@@ -41,10 +41,10 @@ public class Node2 {
     
     private Sum[] sumList;
 
-    /* AGGIUNTA DEL SINGLETON*/
+
     private EventHandler handler;
     private RandomFunction random;
-    /* --------------------- */
+
     private double exitProbability;
 
     private CSVController csvController;
@@ -101,28 +101,15 @@ public class Node2 {
         if (!finiteHorizon) {
             //inizializzo la posizione 0 degli arraylist con il primo arrivo
             double firstArrival = this.random.getJobArrival(this.id);
-
-            //in questo modo pero non stiamo parametrizzando la classe, cosi funzionerà solo per lo specifico nodo che deve vedere getInternalArrivalNodo2.
             double firstInternalArrival = this.handler.getInternalArrivalNodo(id).remove(0);
-            /* PARTE DEL SINGLETON */
             eventList2[0] = new EventList(firstArrival,1);
             eventList2[server + 2] = new EventList(firstInternalArrival,1);
-            /*  ---------------   */
-            //ciclo che istanzia i singoli componenti degli arraylist EventList e SumList
-            //rappresentati i serventi del nodo e li pone a 0 e idle
+
             for(int i = 1; i <= (server + 1); i++) {
                 eventList2[i] = new EventList(0,0);
             }
-            /* SETTO LA NUOVA EVENTLIST MODIFICATA VERSO L'HANDLER*/
             this.handler.setEventNodo(id, eventList2);
-            /* ------------------ */
         }
-
-
-
-        
-
-
         for(int i = 0; i <= server + 2; i++) {
             this.sumList[i] = new Sum();
         }
@@ -145,8 +132,6 @@ public class Node2 {
             this.area = this.area + (this.time.getNext() - this.time.getCurrent()) * this.num_job;
             this.time.setCurrent(this.time.getNext());
 
-            /*----------------------------------------*/
-
             timeService = 0.0;
 
             for(int i = 1; i <= server; i++) {
@@ -157,18 +142,11 @@ public class Node2 {
 
             timeService = this.area;
 
-
-            /*for(int i = 1; i <= server; i++) {
-                timeService -= sumList[i].getService();
-            }*/
             if(timeService < 0) {
                 timeService = 0;
             }
 
             this.csvController.writeAttesa(this.time.getCurrent(), (timeService/ this.jobServiti));
-
-            /*----------------------------------------*/
-
 
             if (e == 0) {
                 if(batch) {
@@ -231,7 +209,6 @@ public class Node2 {
                         break;
                     }
                 }
-                //eventList[e].setT(this.handler.getInternalArrivalNodo2().remove(0));
                 if(num_job <= server) {
                     double service = 0.0;
                     if(batch) {
@@ -268,10 +245,10 @@ public class Node2 {
                         service = this.random.getService(this.id); //tempo di servizio del centro s del prossimo job
                     }
 
-                    //this.s = whatIsIdle(eventList);
+
                     sumList[s].incrementService(service);         //aggiorno il tempo di servizio totale del centro s
                     sumList[s].incrementServed();                 //aggiorno il numero di job serviti dal centro s
-                    //this.eventList[s].setT(this.time.getCurrent() + service); //aggiorno il tempo di completamento del centro s
+                    //aggiorno il tempo di completamento del centro s
                     eventList[s].setT(this.time.getCurrent() + service);
                     this.handler.setEventNodo(id, eventList);
 
@@ -359,9 +336,6 @@ public class Node2 {
         this.time.setNext(0.0);
 
         this.random.cleanArrival(this.id);
-        //this.handler.orderList(id);
-
-
 
         EventList[] eventList1;
         eventList1 = new EventList[server + 3];
@@ -454,7 +428,6 @@ public class Node2 {
 
                     if(this.num_job>this.server) {
                         if(this.abbandono()){
-                            //l'indice server + 1 dell'array degli eventi indica l'evento di abbandono
                             eventList[server + 1].setT(this.time.getCurrent()); //aggiorno il tempo del prossimo eevento di abbandono
                             eventList[server + 1].setX(1);  //il centro s diventa busy
                             this.handler.setEventNodo(id, eventList);
@@ -465,7 +438,7 @@ public class Node2 {
 
                     sumList[s].incrementService(service);         //aggiorno il tempo di servizio totale del centro s
                     sumList[s].incrementServed();                 //aggiorno il numero di job serviti dal centro s
-                    //this.eventList[s].setT(this.time.getCurrent() + service); //aggiorno il tempo di completamento del centro s
+                   //aggiorno il tempo di completamento del centro s
                     eventList[s].setT(this.time.getCurrent() + service);
                     this.handler.setEventNodo(id, eventList);
                 }
@@ -477,7 +450,6 @@ public class Node2 {
 
             }
         }
-        //this.handler.resetInternal(id);
     }
 
     private int whatIsIdle(EventList[] eventList) {
@@ -513,8 +485,6 @@ public class Node2 {
     }
 
 
-
-
     public void printStats() {
         System.out.println("Hi, I'm " + this.returnNameOfCenter() + " and I'm done!\n\n");
         System.out.println("for " + this.jobServiti + " jobs the service node statistics are:\n\n");
@@ -537,15 +507,7 @@ public class Node2 {
         System.out.println("    server     utilization     avg service        share\n");
         for(int i = 1; i <= this.server; i++) {
             System.out.println(i + "\t" + this.sumList[i].getService() / this.time.getCurrent() + "\t" + this.sumList[i].getService() / this.sumList[i].getServed() + "\t" + (double)this.sumList[i].getServed() / (double)this.jobServiti);
-            // System.out.println(i+"\t");
-            // System.out.println("get service" + this.sumList[i].getService() + "\n");
-            // System.out.println("getCurrent" + this.time.getCurrent() + "\n");
-            // System.out.println("getserved"+this.sumList[i].getServed() + "\n");
-            // System.out.println("jobServiti"+this.jobServiti + "\n");
-            //System.out.println(i + "\t" + sumList[i].getService() / this.time.getCurrent() + "\t" + this.sumList[i].getService() / this.sumList[i].getServed() + "\t" + this.sumList[i].getServed() / this.jobServiti);
             System.out.println("\n");
-            //System.out.println("jobServiti"+this.num_job_feedback + "\n");
-             
         }
         System.out.println("\n");
 
@@ -614,18 +576,6 @@ public class Node2 {
             writer3.println(this.area / (this.time.getCurrent() - limitTime));
             writer3.close();
             fw3.close();
-
-            /*double totalServiceTime = 0;
-            for(int i = 1; i <= this.server; i++) {
-                totalServiceTime += ((this.sumList[i].getService()/this.sumList[i].getServed())*((double)this.sumList[i].getServed() / (double)this.jobServiti));
-            }
-
-            //E[Ts]
-            FileWriter fw5 = new FileWriter(file5, true);
-            PrintWriter writer5 = new PrintWriter(fw5);
-            writer5.println(totalServiceTime + totalQueueTime);
-            writer5.close();
-            fw5.close();*/
         } catch (Exception e) {
             System.out.println("Errore nella creazione del file");
         }
@@ -698,17 +648,6 @@ public class Node2 {
             writer3.close();
             fw3.close();
 
-            /*double totalServiceTime = 0;
-            for(int i = 1; i <= this.server; i++) {
-                totalServiceTime += ((this.sumList[i].getService()/this.sumList[i].getServed())*((double)this.sumList[i].getServed() / (double)this.jobServiti));
-            }
-
-            //E[Ts]
-            FileWriter fw5 = new FileWriter(file5, true);
-            PrintWriter writer5 = new PrintWriter(fw5);
-            writer5.println(totalServiceTime + totalQueueTime);
-            writer5.close();
-            fw5.close();*/
         } catch (Exception e) {
             System.out.println("Errore nella creazione del file");
         }

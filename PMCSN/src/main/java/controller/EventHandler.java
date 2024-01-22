@@ -8,13 +8,10 @@ import java.util.ArrayList;
 import org.w3c.dom.events.Event;
 
 
-/* LA CLASSE DEVE ESSERE SINGLETON*/
-
 /* Node1 prende ingressi dall'esterno e può sia uscire fuori che andare al Node2
    Node2 prende ingressi da Node1 e dall'esterno e fa uscire solo fuori
    Node 3 prende ingressi solo dall'interno e può sia uscire fuori che andare al successivo
    Node 4 prende ingressi da precedente e dall'esterno e fa uscire sia fuori che andare al successivo
-
 */
 public class EventHandler {
 
@@ -95,7 +92,6 @@ public class EventHandler {
         this.random = RandomFunction.getInstance();
 
         initializeRoutingMatrix();
-        //printMatrix();
 
         
     }
@@ -199,15 +195,6 @@ public class EventHandler {
         this.internalArrivalNodo2.clear();
         this.internalArrivalNodo3.clear();
         this.internalArrivalNodo4.clear();
-
-        /*this.eventNodo0 = new EventList[server0 + 2];
-        this.eventNodo1 = new EventList[server1 + 3];
-        this.eventNodo2 = new EventList[server2 + 3];
-        this.eventNodo3 = new EventList[server3 + 3];
-        this.eventNodo4 = new EventList[server4 + 3];
-        this.eventNodo5 = new EventList[server5 + 3];
-        this.eventNodo6 = new EventList[server6 + 3];
-        this.eventNodo7 = new EventList[server7 + 3];*/
     }
 
     public void resetID(int id) {
@@ -380,10 +367,6 @@ public class EventHandler {
         }
     }
 
-    //si può pensare come un metodo che prende in input numero di centro di partenza (riga) e di arrivo (colonna)
-    //l'incrocio dei due è la probabilità di routing
-    //se il centro di partenza è uguale a quello di arrivo, la probabilità di routing è 0 perché abbiamo
-    //escluso il feedback
     private void initializeRoutingMatrix() {
         for(int i = 0; i < numCenters; i++) {
             for(int j = 0; j < numCenters; j++) {
@@ -397,8 +380,7 @@ public class EventHandler {
         routingMatrix[0][4] = 0.125;
 
         routingMatrix[1][5] = 0.625;
-        routingMatrix[2][6] = 0.7575; //è la probabilità x
-        //routingMatrix[6][7] = 0.06; //è la probabilità y
+        routingMatrix[2][6] = 0.7575;
         routingMatrix[6][7] = 0.35;
 
     }

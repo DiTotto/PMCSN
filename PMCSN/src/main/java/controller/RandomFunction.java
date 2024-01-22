@@ -6,33 +6,19 @@ import main.java.utils.*;
 
 public class RandomFunction {
 
-    //tempo di interarrivo del centro
-    private double intTime;
-    //tempo di servizio del centro
-    private double serviceTime;
-    //tempo di abbandono dal centro
-    private double abbandonTime;
-
-    private static RandomFunction instance = null; 
-
+    private static RandomFunction instance = null;
     
     private Rngs rngs = new Rngs();
     private Rvms rvms = new Rvms();
 
     private final double start = 0;
-    //private double arrival = this.start;
-    //private double arrival2 = this.start;
 
     private double[] arrival = new double[8];
 
-    //i tempi di interarrivo sono usati solo dai centri che prendono da fuori
-    // per correttezza inserisco tutti comunque anche se non usati
     private double[] interarrival = {1.96, 20, 11.76, 4.878, 15.385, 15.385, 7.69, 1250};
     //private double[] interarrival = {3.92, 20, 11.76, 4.878, 15.385, 15.385, 7.69, 1250};
     private RandomFunction() {
-        this.intTime = 0;
-        this.abbandonTime = 0;
-        this.serviceTime = 0;
+
         this.rngs.plantSeeds(12345);
 
         for(int i = 0; i < 8; i++) {
@@ -48,11 +34,7 @@ public class RandomFunction {
         return instance;
     }
     
-    private RandomFunction(double intTime, double abbandonTime, double serviceTime) {
-        this.intTime = intTime;
-        this.serviceTime = serviceTime;
-        this.abbandonTime = abbandonTime;
-    }
+
 
     
 
@@ -83,60 +65,10 @@ public class RandomFunction {
                 return z;
             }
         }
-
         // Scala e trasla il numero secondo la media e la deviazione standard
-        
-
         // Verifica se il numero è all'interno dell'intervallo desiderato
         
     }
-
-    /*public double getJobArrival() {
-        //arrival += this.start;
-        rngs.selectStream(0);
-        //arrival += Exponential(intTime);
-        arrival += Exponential(7); //ipotizziamo che all'URP arrivino 70 richieste in media al giorno, quindi una ogni circa 7 minuti
-        return arrival;
-
-    }*/
-
-    /*public double getService() {
-        rngs.selectStream(1);
-        //NEL NOSTRO CASO ANDREBBE USATA LA ERLANG, NON ESPONENZIALE
-        //double departure = Exponential(abbandonTime);
-        double prob = extractProb();
-        double departure = 0.0;
-        if (prob <= 0.33) {
-            departure = Exponential((double)5);
-        }else if (prob > 0.33 && prob <= 0.4){
-            departure = Exponential((double)15);
-        }else if (prob > 0.4 && prob <= 0.69){
-            departure = Exponential((double)3);
-        }else if (prob > 0.69 && prob <= 0.97){
-            departure = Uniform(5, 10);
-        }else if (prob > 0.97){
-            departure = Uniform(15,20);    
-        }
-        //double departure = Uniform(2.0, 5.0);
-        return departure;
-    }
-
-    public double getJobArrival2() {
-        //arrival += this.start;
-        rngs.selectStream(2);
-        //arrival += Exponential(intTime);
-        arrival2 += Exponential(5);
-        return arrival2;
-
-    }
-
-    public double getService2() {
-        rngs.selectStream(3);
-        //NEL NOSTRO CASO ANDREBBE USATA LA ERLANG, NON ESPONENZIALE
-        //double departure = Exponential(abbandonTime);
-        double departure = Uniform(2.0, 10.0);
-        return departure;
-    }*/
 
     public void cleanArrival(int id) {
 
@@ -145,9 +77,7 @@ public class RandomFunction {
     }
 
     public double getJobArrival(int id) {
-        //arrival += this.start;
         rngs.selectStream(id);
-        //arrival += Exponential(intTime);
         arrival[id] += Exponential(interarrival[id]);
         return arrival[id];
 
@@ -192,9 +122,6 @@ public class RandomFunction {
             default:
                 return 0.0;
         }
-        /*rngs.selectStream(id+8);
-        departure = Exponential(0.2);
-        return departure;*/
     }
 
     //getService

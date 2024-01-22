@@ -155,9 +155,6 @@ public class Main {
                 System.out.println("------------------END CULTURA--------------------");
 
             }
-
-
-            //centralino.printStats();
         } catch (IOException e) {
             e.printStackTrace();
         }

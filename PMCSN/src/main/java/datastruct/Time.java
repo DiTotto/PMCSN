@@ -6,9 +6,6 @@ public class Time {
     private double current;
     private double next;
 
-    //Utile ??
-    /*ArrayList<Integer> lastTIME = new ArrayList<Integer>();*/
-
     public Time() {
         this.current = 0;
         this.next = 0;
@@ -36,15 +33,5 @@ public class Time {
     public void setNext(double next) {
         this.next = next;
     }
-
-    /* DA RISCRIVERE ??
-    public ArrayList<Integer> getLastTIME() {
-        return lastTIME;
-    }
-
-    public void setLastTIME(ArrayList<Integer> lastTIME) {
-        this.lastTIME = lastTIME;
-    }
-    */
 
 }

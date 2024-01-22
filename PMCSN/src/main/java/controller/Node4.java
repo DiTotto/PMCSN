@@ -37,9 +37,6 @@ public class Node4 {
 
     private Time time = new Time();
 
-    //private ArrayList<EventList> eventList = new ArrayList<EventList>();
-    //private ArrayList<Sum> sumList = new ArrayList<Sum>();
-
     private Sum[] sumList;
 
     /* AGGIUNTA DEL SINGLETON*/
@@ -67,11 +64,6 @@ public class Node4 {
     private boolean finiteHorizon = true;
 
 
-
-    /* -------------DA MODIFICARE DA INSERIRE TEMPI DI INTERARRIVO ETC--------------------- */
-    //private RandomFunction random = new RandomFunction();
-
-
     public Node4(int num_job, String nome, int id, int the_next, String path, boolean batch, String relativePath) {
 
         EventList[] eventList1;
@@ -86,11 +78,9 @@ public class Node4 {
 
         this.the_next = the_next;
 
-        /* ottengo l'istanza singleton*/
         this.handler = EventHandler.getInstance();
         this.random = RandomFunction.getInstance();
         this.csvController = new CSVController(relativePath);
-        /*---------*/
 
         this.num_job = num_job;
         this.jobServiti = 0;
@@ -115,8 +105,6 @@ public class Node4 {
             this.sumList[i] = new Sum();
         }
 
-        //inizializzo la posizione 0 degli arraylist con il primo arrivo
-
         if (!finiteHorizon){
             double firstArrival = this.random.getJobArrival(this.id);
             double firstInternalArrival = this.handler.getInternalArrivalNodo(id).remove(0);
@@ -124,20 +112,12 @@ public class Node4 {
             eventList1[server + 2] = new EventList(firstInternalArrival,1);
 
 
-            //ciclo che istanzia i singoli componenti degli arraylist EventList e SumList
-            //rappresentati i serventi del nodo e li pone a 0 e idle
             for(int i = 1; i <= (server + 1); i++) {
                 eventList1[i] = new EventList(0,0);
             }
-
-            /* SETTO LA NUOVA EVENTLIST MODIFICATA VERSO L'HANDLER*/
             this.handler.setEventNodo(id, eventList1);
-            /* ------------------ */
+
         }
-
-
-
-
     }
 
 
@@ -150,7 +130,6 @@ public class Node4 {
 
         double timeService = 0.0;
 
-        //while ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0)) {
         while ((batch) ? (job_batch < 200) : ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0))) {
 
             EventList[] eventList = this.handler.getEventNodo(id);
@@ -160,8 +139,6 @@ public class Node4 {
             this.area = this.area + (this.time.getNext() - this.time.getCurrent()) * this.num_job;
             this.time.setCurrent(this.time.getNext());
 
-            /*----------------------------------------*/
-
             timeService = 0.0;
 
             for(int i = 1; i <= server; i++) {
@@ -169,16 +146,9 @@ public class Node4 {
             }
 
             this.csvController.writeRho(this.time.getCurrent() , (timeService / (this.server*this.time.getCurrent())));
-
             timeService = this.area;
-
-            /*for(int i = 1; i <= server; i++) {
-                timeService -= sumList[i].getService();
-            }*/
-
             this.csvController.writeAttesa(this.time.getCurrent(), (timeService/ this.jobServiti));
 
-            /*----------------------------------------*/
             if (e == 0) {
                 if(batch) {
                     job_batch++;
@@ -190,8 +160,6 @@ public class Node4 {
                     if (eventList[0].getT() > this.STOP) { //se il tempo di arrivo del prossimo job è maggiore del tempo di stop
                         eventList[0].setX(0);
                         this.handler.setEventNodo(id, eventList);
-
-                        //insert qui il passaggio di statistiche a handler
                     }
                 }
                 if (num_job <= server) { //se il numero di job è minore del numero di server fondamentalmente sto mettendo quel job in servizio da qualche parte
@@ -201,7 +169,6 @@ public class Node4 {
                     } else {
                         service = this.random.getService(this.id); //tempo di servizio del centro s del prossimo job
                     }
-                    //double service = this.random.getService(this.id); //tempo di servizio del centro s del prossimo job
                     this.s = whatIsIdle(eventList); //cerco un servente idle
                     sumList[s].incrementService(service); //aggiorno il tempo di servizio totale del centro s
                     sumList[s].incrementServed(); //aggiorno il numero di job serviti dal centro s
@@ -242,9 +209,7 @@ public class Node4 {
                     }
 
                 }
-                //eventList[e].setT(this.handler.getInternalArrivalNodo2().remove(0));
                 if (num_job <= server) {
-                    //double service = this.random.getService(this.id);
                     double service = 0.0;
                     if(batch) {
                         service = this.random.getServiceBatch(this.id); //tempo di servizio del centro s del prossimo job
@@ -267,12 +232,9 @@ public class Node4 {
 
                 double prob = this.random.extractProb();
 
-                //implemento logica di routing - HO USATO LA MATRICE DI ROUTING
                 if(prob <= this.handler.getRoutingProbability(id, this.the_next)) {
                     this.handler.addInternalArrivalNodo(this.the_next, this.time.getCurrent());
                 }
-
-                //fine logica di routing
 
 
                 if (this.num_job >= this.server) { //se ci sono job in coda
@@ -285,18 +247,16 @@ public class Node4 {
                             this.handler.setEventNodo(id, eventList);
                         }
                     }
-
-                    //double service = this.random.getService(this.id);    //tempo di servizio del centro s del prossimo job
                     double service = 0.0;
                     if(batch) {
                         service = this.random.getServiceBatch(this.id); //tempo di servizio del centro s del prossimo job
                     } else {
                         service = this.random.getService(this.id); //tempo di servizio del centro s del prossimo job
                     }
-                    //this.s = whatIsIdle(eventList);
+
                     sumList[s].incrementService(service);         //aggiorno il tempo di servizio totale del centro s
                     sumList[s].incrementServed();                 //aggiorno il numero di job serviti dal centro s
-                    //this.eventList[s].setT(this.time.getCurrent() + service); //aggiorno il tempo di completamento del centro s
+                    //aggiorno il tempo di completamento del centro s
                     eventList[s].setT(this.time.getCurrent() + service);
                     this.handler.setEventNodo(id, eventList);
 
@@ -334,10 +294,7 @@ public class Node4 {
     }
 
     public void bathMeans(){
-        //k = 64
-        //ipotizzo b = 1028
 
-        //soluzione migliore si ha con k = 4096 e b = 4092
         if(batch) {
             for (int i = 0; i < 50; i++) {
                 //this.workforBatch();
@@ -386,14 +343,6 @@ public class Node4 {
         this.time.setNext(0.0);
 
         this.random.cleanArrival(this.id);
-        //if(this.id == 1) {
-            //this.handler.resetID(1);
-        //} else if(this.id == 2) {
-            //this.handler.resetID(2);
-        //}
-
-
-        //this.handler.orderList(id);
 
 
         EventList[] eventList1;
@@ -415,10 +364,8 @@ public class Node4 {
         this.handler.setEventNodo(id, eventList1);
 
 
-
-
         int e;
-        //while ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0)) {
+
         while ((this.handler.getEventNodo(id)[0].getX() != 0) || (this.num_job > 0) || (!this.handler.getInternalArrivalNodo(id).isEmpty())) {
 
             EventList[] eventList = this.handler.getEventNodo(id);
@@ -435,8 +382,6 @@ public class Node4 {
                 if (eventList[0].getT() > this.STOP) { //se il tempo di arrivo del prossimo job è maggiore del tempo di stop
                     eventList[0].setX(0);
                     this.handler.setEventNodo(id, eventList);
-
-                    //insert qui il passaggio di statistiche a handler
                 }
                 if (num_job <= server) {
                     double service = 0.0;
@@ -474,9 +419,7 @@ public class Node4 {
                     eventList[e].setX(0);
 
                 }
-                //eventList[e].setT(this.handler.getInternalArrivalNodo2().remove(0));
                 if (num_job <= server) {
-                    //double service = this.random.getService(this.id);
                     double service = 0.0;
                     service = this.random.getService(this.id); //tempo di servizio del centro s del prossimo job
                     this.s = whatIsIdle(eventList);
@@ -494,13 +437,9 @@ public class Node4 {
 
                 double prob = this.random.extractProb();
 
-                //implemento logica di routing - HO USATO LA MATRICE DI ROUTING
                 if(prob <= this.handler.getRoutingProbability(id, this.the_next)) {
                     this.handler.addInternalArrivalNodo(this.the_next, this.time.getCurrent());
                 }
-
-                //fine logica di routing
-
 
                 if (this.num_job >= this.server) { //se ci sono job in coda
 
@@ -528,9 +467,6 @@ public class Node4 {
 
             }
         }
-
-        //this.handler.resetInternal(id);
-
     }
 
 
@@ -590,15 +526,7 @@ public class Node4 {
         System.out.println("    server     utilization     avg service        share\n");
         for(int i = 1; i <= this.server; i++) {
             System.out.println(i + "\t" + this.sumList[i].getService() / this.time.getCurrent() + "\t" + this.sumList[i].getService() / this.sumList[i].getServed() + "\t" + (double)this.sumList[i].getServed() / (double)this.jobServiti);
-            // System.out.println(i+"\t");
-            // System.out.println("get service" + this.sumList[i].getService() + "\n");
-            // System.out.println("getCurrent" + this.time.getCurrent() + "\n");
-            // System.out.println("getserved"+this.sumList[i].getServed() + "\n");
-            // System.out.println("jobServiti"+this.jobServiti + "\n");
-            //System.out.println(i + "\t" + sumList[i].getService() / this.time.getCurrent() + "\t" + this.sumList[i].getService() / this.sumList[i].getServed() + "\t" + this.sumList[i].getServed() / this.jobServiti);
             System.out.println("\n");
-            //System.out.println("jobServiti"+this.num_job_feedback + "\n");
-
         }
         System.out.println("\n");
     }
@@ -671,18 +599,6 @@ public class Node4 {
             writer3.println(this.area / (this.time.getCurrent() - limitTime));
             writer3.close();
             fw3.close();
-
-            /*double totalServiceTime = 0;
-            for(int i = 1; i <= this.server; i++) {
-                totalServiceTime += ((this.sumList[i].getService()/this.sumList[i].getServed())*((double)this.sumList[i].getServed() / (double)this.jobServiti));
-            }
-
-            //E[Ts]
-            FileWriter fw5 = new FileWriter(file5, true);
-            PrintWriter writer5 = new PrintWriter(fw5);
-            writer5.println(totalServiceTime + totalQueueTime);
-            writer5.close();
-            fw5.close();*/
         } catch (Exception e) {
             System.out.println("Errore nella creazione del file");
         }

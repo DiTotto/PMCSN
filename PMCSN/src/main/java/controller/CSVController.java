@@ -27,17 +27,6 @@ public class CSVController {
         }
     }
 
-
-
-    /*public void writeInterarrivalTime(double interarrivalTime) {
-        try (CSVWriter writer = new CSVWriter(new FileWriter(String.valueOf(interarrivalTime), true))) {
-            String[] record = {String.valueOf(interarrivalTime)};
-            writer.writeNext(record);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
-
     public void writeNumJob(String event, double time, int totalJobs) {
         try {
 
