@@ -1,0 +1,233 @@
+------------private double[] interarrival = {3, 30, 15, 8, 23, 15.385, 7.69, 1250};--------------------
+
+"C:\Program Files\Java\jdk-17.0.2\bin\java.exe" "-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2023.2.5\lib\idea_rt.jar=50973:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2023.2.5\bin" -Dfile.encoding=UTF-8 -classpath C:\Users\lucad\Documents\Progetto_PMCSN\PMCSN\out\production\pmcsn;C:\Users\lucad\Downloads\commons-io-2.15.1.jar;C:\Users\lucad\Downloads\opencsv-3.8.jar main.java.org.example.Main
+
+Enter a positive integer seed (9 digits or less) >> 12345
+Hi, I'm Centralino and I'm done!
+
+
+for 127 jobs the service node statistics are:
+
+
+  avg interarrivals .. = 3.129154779128748
+  avg wait ........... = 1.259821004022381
+  avg # in node ...... = 0.41182620326651936
+  external num_job ..... = 127
+  num job left ....... = 0
+  avg delay .......... = 0.2829605380839445
+  avg # in queue ..... = 0.09249771491450069
+
+the server statistics are:
+
+
+    server     utilization     avg service        share
+
+1	0.31932848835201866	0.9768604659384365	1.0
+
+
+------------------END CENTRALINO--------------------
+Hi, I'm Anagrafe and I'm done!
+
+
+for 27 jobs the service node statistics are:
+
+
+  avg interarrivals .. = 14.607407900738256
+  avg wait ........... = 21.501591830455006
+  avg # in node ...... = 1.603384496727755
+  number of internal jobs = 12
+  number of external jobs = 15
+  num job left ....... = 0
+  avg delay .......... = 0.780229413241162
+  avg # in queue ..... = 0.058182099025335235
+
+the server statistics are:
+
+
+    server     utilization     avg service        share
+
+1	0.4753608359777768	17.21155447008568	0.37037037037037035
+
+
+2	0.5582089503510116	25.264081060899994	0.2962962962962963
+
+
+3	0.5116326113736314	20.583176897412997	0.3333333333333333
+
+
+
+
+------------------END ANAGRAFE--------------------
+Hi, I'm URP and I'm done!
+
+
+for 43 jobs the service node statistics are:
+
+
+  avg interarrivals .. = 9.178558204848589
+  avg wait ........... = 10.671747404884838
+  avg # in node ...... = 1.222727949715494
+  number of internal jobs = 19
+  number of external jobs = 24
+  num job left ....... = 0
+  avg delay .......... = 4.570898393009808
+  avg # in queue ..... = 0.5237160334102793
+
+the server statistics are:
+
+
+    server     utilization     avg service        share
+
+1	0.6990119163052146	6.10084901187503	1.0
+
+
+
+
+------------------END URP--------------------
+Hi, I'm Scolastico and I'm done!
+
+
+for 100 jobs the service node statistics are:
+
+
+  avg external interarrivals .. = 3.920161241506229
+  avg internal interarrivals .. = 3.851369658775488
+  avg wait ........... = 32.30471704276022
+  avg # in node ...... = 7.068264557306641
+  number of internal jobs = 49
+  number of external jobs = 54
+  num job left ....... = 3
+  avg delay .......... = 16.38813722140405
+  avg # in queue ..... = 3.585720603248182
+
+the server statistics are:
+
+
+    server     utilization     avg service        share
+
+1	0.8960222892838926	16.38068087839211	0.25
+
+
+2	0.8717300557629274	15.936581072071071	0.25
+
+
+3	0.8644214995147316	16.461426352193737	0.24
+
+
+4	0.8503701094969073	14.948161573899512	0.26
+
+
+
+
+------------------END SCOLASTICO--------------------
+Hi, I'm Servizi Sociali and I'm done!
+
+
+for 32 jobs the service node statistics are:
+
+
+  avg external interarrivals .. = 13.270919149535812
+  avg internal interarrivals .. = 12.140836522920463
+  avg wait ........... = 30.90137527709428
+  avg # in node ...... = 2.5654902388985117
+  number of internal jobs = 14
+  number of external jobs = 19
+  num job left ....... = 1
+  avg delay .......... = 6.372486087742059
+  avg # in queue ..... = 0.5290557688459006
+
+the server statistics are:
+
+
+    server     utilization     avg service        share
+
+1	0.6478016243443601	22.69900222912958	0.34375
+
+
+2	0.7010552787922324	24.56501301946216	0.34375
+
+
+3	0.6875775669160187	26.502028632476197	0.3125
+
+
+
+
+------------------END SERVIZI SOCIALI--------------------
+Hi, I'm StatoCivile and I'm done!
+
+
+for 17 jobs the service node statistics are:
+
+
+  avg interarrivals .. = 21.298439079668047
+  avg wait ........... = 28.218383668668128
+  avg # in node ...... = 1.228435725755936
+  number of internal jobs = 17
+  number of external jobs = 0
+  num job left ....... = 0
+  avg delay .......... = 2.2995447806987555
+  avg # in queue ..... = 0.10010647649966121
+
+the server statistics are:
+
+
+    server     utilization     avg service        share
+
+1	0.5384058972549547	26.28139649621255	0.47058823529411764
+2	0.58992335200132	25.59656545841988	0.5294117647058824
+
+
+------------------END STATO CIVILE--------------------
+Hi, I'm Protocollo and I'm done!
+
+
+for 32 jobs the service node statistics are:
+
+
+  avg interarrivals .. = 11.728005872975007
+  avg wait ........... = 6.894605071504657
+  avg # in node ...... = 0.5760305355832318
+  number of internal jobs = 32
+  number of external jobs = 0
+  num job left ....... = 0
+  avg delay .......... = 4.440892098500626E-16
+  avg # in queue ..... = 3.710276988219702E-17
+
+the server statistics are:
+
+
+    server     utilization     avg service        share
+
+1	0.177262504386285	6.172172600307096	0.34375
+2	0.2173090997983213	7.566570698164946	0.34375
+3	0.1814589313986255	6.950118600495654	0.3125
+
+
+------------------END PROTOCOLLO--------------------
+Hi, I'm Cultura and I'm done!
+
+
+for 11 jobs the service node statistics are:
+
+
+  avg interarrivals .. = 34.81939184869513
+  avg wait ........... = 218.87933938296146
+  avg # in node ...... = 3.1987253396443975
+  number of internal jobs = 11
+  number of external jobs = 0
+  num job left ....... = 0
+  avg delay .......... = 99.7666051949494
+  avg # in queue ..... = 1.4579995032286965
+
+the server statistics are:
+
+
+    server     utilization     avg service        share
+
+1	0.8498823339491192	127.940870479104	0.45454545454545453
+2	0.8908435024665821	111.75595394543545	0.5454545454545454
+
+
+------------------END CULTURA--------------------
+
+Process finished with exit code 0

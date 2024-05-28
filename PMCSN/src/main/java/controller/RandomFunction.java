@@ -1,0 +1,244 @@
+package main.java.controller;
+
+import static java.lang.Math.log;
+import main.java.utils.*;
+
+
+public class RandomFunction {
+
+    private static RandomFunction instance = null;
+    
+    private Rngs rngs = new Rngs();
+    private Rvms rvms = new Rvms();
+
+    private final double start = 0;
+
+    private double[] arrival = new double[8];
+
+    private double[] interarrival = {1.96, 20, 11.76, 4.878, 15.385, 15.385, 7.69, 1250};
+    //private double[] interarrival = {3.92, 20, 11.76, 4.878, 15.385, 15.385, 7.69, 1250};
+    private RandomFunction() {
+
+        this.rngs.plantSeeds(12345);
+
+        for(int i = 0; i < 8; i++) {
+            arrival[i] = this.start;
+        }
+
+    }
+
+    public static RandomFunction getInstance() {
+        if (instance == null) {
+            instance = new RandomFunction();
+        }
+        return instance;
+    }
+    
+
+
+    
+
+
+    public double Exponential(double mu) {
+        return (-mu * log(1.0 - rngs.random()));
+    }
+    public double Uniform(double a, double b) {
+        return (a + (b - a) * rngs.random());
+    }  
+
+    public double NormalTruncated(double m, double s, double a, double b) throws Exception {
+        // Genera un numero casuale dalla distribuzione normale standard
+        // m indica la media e s la deviazione standard
+
+        if (a >= b) {
+            throw new Exception("Il valore di a deve essere minore di b");
+        }
+
+        double u;
+        double z;
+
+        while(true) {
+            u = rngs.random();
+            z = rvms.idfNormal(m, s, u);
+
+            if (z >= a && z <= b){
+                return z;
+            }
+        }
+        // Scala e trasla il numero secondo la media e la deviazione standard
+        // Verifica se il numero è all'interno dell'intervallo desiderato
+        
+    }
+
+    public void cleanArrival(int id) {
+
+        arrival[id] = this.start;
+
+    }
+
+    public double getJobArrival(int id) {
+        rngs.selectStream(id);
+        arrival[id] += Exponential(interarrival[id]);
+        return arrival[id];
+
+    }
+
+    //getServiceBatch
+    public double getServiceBatch(int id){
+        double departure = 0.0;
+        switch(id) {
+            case 0:
+                rngs.selectStream(id+8);
+                departure = Exponential(1);
+                return departure;
+            case 1:
+                rngs.selectStream(id+8);
+                departure = Exponential(20);
+                return departure;
+            case 2:
+                rngs.selectStream(id+8);
+                departure = Exponential(5);
+                return departure;
+            case 3:
+                rngs.selectStream(id+8);
+                departure = Exponential(5);
+                return departure;
+            case 4:
+                rngs.selectStream(id+8);
+                departure = Exponential(20);
+                return departure;
+            case 5:
+                rngs.selectStream(id+8);
+                departure = Exponential(25);
+                return departure;
+            case 6:
+                rngs.selectStream(id+8);
+                departure = Exponential(6.5);
+                return departure;
+            case 7:
+                rngs.selectStream(id+8);
+                departure = Exponential(20);
+                return departure;
+            default:
+                return 0.0;
+        }
+    }
+
+    //getService
+    public double getService(int id) {
+        double departure = 0.0;
+        double prob;
+        switch(id) {
+            //CENTRALINO
+            case 0:
+                rngs.selectStream(id+8);
+                try {
+                    departure = NormalTruncated(1, 0.40, 0.10, 2);
+                    //departure = NormalTruncated(2, 0.8, 0.50, 4);
+                    return departure;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            //ANAGRAFE
+            case 1:
+                try {
+                    rngs.selectStream(id+8);
+                    departure = NormalTruncated(20, 5, 5, 35);
+                    //departure = NormalTruncated(40, 10, 15, 60);
+                    return departure;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            //URP
+            case 2:
+                try {
+                    prob = extractProb();
+                    rngs.selectStream(id+8);
+                    if (prob <= 0.30) {
+                        departure = NormalTruncated(5, 2, 2, 8);
+                        //departure = NormalTruncated(2.5, 1, 1, 4);
+                    }else if (prob > 0.30 && prob <= 0.60){
+                        departure = NormalTruncated(3, 1.5, 1, 5);
+                        //departure = NormalTruncated(1.5, 0.75, 0.5, 2.5);
+                    } else if (prob > 0.60 && prob <= 0.66){
+                        departure = NormalTruncated(15, 5, 8, 20);
+                        //departure = NormalTruncated(7.5, 2.5, 4, 10);
+                    } else if (prob > 0.66 && prob <= 0.70){
+                        departure = NormalTruncated(17.5, 5, 10, 25);
+                        //departure = NormalTruncated(8.75, 2.5, 5, 12.5);
+                    } else if (prob > 0.70) {
+                        departure = NormalTruncated(7.5, 2.5, 3, 12);
+                        //departure = NormalTruncated(3.75, 1.25, 1.5, 6);
+                    }
+                    return departure;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            //SCOLASTICO
+            case 3:
+                try {
+                    rngs.selectStream(id+8);
+                    departure = NormalTruncated(15, 4, 10, 25);
+                    //departure = NormalTruncated(7.5, 2, 5, 12.5);
+                    return departure;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            //SERVIZI SOCIALI
+            case 4:
+                try {
+                    rngs.selectStream(id+8);
+                    departure = NormalTruncated(25, 10, 10, 40);
+                    //departure = NormalTruncated(50, 20, 20, 80);
+                    return departure;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            //STATO CIVILE
+            case 5:
+                try {
+                    rngs.selectStream(id+8);
+                    departure = NormalTruncated(25, 5, 10, 35);
+                    //departure = NormalTruncated(50, 10, 20, 70);
+                    return departure;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            //PROTOCOLLO
+            case 6:
+                try {
+                    rngs.selectStream(id+8);
+                    departure = NormalTruncated(6.5, 2, 3, 10);
+                    //departure = NormalTruncated(13, 4, 6, 20);
+                    return departure;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            //CULTURA
+            case 7:
+                try {
+                    rngs.selectStream(id+8);
+                    departure = NormalTruncated(120, 30, 60, 240);
+                    //departure = NormalTruncated(240, 60, 120, 480);
+                    return departure;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            default:
+                rngs.selectStream(id+8);
+                departure = Uniform(2.0, 10.0);
+                return departure;
+        }
+    }
+
+
+
+    public double extractProb() {
+        rngs.selectStream(20);
+        return rngs.random();
+    }
+
+
+}
